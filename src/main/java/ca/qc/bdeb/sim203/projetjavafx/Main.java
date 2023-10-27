@@ -1,7 +1,15 @@
 package ca.qc.bdeb.sim203.projetjavafx;
 
-public class Main {
+import javafx.application.Application;
+import javafx.stage.*;
+
+public class Main extends Application {
     public static void main(String[] args) {
-        System.out.println("Hello world!");
+        launch(args);
+    }
+
+    @Override
+    public void start(Stage primaryStage) {
+
     }
 }
