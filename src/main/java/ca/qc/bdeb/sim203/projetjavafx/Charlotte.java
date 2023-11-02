@@ -9,10 +9,11 @@ public class Charlotte extends ObjetJeu {
     private final double H_CHARLOTTE = 90;
 
     //TODO: Pour les deux accélérations: devrait être 1000, mais quand c'est 1000, Charlotte va trop rapidement.
-    private final double ACCELERATION_X = 2;
-    private final double ACCELERATION_Y = 2;
+    private final double ACCELERATION_X = 0.2;
+    private final double ACCELERATION_Y = 0.2;
 
-    private final double VITESSE_MAX = 4;
+    //TODO: La vitesse devrait être de 300, mais quand c'est 300, Charlotte va trop rapidement
+    private final double VITESSE_MAX = 0.2;
 
     private Image image = new Image("charlotte.png");
 
@@ -48,17 +49,22 @@ public class Charlotte extends ObjetJeu {
         //endregion
 
         mettreAJourPhysique(deltaTemps);
-
     }
 
     private void mettreAJourPhysique(double deltaTemps) {
+        //NOTE: Math.min() choisit la plus petite valeur entre les 2 valeurs
+        //Math.max() choisit la plus grande valeur entre les 2 valeurs
         vx += deltaTemps * ax;
         vy += deltaTemps * ay;
-        vx = Math.max(vx, VITESSE_MAX);
-        vy = Math.max(vy, VITESSE_MAX);
+        vx = Math.min(vx, VITESSE_MAX);
+        vy = Math.min(vy, VITESSE_MAX);
 
         x += deltaTemps * vx;
         y += deltaTemps * vy;
+        x = Math.max(0, x);
+        x = Math.min(x, Main.WIDTH);
+        y = Math.max(0, y);
+        y = Math.min(y, Main.HEIGHT);
     }
 
     public void draw(GraphicsContext context) {
