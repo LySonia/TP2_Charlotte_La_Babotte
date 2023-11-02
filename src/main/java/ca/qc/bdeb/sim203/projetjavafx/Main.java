@@ -12,6 +12,8 @@ public class Main extends Application {
         launch(args);
     }
 
+    public final static double NANOSECONDE = 1e-9;
+
     public static int WIDTH = 900;
     public static int HEIGHT = 520;
     @Override
@@ -34,17 +36,18 @@ public class Main extends Application {
             long lastTime = System.nanoTime();
             @Override
             public void handle(long now) {
-                double deltaTemps = (now - lastTime) * 1e-9;
+                double deltaTemps = (now - lastTime) * NANOSECONDE;
 
                 //region -- UPDATE --
                 charlotte.update(deltaTemps);
                 //endregion
 
-
-                //region -- DRAW --
+                //region -- DESSINER --
                 context.clearRect(0, 0, WIDTH, HEIGHT);
                 charlotte.draw(context);
                 //endregion
+
+                lastTime = now; //TODO: fix
             }
         };
 

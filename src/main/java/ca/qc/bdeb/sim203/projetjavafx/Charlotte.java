@@ -9,11 +9,11 @@ public class Charlotte extends ObjetJeu {
     private final double H_CHARLOTTE = 90;
 
     //TODO: Pour les deux accélérations: devrait être 1000, mais quand c'est 1000, Charlotte va trop rapidement.
-    private final double ACCELERATION_X = 0.2;
-    private final double ACCELERATION_Y = 0.2;
+    private final double ACCELERATION_X = 1000;
+    private final double ACCELERATION_Y = 1000;
 
     //TODO: La vitesse devrait être de 300, mais quand c'est 300, Charlotte va trop rapidement
-    private final double VITESSE_MAX = 0.2;
+    private final double VITESSE_MAX = 300;
 
     private Image image = new Image("charlotte.png");
 
@@ -30,22 +30,25 @@ public class Charlotte extends ObjetJeu {
         boolean droite = Input.isKeyPressed(KeyCode.RIGHT);
         boolean bas = Input.isKeyPressed(KeyCode.DOWN);
 
-        //region -- MOUVEMENT HORIZONTALE --
+        //region -- MOUVEMENT HORIZONTAL --
         if (gauche)
             ax = -ACCELERATION_X;
         else if (droite)
             ax = ACCELERATION_X;
-        else
-            ax = 0;
+        else {
+            if (Math.abs(vx) > 0) {
+                ax *= -1;
+            }
+        }
         //endregion
 
-        //region -- MOUVEMENT VERTICALE --
+        //region -- MOUVEMENT VERTICAL --
         if (haut)
             ay = -ACCELERATION_Y;
         else if (bas)
             ay = ACCELERATION_Y;
         else
-            ay = 0;
+            ay *= -1;
         //endregion
 
         mettreAJourPhysique(deltaTemps);
@@ -57,12 +60,13 @@ public class Charlotte extends ObjetJeu {
         vx += deltaTemps * ax;
         vy += deltaTemps * ay;
         vx = Math.min(vx, VITESSE_MAX);
-        vy = Math.min(vy, VITESSE_MAX);
+        vy = Math.min(vy, VITESSE_MAX); //TODO: Valeur abs
 
         x += deltaTemps * vx;
         y += deltaTemps * vy;
+        //Pour pas que sort de l'écran
         x = Math.max(0, x);
-        x = Math.min(x, Main.WIDTH);
+        x = Math.min(x, (Main.WIDTH + w));
         y = Math.max(0, y);
         y = Math.min(y, (Main.HEIGHT - h)); //J'ai pris en consid
     }
