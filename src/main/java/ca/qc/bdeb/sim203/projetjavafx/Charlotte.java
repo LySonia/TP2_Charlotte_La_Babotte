@@ -9,7 +9,7 @@ public class Charlotte {
 
     private double x, y;
 
-    private Image image = new Image("src/assets/charlotte");
+    private Image image = new Image("charlotte.png");
 
     public Charlotte() {
     }
