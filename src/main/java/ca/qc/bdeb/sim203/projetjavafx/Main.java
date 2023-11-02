@@ -35,12 +35,29 @@ public class Main extends Application {
             @Override
             public void handle(long now) {
                 double deltaTemps = (now - lastTime) * 1e-9;
+
+                //region -- UPDATE --
+                charlotte.update(deltaTemps);
+                //endregion
+
+
                 //region -- DRAW --
                 context.clearRect(0, 0, WIDTH, HEIGHT);
                 charlotte.draw(context);
                 //endregion
             }
         };
+
+
+        //region ÉVÉNEMENTS
+        scene.setOnKeyPressed((e) -> {
+           Input.setKeyPressed(e.getCode(), true);
+        });
+
+        scene.setOnKeyReleased((e) -> {
+            Input.setKeyPressed(e.getCode(), false);
+        });
+        //endregion
 
         timer.start();
 
