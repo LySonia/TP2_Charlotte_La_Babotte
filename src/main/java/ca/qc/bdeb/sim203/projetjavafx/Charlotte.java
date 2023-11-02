@@ -36,9 +36,13 @@ public class Charlotte extends ObjetJeu {
         else if (droite)
             ax = ACCELERATION_X;
         else {
-            if (Math.abs(vx) > 0) {
-                ax *= -1;
-            }
+            if (vx < 0)
+                ax = ACCELERATION_X;
+            else if (vx > 0)
+                ax = -ACCELERATION_X;
+            else if (vx==0)
+                ax=0;
+
         }
         //endregion
 
