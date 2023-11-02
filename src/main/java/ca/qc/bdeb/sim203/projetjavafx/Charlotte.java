@@ -36,12 +36,10 @@ public class Charlotte extends ObjetJeu {
         else if (droite)
             ax = ACCELERATION_X;
         else {
-            if (vx < 0)
-                ax = ACCELERATION_X;
-            else if (vx > 0)
-                ax = -ACCELERATION_X;
-            else if (vx==0)
-                ax=0;
+            //TODO: à rendre plus smooth (ax *= -1)
+            ax = 0;
+            vx = 0;
+
 
         }
         //endregion
@@ -51,8 +49,11 @@ public class Charlotte extends ObjetJeu {
             ay = -ACCELERATION_Y;
         else if (bas)
             ay = ACCELERATION_Y;
-        else
-            ay *= -1;
+        else {
+            //ay *= -1;
+            ay = 0;
+            vy = 0;
+        }
         //endregion
 
         mettreAJourPhysique(deltaTemps);
