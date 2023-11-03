@@ -11,14 +11,11 @@ public class Main extends Application {
     public static void main(String[] args) {
         launch(args);
     }
-
     public final static double NANOSECONDE = 1e-9;
-
     public static int WIDTH = 900;
     public static int HEIGHT = 520;
     @Override
     public void start(Stage primaryStage) throws Exception {
-
         //region -- VARIABLES D'AFFICHAGE DE BASE --
         var root = new Pane();
 
@@ -32,7 +29,6 @@ public class Main extends Application {
         Charlotte charlotte = new Charlotte();
 
         AnimationTimer timer = new AnimationTimer() {
-
             long lastTime = System.nanoTime();
             @Override
             public void handle(long now) {
