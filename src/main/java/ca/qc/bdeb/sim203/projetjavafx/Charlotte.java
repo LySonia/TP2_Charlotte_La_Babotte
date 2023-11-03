@@ -73,7 +73,7 @@ public class Charlotte extends ObjetJeu {
         x = Math.max(0, x);
         x = Math.min(x, (Main.WIDTH + w));
         y = Math.max(0, y);
-        y = Math.min(y, (Main.HEIGHT - h)); //J'ai pris en consid
+        y = Math.min(y, (Main.HEIGHT - h));
     }
 
     public void draw(GraphicsContext context) {
