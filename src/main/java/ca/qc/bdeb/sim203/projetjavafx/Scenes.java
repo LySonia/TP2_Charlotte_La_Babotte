@@ -9,8 +9,8 @@ public abstract class Scenes  {
 
     protected Pane root = new Pane();
     private Scene scene = new Scene(root, LARGEUR, HAUTEUR);
-    private static final int LARGEUR = 900;
-    private static final int HAUTEUR = 520;
+    protected static final int LARGEUR = 900;
+    protected static final int HAUTEUR = 520;
 
     public Scenes() {
         construireScene();
