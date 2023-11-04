@@ -13,7 +13,7 @@ public abstract class Scenes  {
     private static final int HAUTEUR = 520;
 
     public Scenes() {
-
+        construireScene();
     }
 
     public abstract void construireScene();
