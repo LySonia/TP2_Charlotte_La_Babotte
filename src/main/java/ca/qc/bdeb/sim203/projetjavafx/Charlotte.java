@@ -15,6 +15,8 @@ public class Charlotte extends ObjetJeu {
     //TODO: La vitesse devrait être de 300, mais quand c'est 300, Charlotte va trop rapidement
     private final double VITESSE_MAX = 300;
 
+    private final double EPSILON = 1e-10;
+
     private Image image = new Image("charlotte.png");
 
     public Charlotte() {
@@ -36,11 +38,13 @@ public class Charlotte extends ObjetJeu {
         else if (droite)
             ax = ACCELERATION_X;
         else {
-            //TODO: à rendre plus smooth (ax *= -1)
-            ax = 0;
-            vx = 0;
-
-
+            if (0 <= Math.abs(vx) && Math.abs(vx) < EPSILON) {
+                ax = 0;
+            } else if (vx < 0){
+                ax = ACCELERATION_X;
+            } else if (vx > 0) {
+                ax = -ACCELERATION_X;
+            }
         }
         //endregion
 
