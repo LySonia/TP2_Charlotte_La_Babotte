@@ -14,9 +14,6 @@ import static javafx.scene.paint.Color.BLUE;
 
 public class SceneAccueil extends Scenes{
 
-
-
-
     @Override
     public void construireScene() {
         Image logo = new Image("logo.png");

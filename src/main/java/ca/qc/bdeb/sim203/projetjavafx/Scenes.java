@@ -19,6 +19,8 @@ public abstract class Scenes  {
 
     public abstract void construireScene();
 
+    public abstract void escape();
+
     public Scene getScene() {
         return scene;
     }
