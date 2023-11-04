@@ -75,9 +75,9 @@ public class Charlotte extends ObjetJeu {
         y += deltaTemps * vy;
         //Pour pas que sort de l'écran
         x = Math.max(0, x);
-        x = Math.min(x, (Main.WIDTH + w));
+        x = Math.min(x, (Main.LARGEUR + w));
         y = Math.max(0, y);
-        y = Math.min(y, (Main.HEIGHT - h));
+        y = Math.min(y, (Main.HAUTEUR - h));
     }
 
     public void draw(GraphicsContext context) {

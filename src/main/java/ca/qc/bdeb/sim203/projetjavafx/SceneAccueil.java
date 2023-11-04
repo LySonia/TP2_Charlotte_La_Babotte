@@ -1,16 +1,11 @@
 package ca.qc.bdeb.sim203.projetjavafx;
 
-
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-
-import static javafx.scene.paint.Color.BLUE;
-
 
 public class SceneAccueil extends Scenes{
 
@@ -33,8 +28,8 @@ public class SceneAccueil extends Scenes{
 
         var vboxAccueil = new VBox();
 
-        vboxAccueil.setMaxHeight(HAUTEUR);
-        vboxAccueil.setMaxWidth(LARGEUR);
+        vboxAccueil.setMaxHeight(Main.HAUTEUR);
+        vboxAccueil.setMaxWidth(Main.LARGEUR);
 
         vboxAccueil.getChildren().add(imgvLogo);
         vboxAccueil.getChildren().add(groupeBoutons);
@@ -43,6 +38,11 @@ public class SceneAccueil extends Scenes{
 
         root.getChildren().add(vboxAccueil);
 
+
+    }
+
+    @Override
+    public void escape() {
 
     }
 }

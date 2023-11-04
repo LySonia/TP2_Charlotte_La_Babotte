@@ -10,8 +10,8 @@ public class SceneInfo extends Scenes {
     @Override
     public void construireScene() {
         var vbox = new VBox();
-        vbox.setMaxWidth(LARGEUR);
-        vbox.setMaxHeight(HAUTEUR);
+        vbox.setMaxWidth(Main.LARGEUR);
+        vbox.setMaxHeight(Main.HAUTEUR);
         var titre = new Text("Charlotte la Barbotte");
         titre.setFont(Font.font(50));
         //TODO: Faire de sorte que c'est toujours un poisson au hasard qui est choisie
@@ -61,5 +61,10 @@ public class SceneInfo extends Scenes {
         vbox.setAlignment(Pos.CENTER);
 
         root.getChildren().addAll(vbox);
+    }
+
+    @Override
+    public void escape() {
+
     }
 }

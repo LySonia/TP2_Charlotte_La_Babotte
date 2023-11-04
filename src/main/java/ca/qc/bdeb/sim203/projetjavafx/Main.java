@@ -11,9 +11,8 @@ public class Main extends Application {
     public static void main(String[] args) {
         launch(args);
     }
-    public final static double NANOSECONDE = 1e-9;
-    public static int WIDTH = 900;
-    public static int HEIGHT = 520;
+    public static final int LARGEUR = 900;
+    public static final int HAUTEUR = 520;
     @Override
     public void start(Stage primaryStage) throws Exception {
         //region -- VARIABLES D'AFFICHAGE DE BASE --
@@ -22,45 +21,10 @@ public class Main extends Application {
         // Une scene, canvas et un context de base juste pour tester Charlotte qui bouge
         var sceneInfo = new SceneInfo();
         var sceneAccueil = new SceneAccueil();
-        var scene = sceneAccueil.getScene();
-        var canvas = new Canvas(WIDTH, HEIGHT);
-        var context = canvas.getGraphicsContext2D();
-        root.getChildren().add(canvas);
+        var sceneJeu = new SceneJeu();
+        var scene = sceneJeu.getScene();
         //endregion
 
-        Charlotte charlotte = new Charlotte();
-
-        AnimationTimer timer = new AnimationTimer() {
-            long lastTime = System.nanoTime();
-            @Override
-            public void handle(long now) {
-                double deltaTemps = (now - lastTime) * NANOSECONDE;
-
-                //region -- UPDATE --
-                charlotte.update(deltaTemps);
-                //endregion
-
-                //region -- DESSINER --
-                context.clearRect(0, 0, WIDTH, HEIGHT);
-                charlotte.draw(context);
-                //endregion
-
-                lastTime = now; //TODO: fix
-            }
-        };
-
-
-        //region ÉVÉNEMENTS
-        scene.setOnKeyPressed((e) -> {
-           Input.setKeyPressed(e.getCode(), true);
-        });
-
-        scene.setOnKeyReleased((e) -> {
-            Input.setKeyPressed(e.getCode(), false);
-        });
-        //endregion
-
-        timer.start();
 
         primaryStage.setScene(scene);
         primaryStage.setTitle("Charlotte la Barbotte");
