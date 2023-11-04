@@ -14,6 +14,7 @@ public abstract class Scenes  {
 
     public Scenes() {
         construireScene();
+        root.setStyle("-fx-background-color: #2A7FFF;");
     }
 
     public abstract void construireScene();

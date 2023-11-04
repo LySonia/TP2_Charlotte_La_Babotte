@@ -35,7 +35,7 @@ public class SceneAccueil extends Scenes{
         imgvLogo.setFitWidth(logo.getWidth()/1.5);
 
         var vboxAccueil = new VBox();
-        root.setStyle("-fx-background-color: #2A7FFF;");
+
         vboxAccueil.setMaxHeight(HAUTEUR);
         vboxAccueil.setMaxWidth(LARGEUR);
 

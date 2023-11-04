@@ -20,7 +20,9 @@ public class Main extends Application {
         var root = new Pane();
 
         // Une scene, canvas et un context de base juste pour tester Charlotte qui bouge
-        var scene = new Scene(root, WIDTH, HEIGHT);
+        var sceneInfo = new SceneInfo();
+        var sceneAccueil = new SceneAccueil();
+        var scene = sceneAccueil.getScene();
         var canvas = new Canvas(WIDTH, HEIGHT);
         var context = canvas.getGraphicsContext2D();
         root.getChildren().add(canvas);
