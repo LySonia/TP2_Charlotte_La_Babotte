@@ -15,15 +15,8 @@ public class Main extends Application {
     public static final int HAUTEUR = 520;
     @Override
     public void start(Stage primaryStage) throws Exception {
-        //region -- VARIABLES D'AFFICHAGE DE BASE --
-        var root = new Pane();
-
-        // Une scene, canvas et un context de base juste pour tester Charlotte qui bouge
-        var sceneInfo = new SceneInfo();
-        var sceneAccueil = new SceneAccueil();
         var sceneJeu = new SceneJeu();
         var scene = sceneJeu.getScene();
-        //endregion
 
 
         primaryStage.setScene(scene);

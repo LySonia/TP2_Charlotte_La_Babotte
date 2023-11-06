@@ -8,7 +8,7 @@ import javafx.stage.Stage;
 public abstract class Scenes  {
 
     protected Pane root = new Pane();
-    private Scene scene = new Scene(root, Main.LARGEUR, Main.HAUTEUR);
+    protected Scene scene = new Scene(root, Main.LARGEUR, Main.HAUTEUR);
 
 
     public Scenes() {
