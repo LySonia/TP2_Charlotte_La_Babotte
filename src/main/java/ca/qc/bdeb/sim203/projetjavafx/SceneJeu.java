@@ -34,7 +34,9 @@ public class SceneJeu extends Scenes {
         timer.start();
     }
 
-    public void gererModeDebug()
+    public void gererModeDebug(){
+
+    }
 
     @Override
     public void escape() {

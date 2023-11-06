@@ -7,6 +7,18 @@ import javafx.scene.layout.*;
 import javafx.scene.text.*;
 
 public class SceneInfo extends Scenes {
+
+    private static SceneInfo infos = null;
+
+    public static SceneInfo getSceneInfo(){
+        if(infos == null){
+            infos = new SceneInfo();
+        }
+        return infos;
+    }
+
+
+
     @Override
     public void construireScene() {
         var vbox = new VBox();

@@ -4,10 +4,22 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 public class SceneAccueil extends Scenes{
+
+    private static SceneAccueil accueil = null;
+
+    public static SceneAccueil getSceneAccueil(){
+        if (accueil==null){
+            accueil = new SceneAccueil();
+        }
+        return accueil;
+    }
+
+
 
     @Override
     public void construireScene() {
@@ -39,6 +51,16 @@ public class SceneAccueil extends Scenes{
         root.getChildren().add(vboxAccueil);
 
 
+    }
+
+    @Override
+    protected void declarerEvenements() {
+        super.declarerEvenements();
+        SceneAccueil.getSceneAccueil().getScene().setOnKeyPressed(event -> {
+            if(event.getCode() == KeyCode.P){
+                System.exit(0);
+            }
+        });
     }
 
     @Override

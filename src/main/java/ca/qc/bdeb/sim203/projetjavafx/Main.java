@@ -19,11 +19,11 @@ public class Main extends Application {
         var root = new Pane();
 
         // Une scene, canvas et un context de base juste pour tester Charlotte qui bouge
-        var sceneInfo = new SceneInfo();
-        var sceneAccueil = new SceneAccueil();
+
         var sceneJeu = new SceneJeu();
         var scene = sceneJeu.getScene();
         //endregion
+        scene = SceneAccueil.getSceneAccueil().getScene();
 
 
         primaryStage.setScene(scene);
