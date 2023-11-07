@@ -56,7 +56,6 @@ public enum Assets {
             if (nbrAleatoire == i)
                 poissonChoisi = poissonsEnnemis[i];
         }
-
         return poissonChoisi;
     }
 
