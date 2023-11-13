@@ -7,17 +7,11 @@ import javafx.scene.input.*;
 public class Charlotte extends ObjetJeu {
     private final double W_CHARLOTTE = 102;
     private final double H_CHARLOTTE = 90;
-
-    //TODO: Pour les deux accélérations: devrait être 1000, mais quand c'est 1000, Charlotte va trop rapidement.
     private final double ACCELERATION_X = 1000;
     private final double ACCELERATION_Y = 1000;
-
-    //TODO: La vitesse devrait être de 300, mais quand c'est 300, Charlotte va trop rapidement
     private final double VITESSE_MAX = 300;
 
-    private final double EPSILON = 1e-10;
-
-    private Image image = new Image("charlotte.png");
+    private Image image = new Image(Assets.CHARLOTTE.getEmplacement());
 
     public Charlotte() {
         w = W_CHARLOTTE;
@@ -38,13 +32,24 @@ public class Charlotte extends ObjetJeu {
         else if (droite)
             ax = ACCELERATION_X;
         else {
-            if (0 <= Math.abs(vx) && Math.abs(vx) < EPSILON) {
-                ax = 0;
-            } else if (vx < 0){
-                ax = ACCELERATION_X;
-            } else if (vx > 0) {
-                ax = -ACCELERATION_X;
+            // Code inspiré des NDC "Animations 5"
+            ax = 0;
+
+            int signeVitesse = trouverSigneVitesse(vx);
+
+            //On veut que le poisson accélère dans le sens opposé de la vitesse
+            vx += deltaTemps * (-signeVitesse) * ACCELERATION_X;
+
+            int nouveauSigneVitesse = trouverSigneVitesse(vx);
+
+            //Si le nouveau signe de la vitesse et l'ancienne sont différent, alors on a est passé par vx = 0
+            //Par exemple, si notre vitesse initiale est de -5
+            //et que notre nouvelle vitesse des de +0.0003
+            //alors on peut considérer que la vitesse a atteint 0
+            if (nouveauSigneVitesse != signeVitesse) {
+                vx = 0;
             }
+
         }
         //endregion
 
@@ -54,13 +59,26 @@ public class Charlotte extends ObjetJeu {
         else if (bas)
             ay = ACCELERATION_Y;
         else {
-            //ay *= -1;
             ay = 0;
-            vy = 0;
+            int signeVitesse = trouverSigneVitesse(vy);
+
+            vy += deltaTemps * (-signeVitesse) * ACCELERATION_Y;
+
+            int nouveauSigneVitesse = trouverSigneVitesse(vy);
+
+            if (nouveauSigneVitesse != signeVitesse) {
+                vy = 0;
+            }
         }
         //endregion
-
         mettreAJourPhysique(deltaTemps);
+    }
+
+    private int trouverSigneVitesse(double vitesse) {
+        if (vitesse > 1) {
+            return 1;
+        }
+        return -1;
     }
 
     private void mettreAJourPhysique(double deltaTemps) {
@@ -68,21 +86,29 @@ public class Charlotte extends ObjetJeu {
         //Math.max() choisit la plus grande valeur entre les 2 valeurs
         vx += deltaTemps * ax;
         vy += deltaTemps * ay;
-        vx = Math.min(vx, VITESSE_MAX);
-        vy = Math.min(vy, VITESSE_MAX); //TODO: Valeur abs
+        vx = assurerQueVitesseDansLesBornes(vx);
+        vy = assurerQueVitesseDansLesBornes(vy);
 
         x += deltaTemps * vx;
         y += deltaTemps * vy;
         //Pour pas que sort de l'écran
         x = Math.max(0, x);
-        x = Math.min(x, (Main.LARGEUR + w));
+        x = Math.min(x, (Main.LARGEUR - w));
         y = Math.max(0, y);
         y = Math.min(y, (Main.HAUTEUR - h));
+    }
+
+    private double assurerQueVitesseDansLesBornes(double vitesse) {
+        if(vitesse > VITESSE_MAX) {
+            vitesse = VITESSE_MAX;
+        } else if(vitesse < -VITESSE_MAX) {
+            vitesse = -VITESSE_MAX;
+        }
+        return vitesse;
     }
 
     public void draw(GraphicsContext context) {
         context.drawImage(image, x, y);
     }
-
 
 }

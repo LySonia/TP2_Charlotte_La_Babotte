@@ -6,7 +6,21 @@ import javafx.scene.image.*;
 import javafx.scene.layout.*;
 import javafx.scene.text.*;
 
+import java.util.*;
+
 public class SceneInfo extends Scenes {
+
+    private static SceneInfo infos = null;
+
+    public static SceneInfo getSceneInfo(){
+        if(infos == null){
+            infos = new SceneInfo();
+        }
+        return infos;
+    }
+
+
+
     @Override
     public void construireScene() {
         var vbox = new VBox();
@@ -15,7 +29,7 @@ public class SceneInfo extends Scenes {
         var titre = new Text("Charlotte la Barbotte");
         titre.setFont(Font.font(50));
         //TODO: Faire de sorte que c'est toujours un poisson au hasard qui est choisie
-        var poissonEnnemiImage = new Image("poisson1.png");
+        var poissonEnnemiImage = new Image(choisirPoissonHasard());
         var poissonEnnemiImageView = new ImageView(poissonEnnemiImage);
 
 
@@ -61,6 +75,28 @@ public class SceneInfo extends Scenes {
         vbox.setAlignment(Pos.CENTER);
 
         root.getChildren().addAll(vbox);
+    }
+
+    public String choisirPoissonHasard(){
+        //TODO: Façon plus efficace de faire?
+        String poissonChoisi = Assets.POISSON_1.getEmplacement(); //Par défault
+
+        String[] poissonsEnnemis = {
+                Assets.POISSON_1.getEmplacement(),
+                Assets.POISSON_2.getEmplacement(),
+                Assets.POISSON_3.getEmplacement(),
+                Assets.POISSON_4.getEmplacement(),
+                Assets.POISSON_5.getEmplacement()
+        };
+
+        Random aleatoire = new Random();
+        int nbrAleatoire = aleatoire.nextInt(poissonsEnnemis.length);
+
+        for (int i = 0; i < poissonsEnnemis.length; i++) {
+            if (nbrAleatoire == i)
+                poissonChoisi = poissonsEnnemis[i];
+        }
+        return poissonChoisi;
     }
 
     @Override

@@ -1,7 +1,5 @@
 package ca.qc.bdeb.sim203.projetjavafx;
 
-import java.util.*;
-
 public enum Assets {
     BARIL("baril.png"),
     BARIL_OUVERT("baril-ouvert.png"),
@@ -26,9 +24,6 @@ public enum Assets {
 
     private String emplacement;
 
-
-    private final int NBR_ENNEMIS = 5;
-
     Assets(String emplacement) {
         this.emplacement = emplacement;
     }
@@ -37,26 +32,6 @@ public enum Assets {
         return emplacement;
     }
 
-    public String choisirPoissonHasard(){
-        String poissonChoisi = POISSON_1.emplacement; //Par défault
 
-        String[] poissonsEnnemis = {
-                POISSON_1.emplacement,
-                POISSON_2.emplacement,
-                POISSON_3.emplacement,
-                POISSON_4.emplacement,
-                POISSON_5.emplacement
-        };
-
-        Random aleatoire = new Random();
-        int nbrAleatoire = aleatoire.nextInt(NBR_ENNEMIS);
-
-        //TODO: Façon plus efficace de faire?
-        for (int i = 0; i < poissonsEnnemis.length; i++) {
-            if (nbrAleatoire == i)
-                poissonChoisi = poissonsEnnemis[i];
-        }
-        return poissonChoisi;
-    }
 
 }
