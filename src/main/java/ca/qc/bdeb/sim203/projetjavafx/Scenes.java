@@ -9,11 +9,12 @@ import javafx.scene.control.*;
 import javafx.scene.image.*;
 import javafx.scene.input.*;
 import javafx.scene.layout.*;
-import javafx.scene.paint.*;
 import javafx.scene.text.*;
 import javafx.stage.*;
 
 import java.util.*;
+
+import static ca.qc.bdeb.sim203.projetjavafx.GenerateurAleatoire.obtenirNombreAleatoire;
 
 public class Scenes {
     private Stage stage = new Stage();
@@ -24,7 +25,6 @@ public class Scenes {
     public Scenes() {
         stage.setScene(getSceneAccueil()); //Par défault, c'est la scène d'accueil
     }
-
 
     public Stage getStage() {
         return stage;
@@ -46,6 +46,7 @@ public class Scenes {
 
     public Scene getSceneJeu() {
         Pane root = creerRoot();
+        //TODO: Créer un nouveau partie de jeu ici?
         var sceneJeu = new Scene(root, Main.LARGEUR, Main.HAUTEUR);
         ArrayList<ObjetJeu> objetsJeu = new ArrayList<>();
         Canvas canvas = new Canvas(Main.LARGEUR, Main.HAUTEUR);
@@ -54,7 +55,9 @@ public class Scenes {
         root.getChildren().add(canvas);
 
         Charlotte charlotte = new Charlotte();
+        PoissonEnnemi poissonEnnemi = new PoissonEnnemi(1); //TODO: Test
         objetsJeu.add(charlotte);
+        objetsJeu.add(poissonEnnemi);
         AnimationTimer timer = new AnimationTimer() {
             long lastTime = System.nanoTime();
             @Override
@@ -63,11 +66,13 @@ public class Scenes {
 
                 //region -- UPDATE --
                 charlotte.update(deltaTemps);
+                poissonEnnemi.mettreAJourPhysique(deltaTemps);
                 //endregion
 
                 //region -- DESSINER --
                 contexte.clearRect(0, 0, Main.LARGEUR, Main.HAUTEUR);
                 charlotte.dessiner(contexte);
+                poissonEnnemi.dessiner(contexte);
 
                 if (estEnDebug) {
                     gererModeDebug(objetsJeu, canvas.getGraphicsContext2D());
@@ -82,13 +87,17 @@ public class Scenes {
 
 
         //region ÉVÉNEMENTS
+        //TODO: Fix le outrageous copié-collé icite :O)
+        //TODO: Et réduire la quantité de code à l'intérieur des événements
         sceneJeu.setOnKeyPressed((e) -> {
             Input.setKeyPressed(e.getCode(), true);
+
             if (e.getCode() == KeyCode.D) {
                 estEnDebug = !estEnDebug;
             }
+
             if (e.getCode() == KeyCode.ESCAPE) {
-                System.exit(0);
+                Platform.exit();
             }
         });
 
@@ -100,37 +109,32 @@ public class Scenes {
         return sceneJeu;
     }
 
-
-
     public Scene getSceneAccueil() {
         Pane root = creerRoot();
         var sceneAccueil = new Scene(root, Main.LARGEUR, Main.HAUTEUR);
-        Image logo = new Image("logo.png");
+        var logo = new Image(Assets.LOGO.getEmplacement());
+        var logoImageView = new ImageView(logo);
+        logoImageView.setPreserveRatio(true);
+        logoImageView.setFitWidth(logo.getWidth() / 1.5);
+
         Button infos = new Button("Infos!");
         Button jouer = new Button("Jouer!");
 
-        //section de boutons
+        var vboxAccueil = new VBox();
+        vboxAccueil.setPrefHeight(Main.HAUTEUR);
+        vboxAccueil.setPrefWidth(Main.LARGEUR);
+
         var groupeBoutons = new HBox();
-        groupeBoutons.getChildren().add(jouer);
-        groupeBoutons.getChildren().add(infos);
+        groupeBoutons.getChildren().addAll(jouer, infos);
         groupeBoutons.setAlignment(Pos.CENTER);
 
-
-        var imgvLogo = new ImageView(logo);
-        imgvLogo.setPreserveRatio(true);
-        imgvLogo.setFitWidth(logo.getWidth() / 1.5);
-
-        var vboxAccueil = new VBox();
-
-        vboxAccueil.setMaxHeight(Main.HAUTEUR);
-        vboxAccueil.setMaxWidth(Main.LARGEUR);
-        vboxAccueil.getChildren().add(imgvLogo);
-        vboxAccueil.getChildren().add(groupeBoutons);
+        vboxAccueil.getChildren().addAll(
+                logoImageView,
+                groupeBoutons
+        );
         vboxAccueil.setAlignment(Pos.CENTER);
 
-
         root.getChildren().add(vboxAccueil);
-
 
         //region ÉVÉNEMENTS
         gererEvenementsGenerales(sceneAccueil);
@@ -152,12 +156,13 @@ public class Scenes {
         var sceneInfo = new Scene(root, Main.LARGEUR, Main.HAUTEUR);
 
         var vbox = new VBox();
-        vbox.setMaxWidth(Main.LARGEUR);
-        vbox.setMaxHeight(Main.HAUTEUR);
+        vbox.setPrefWidth(Main.LARGEUR);
+        vbox.setPrefHeight(Main.HAUTEUR);
+
         var titre = new Text("Charlotte la Barbotte");
         titre.setFont(Font.font(50));
         //TODO: Faire de sorte que c'est toujours un poisson au hasard qui est choisie
-        var poissonEnnemiImage = new Image(choisirPoissonHasard());
+        var poissonEnnemiImage = new Image(Assets.POISSON_1.choisirPoissonHasard());
         var poissonEnnemiImageView = new ImageView(poissonEnnemiImage);
 
 
@@ -200,9 +205,9 @@ public class Scenes {
                 texteExplicatifMieux,
                 retour
         );
-        vbox.setAlignment(Pos.CENTER);
+        vbox.setAlignment(Pos.TOP_CENTER);
 
-        root.getChildren().addAll(vbox);
+        root.getChildren().add(vbox);
 
         //region ÉVÉNEMENTS
         gererEvenementsGenerales(sceneInfo);
@@ -215,8 +220,6 @@ public class Scenes {
         return sceneInfo;
     }
 
-
-
     public void gererModeDebug(ArrayList<ObjetJeu> objetsJeu, GraphicsContext contexte) {
         //Mettre un rectangle jaune autour de tous les objets de jeu
         //TODO: Quick and dirty fix: (le not equal to null)
@@ -226,31 +229,10 @@ public class Scenes {
             }
         }
     }
-    public String choisirPoissonHasard(){
-        //TODO: Façon plus efficace de faire?
-        String poissonChoisi = Assets.POISSON_1.getEmplacement(); //Par défault
-
-        String[] poissonsEnnemis = {
-                Assets.POISSON_1.getEmplacement(),
-                Assets.POISSON_2.getEmplacement(),
-                Assets.POISSON_3.getEmplacement(),
-                Assets.POISSON_4.getEmplacement(),
-                Assets.POISSON_5.getEmplacement()
-        };
-
-        Random aleatoire = new Random();
-        int nbrAleatoire = aleatoire.nextInt(poissonsEnnemis.length);
-
-        for (int i = 0; i < poissonsEnnemis.length; i++) {
-            if (nbrAleatoire == i)
-                poissonChoisi = poissonsEnnemis[i];
-        }
-        return poissonChoisi;
-    }
 
     private Pane creerRoot() {
         Pane root = new Pane();
-        root.setStyle("-fx-background-color: #2A7FFF;");
+        root.setStyle("-fx-background-color: #2A7FFF;"); // Pour faire de sorte que le fond est bleu
         return root;
     }
 

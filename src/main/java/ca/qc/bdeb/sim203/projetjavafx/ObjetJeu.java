@@ -5,19 +5,45 @@ import javafx.scene.image.*;
 import javafx.scene.layout.*;
 import javafx.scene.paint.*;
 
-public class ObjetJeu {
+public abstract class ObjetJeu {
     protected double x, y;
     //NOTE IMPORTANTE: LE X ET LE Y D'UN OBJET DE JEU DEVRAIT ÊTRE LE COIN EN HAUT À GAUCHE DU RECTANGLE
-
+    private double xCentre, yCentre;
     protected double w, h;
-
     protected double vx, vy;
-
     protected double ax, ay;
-
+    protected double VITESSE_MAX = 300; //TODO: THIS IS A RANDOM TEST VALUE
     protected Image image;
 
     public ObjetJeu() {
+        xCentre = x + (w/2);
+        yCentre = y + (h/2);
+    }
+
+    public void mettreAJourPhysique(double deltaTemps) {
+        //NOTE: Math.min() choisit la plus petite valeur entre les 2 valeurs
+        //Math.max() choisit la plus grande valeur entre les 2 valeurs
+        vx += deltaTemps * ax;
+        vy += deltaTemps * ay;
+        vx = assurerQueVitesseDansLesBornes(vx);
+        vy = assurerQueVitesseDansLesBornes(vy);
+
+        x += deltaTemps * vx;
+        y += deltaTemps * vy;
+        //Pour pas que sort de l'écran
+        x = Math.max(0, x);
+        x = Math.min(x, (Main.LARGEUR - w));
+        y = Math.max(0, y);
+        y = Math.min(y, (Main.HAUTEUR - h));
+    }
+
+    private double assurerQueVitesseDansLesBornes(double vitesse) {
+        if(vitesse > VITESSE_MAX) {
+            vitesse = VITESSE_MAX;
+        } else if(vitesse < -VITESSE_MAX) {
+            vitesse = -VITESSE_MAX;
+        }
+        return vitesse;
     }
 
     public void mettreContour(GraphicsContext contexte) {
