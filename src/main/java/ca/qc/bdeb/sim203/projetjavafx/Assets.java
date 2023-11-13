@@ -36,9 +36,10 @@ public enum Assets {
 
     //TODO Avant, stai dans la classe "Scenes", mais j'ai l'impression que ici est mieux
     //TODO J'aime pourtant pas comment il faut faire "Assets.[Poisson random}.ChoisirPoissonHasard()"
-    public String choisirPoissonHasard(){
+    public static String choisirPoissonHasard(){
         //TODO Façon plus efficace de faire?
-        String poissonChoisi = Assets.POISSON_1.getEmplacement(); //Par défault
+        String poissonChoisi= null; // je sais pas si le mettre null is smarter
+                //Assets.POISSON_1.getEmplacement(); //Par défault
 
         String[] poissonsEnnemis = {
                 Assets.POISSON_1.getEmplacement(),

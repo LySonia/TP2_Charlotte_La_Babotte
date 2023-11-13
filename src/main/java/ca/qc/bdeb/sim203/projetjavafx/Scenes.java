@@ -162,7 +162,7 @@ public class Scenes {
         var titre = new Text("Charlotte la Barbotte");
         titre.setFont(Font.font(50));
         //TODO: Faire de sorte que c'est toujours un poisson au hasard qui est choisie
-        var poissonEnnemiImage = new Image(Assets.POISSON_1.choisirPoissonHasard());
+        var poissonEnnemiImage = new Image(Assets.choisirPoissonHasard());
         var poissonEnnemiImageView = new ImageView(poissonEnnemiImage);
 
 
