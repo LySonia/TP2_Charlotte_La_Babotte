@@ -22,10 +22,6 @@ public class Input {
 
     public static void setKeyPressed(KeyCode touche, boolean estAppuyee) {
         //Mettre/ajuster la touche dans le Hashmap avec son boolean associé
-        //TODO: Clean this up
-//        if(touches.containsKey(touche)){
-//            touches.replace(touche, estAppuyee);
-//        }else
         touches.put(touche, estAppuyee);
     }
 

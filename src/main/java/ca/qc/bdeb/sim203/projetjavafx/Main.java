@@ -4,6 +4,7 @@ import javafx.animation.*;
 import javafx.application.Application;
 import javafx.scene.*;
 import javafx.scene.canvas.*;
+import javafx.scene.input.*;
 import javafx.scene.layout.*;
 import javafx.stage.*;
 
@@ -15,8 +16,9 @@ public class Main extends Application {
     public static final int HAUTEUR = 520;
     @Override
     public void start(Stage primaryStage) throws Exception {
-        var sceneJeu = new SceneJeu();
-        var scene = sceneJeu.getScene();
+        var scenesJeu = new Scenes();
+        var scene = scenesJeu.getSceneJeu();
+
 
 
         primaryStage.setScene(scene);

@@ -11,9 +11,8 @@ public class Charlotte extends ObjetJeu {
     private final double ACCELERATION_Y = 1000;
     private final double VITESSE_MAX = 300;
 
-    private Image image = new Image(Assets.CHARLOTTE.getEmplacement());
-
     public Charlotte() {
+        image = new Image(Assets.CHARLOTTE.getEmplacement());
         w = W_CHARLOTTE;
         h = H_CHARLOTTE;
         x = 0;
@@ -26,6 +25,7 @@ public class Charlotte extends ObjetJeu {
         boolean droite = Input.isKeyPressed(KeyCode.RIGHT);
         boolean bas = Input.isKeyPressed(KeyCode.DOWN);
 
+        //TODO: Faire une méthode pour mouvement horizontale et verticale!
         //region -- MOUVEMENT HORIZONTAL --
         if (gauche)
             ax = -ACCELERATION_X;
@@ -105,10 +105,6 @@ public class Charlotte extends ObjetJeu {
             vitesse = -VITESSE_MAX;
         }
         return vitesse;
-    }
-
-    public void draw(GraphicsContext context) {
-        context.drawImage(image, x, y);
     }
 
 }

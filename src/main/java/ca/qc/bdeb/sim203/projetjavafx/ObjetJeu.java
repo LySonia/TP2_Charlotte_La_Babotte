@@ -1,6 +1,9 @@
 package ca.qc.bdeb.sim203.projetjavafx;
 
+import javafx.scene.canvas.*;
+import javafx.scene.image.*;
 import javafx.scene.layout.*;
+import javafx.scene.paint.*;
 
 public class ObjetJeu {
     protected double x, y;
@@ -12,16 +15,19 @@ public class ObjetJeu {
 
     protected double ax, ay;
 
-    private VBox vboxTailleObjet = new VBox();
+    protected Image image;
 
     public ObjetJeu() {
-        vboxTailleObjet.setMaxWidth(w);
-        vboxTailleObjet.setMaxHeight(h);
-
     }
 
-    public void mettreContour() {
-        vboxTailleObjet.setStyle("-fx-border-color: blue;\n" + "-fx-border-insets: 5;\n"
-                + "-fx-border-width: 3;\n" + "-fx-border-style: dashed;\n");
+    public void mettreContour(GraphicsContext contexte) {
+        contexte.setLineWidth(1); //TODO: Transformer en constante
+        contexte.setStroke(Color.YELLOW);
+        contexte.strokeRect(x, y, w, h);
+    }
+
+    public void dessiner(GraphicsContext contexte) {
+        contexte.drawImage(image, x, y);
+
     }
 }
