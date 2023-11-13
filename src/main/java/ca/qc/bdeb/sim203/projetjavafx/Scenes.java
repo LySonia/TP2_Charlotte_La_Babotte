@@ -46,7 +46,7 @@ public class Scenes {
 
     public Scene getSceneJeu() {
         Pane root = creerRoot();
-        //TODO: Créer un nouveau partie de jeu ici?
+        //TODO: Créer un nouveau partie de jeu ici? genre l'objet...
         var sceneJeu = new Scene(root, Main.LARGEUR, Main.HAUTEUR);
         ArrayList<ObjetJeu> objetsJeu = new ArrayList<>();
         Canvas canvas = new Canvas(Main.LARGEUR, Main.HAUTEUR);

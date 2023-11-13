@@ -6,15 +6,14 @@ import static ca.qc.bdeb.sim203.projetjavafx.GenerateurAleatoire.obtenirNombreAl
 
 public class PoissonEnnemi extends ObjetJeu {
 
-
     public PoissonEnnemi(int numNiveau) {
         x = Main.LARGEUR - 100; //TODO: Test value
         y = obtenirHauteurDepart();
-        h = obtenirNombreAleatoire(50, 120); //TODO: Constantes?
         vx = -100 * Math.pow(numNiveau, 0.33) + 200;
         vy = obtenirNombreAleatoire(-100, 100);
         ax = -500;
         image = new Image(Assets.POISSON_1.choisirPoissonHasard());
+        //TODO: Hauteur aleatoire, besoin imageView
     }
 
     private double obtenirHauteurDepart() {

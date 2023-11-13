@@ -34,10 +34,10 @@ public enum Assets {
         return emplacement;
     }
 
-    //TODO: Avant, stai dans la classe "Scenes", mais j'ai l'impression que ici est mieux
-    //TODO: J'aime pourtant pas comment il faut faire "Assets.[Poisson random}.ChoisirPoissonHasard()"
+    //TODO Avant, stai dans la classe "Scenes", mais j'ai l'impression que ici est mieux
+    //TODO J'aime pourtant pas comment il faut faire "Assets.[Poisson random}.ChoisirPoissonHasard()"
     public String choisirPoissonHasard(){
-        //TODO: Façon plus efficace de faire?
+        //TODO Façon plus efficace de faire?
         String poissonChoisi = Assets.POISSON_1.getEmplacement(); //Par défault
 
         String[] poissonsEnnemis = {
