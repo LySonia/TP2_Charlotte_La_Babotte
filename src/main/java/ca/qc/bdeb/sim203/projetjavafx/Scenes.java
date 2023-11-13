@@ -1,6 +1,7 @@
 package ca.qc.bdeb.sim203.projetjavafx;
 
 import javafx.animation.*;
+import javafx.application.*;
 import javafx.geometry.*;
 import javafx.scene.*;
 import javafx.scene.canvas.*;
@@ -10,29 +11,99 @@ import javafx.scene.input.*;
 import javafx.scene.layout.*;
 import javafx.scene.paint.*;
 import javafx.scene.text.*;
+import javafx.stage.*;
 
 import java.util.*;
 
 public class Scenes {
+    private Stage stage = new Stage();
     private Pane root = new Pane();
     private boolean estEnDebug = false;
     public final static double NANOSECONDE = 1e-9;
 
     public Scenes() {
-        root.setStyle("-fx-background-color: #2A7FFF;");
+        stage.setScene(getSceneAccueil()); //Par défault, c'est la scène d'accueil
+    }
+
+
+    public Stage getStage() {
+        return stage;
     }
 
     private void gererEvenementsGenerales(Scene scene) {
         scene.setOnKeyPressed((e) -> {
             Input.setKeyPressed(e.getCode(), true);
+
+            if (e.getCode() == KeyCode.ESCAPE) {
+                Platform.exit();
+            }
         });
 
         scene.setOnKeyReleased((e) -> {
             Input.setKeyPressed(e.getCode(), false);
         });
     }
+
+    public Scene getSceneJeu() {
+        Pane root = creerRoot();
+        var sceneJeu = new Scene(root, Main.LARGEUR, Main.HAUTEUR);
+        ArrayList<ObjetJeu> objetsJeu = new ArrayList<>();
+        Canvas canvas = new Canvas(Main.LARGEUR, Main.HAUTEUR);
+        GraphicsContext contexte = canvas.getGraphicsContext2D();
+
+        root.getChildren().add(canvas);
+
+        Charlotte charlotte = new Charlotte();
+        objetsJeu.add(charlotte);
+        AnimationTimer timer = new AnimationTimer() {
+            long lastTime = System.nanoTime();
+            @Override
+            public void handle(long now) {
+                double deltaTemps = (now - lastTime) * NANOSECONDE;
+
+                //region -- UPDATE --
+                charlotte.update(deltaTemps);
+                //endregion
+
+                //region -- DESSINER --
+                contexte.clearRect(0, 0, Main.LARGEUR, Main.HAUTEUR);
+                charlotte.dessiner(contexte);
+
+                if (estEnDebug) {
+                    gererModeDebug(objetsJeu, canvas.getGraphicsContext2D());
+                }
+                //endregion
+
+                lastTime = now;
+            }
+
+        };
+        timer.start();
+
+
+        //region ÉVÉNEMENTS
+        sceneJeu.setOnKeyPressed((e) -> {
+            Input.setKeyPressed(e.getCode(), true);
+            if (e.getCode() == KeyCode.D) {
+                estEnDebug = !estEnDebug;
+            }
+            if (e.getCode() == KeyCode.ESCAPE) {
+                System.exit(0);
+            }
+        });
+
+        sceneJeu.setOnKeyReleased((e) -> {
+            Input.setKeyPressed(e.getCode(), false);
+        });
+        //endregion
+
+        return sceneJeu;
+    }
+
+
+
     public Scene getSceneAccueil() {
-        root.getChildren().clear();
+        Pane root = creerRoot();
         var sceneAccueil = new Scene(root, Main.LARGEUR, Main.HAUTEUR);
         Image logo = new Image("logo.png");
         Button infos = new Button("Infos!");
@@ -53,19 +124,31 @@ public class Scenes {
 
         vboxAccueil.setMaxHeight(Main.HAUTEUR);
         vboxAccueil.setMaxWidth(Main.LARGEUR);
-
         vboxAccueil.getChildren().add(imgvLogo);
         vboxAccueil.getChildren().add(groupeBoutons);
         vboxAccueil.setAlignment(Pos.CENTER);
 
 
         root.getChildren().add(vboxAccueil);
+
+
+        //region ÉVÉNEMENTS
         gererEvenementsGenerales(sceneAccueil);
+
+        jouer.setOnAction((e) -> {
+            stage.setScene(getSceneJeu());
+        });
+
+        infos.setOnAction((e) -> {
+            stage.setScene(getSceneInfo());
+        });
+        //endregion
+
         return sceneAccueil;
     }
 
     public Scene getSceneInfo() {
-        root.getChildren().clear();
+        Pane root = creerRoot();
         var sceneInfo = new Scene(root, Main.LARGEUR, Main.HAUTEUR);
 
         var vbox = new VBox();
@@ -120,61 +203,19 @@ public class Scenes {
         vbox.setAlignment(Pos.CENTER);
 
         root.getChildren().addAll(vbox);
+
+        //region ÉVÉNEMENTS
         gererEvenementsGenerales(sceneInfo);
+
+        retour.setOnAction((e) -> {
+            stage.setScene(getSceneAccueil());
+        });
+        //endregion
+
         return sceneInfo;
     }
 
-    public Scene getSceneJeu() {
-        var sceneJeu = new Scene(root, Main.LARGEUR, Main.HAUTEUR);
-        ArrayList<ObjetJeu> objetsJeu = new ArrayList<>();
-        Canvas canvas = new Canvas(Main.LARGEUR, Main.HAUTEUR);
-        GraphicsContext contexte = canvas.getGraphicsContext2D();
 
-        root.getChildren().add(canvas);
-
-        Charlotte charlotte = new Charlotte();
-        objetsJeu.add(charlotte);
-        AnimationTimer timer = new AnimationTimer() {
-            long lastTime = System.nanoTime();
-            @Override
-            public void handle(long now) {
-                double deltaTemps = (now - lastTime) * NANOSECONDE;
-
-                //region -- UPDATE --
-                charlotte.update(deltaTemps);
-                //endregion
-
-                //region -- DESSINER --
-                contexte.clearRect(0, 0, Main.LARGEUR, Main.HAUTEUR);
-                charlotte.dessiner(contexte);
-
-                if (estEnDebug) {
-                    gererModeDebug(objetsJeu, canvas.getGraphicsContext2D());
-                }
-                //endregion
-
-                lastTime = now;
-            }
-
-        };
-        timer.start();
-
-        sceneJeu.setOnKeyPressed((e) -> {
-            Input.setKeyPressed(e.getCode(), true);
-            if (e.getCode() == KeyCode.D) {
-                estEnDebug = !estEnDebug;
-            }
-            if (e.getCode() == KeyCode.ESCAPE) {
-                System.exit(0);
-            }
-        });
-
-        sceneJeu.setOnKeyReleased((e) -> {
-            Input.setKeyPressed(e.getCode(), false);
-
-        });
-        return sceneJeu;
-    }
 
     public void gererModeDebug(ArrayList<ObjetJeu> objetsJeu, GraphicsContext contexte) {
         //Mettre un rectangle jaune autour de tous les objets de jeu
@@ -207,5 +248,10 @@ public class Scenes {
         return poissonChoisi;
     }
 
+    private Pane creerRoot() {
+        Pane root = new Pane();
+        root.setStyle("-fx-background-color: #2A7FFF;");
+        return root;
+    }
 
 }

@@ -17,11 +17,9 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         var scenesJeu = new Scenes();
-        var scene = scenesJeu.getSceneJeu();
+        primaryStage = scenesJeu.getStage();
 
 
-
-        primaryStage.setScene(scene);
         primaryStage.setTitle("Charlotte la Barbotte");
         primaryStage.show();
     }
