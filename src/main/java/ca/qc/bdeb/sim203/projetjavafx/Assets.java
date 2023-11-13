@@ -1,5 +1,7 @@
 package ca.qc.bdeb.sim203.projetjavafx;
 
+import static ca.qc.bdeb.sim203.projetjavafx.GenerateurAleatoire.obtenirNombreAleatoire;
+
 public enum Assets {
     BARIL("baril.png"),
     BARIL_OUVERT("baril-ouvert.png"),
@@ -32,6 +34,27 @@ public enum Assets {
         return emplacement;
     }
 
+    //TODO: Avant, stai dans la classe "Scenes", mais j'ai l'impression que ici est mieux
+    //TODO: J'aime pourtant pas comment il faut faire "Assets.[Poisson random}.ChoisirPoissonHasard()"
+    public String choisirPoissonHasard(){
+        //TODO: Façon plus efficace de faire?
+        String poissonChoisi = Assets.POISSON_1.getEmplacement(); //Par défault
 
+        String[] poissonsEnnemis = {
+                Assets.POISSON_1.getEmplacement(),
+                Assets.POISSON_2.getEmplacement(),
+                Assets.POISSON_3.getEmplacement(),
+                Assets.POISSON_4.getEmplacement(),
+                Assets.POISSON_5.getEmplacement()
+        };
+
+        int nbrAleatoire = obtenirNombreAleatoire(0, poissonsEnnemis.length - 1);
+
+        for (int i = 0; i < poissonsEnnemis.length; i++) {
+            if (nbrAleatoire == i)
+                poissonChoisi = poissonsEnnemis[i];
+        }
+        return poissonChoisi;
+    }
 
 }

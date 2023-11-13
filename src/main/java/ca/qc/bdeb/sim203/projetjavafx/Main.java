@@ -19,7 +19,6 @@ public class Main extends Application {
         var scenesJeu = new Scenes();
         primaryStage = scenesJeu.getStage();
 
-
         primaryStage.setTitle("Charlotte la Barbotte");
         primaryStage.show();
     }
