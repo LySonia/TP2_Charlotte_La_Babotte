@@ -13,6 +13,9 @@ public class PoissonEnnemi extends ObjetJeu {
         vy = obtenirNombreAleatoire(-100, 100);
         ax = -500;
         image = new Image(Assets.POISSON_1.choisirPoissonHasard());
+        var imageView = new ImageView(image);
+        imageView.setPreserveRatio(true);
+        imageView.setFitHeight(obtenirNombreAleatoire(50, 120));
         //TODO: Hauteur aleatoire, besoin imageView
     }
 

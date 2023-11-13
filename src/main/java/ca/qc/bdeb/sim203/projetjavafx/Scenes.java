@@ -55,9 +55,12 @@ public class Scenes {
         root.getChildren().add(canvas);
 
         Charlotte charlotte = new Charlotte();
-        PoissonEnnemi poissonEnnemi = new PoissonEnnemi(1); //TODO: Test
         objetsJeu.add(charlotte);
-        objetsJeu.add(poissonEnnemi);
+
+        for (int i = 0; i < 5; i++) { //TODO: Test
+            objetsJeu.add(new PoissonEnnemi(1));
+        }
+
         AnimationTimer timer = new AnimationTimer() {
             long lastTime = System.nanoTime();
             @Override

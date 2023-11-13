@@ -21,7 +21,6 @@ public abstract class ObjetJeu {
     }
 
     public void mettreAJourPhysique(double deltaTemps) {
-
         vx += deltaTemps * ax;
         vy += deltaTemps * ay;
         vx = assurerQueVitesseDansLesBornes(vx);
@@ -29,13 +28,6 @@ public abstract class ObjetJeu {
 
         x += deltaTemps * vx;
         y += deltaTemps * vy;
-        //Pour pas que sort de l'écran //TODO: pas nécésssairement quelque chose de désirable pour tous les objets de jeu (ex. poissons ennemis peuent sortir, à déplacer)
-        //NOTE: Math.min() choisit la plus petite valeur entre les 2 valeurs
-        //Math.max() choisit la plus grande valeur entre les 2 valeurs
-        x = Math.max(0, x);
-        x = Math.min(x, (Main.LARGEUR - w));
-        y = Math.max(0, y);
-        y = Math.min(y, (Main.HAUTEUR - h));
     }
 
     private double assurerQueVitesseDansLesBornes(double vitesse) {

@@ -75,6 +75,12 @@ public class Charlotte extends ObjetJeu {
         mettreAJourPhysique(deltaTemps);
     }
 
+    @Override
+    public void mettreAJourPhysique(double deltaTemps) {
+        super.mettreAJourPhysique(deltaTemps);
+        assurerQueResteDansEcran();
+    }
+
     private int trouverSigneVitesse(double vitesse) {
         if (vitesse > 1) {
             return 1;
@@ -82,6 +88,12 @@ public class Charlotte extends ObjetJeu {
         return -1;
     }
 
+    private void assurerQueResteDansEcran() {
+        x = Math.max(0, x);
+        x = Math.min(x, (Main.LARGEUR - w));
+        y = Math.max(0, y);
+        y = Math.min(y, (Main.HAUTEUR - h));
+    }
 
 
 }
