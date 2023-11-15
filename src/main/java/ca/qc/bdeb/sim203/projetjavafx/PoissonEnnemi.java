@@ -5,12 +5,14 @@ import javafx.scene.image.*;
 import static ca.qc.bdeb.sim203.projetjavafx.GenerateurAleatoire.obtenirNombreAleatoire;
 
 public class PoissonEnnemi extends ObjetJeu {
-    int numNiveau;
+    private int numNiveau;
+    private static final int HAUTEUR_MAX_IMAGE= 120;
+    private static final int HAUTEUR_MIN_IMAGE=50;
 
     public PoissonEnnemi(int numNiveau) {
         this.numNiveau = numNiveau;
         initialiserVariables();
-        //TODO: Hauteur aleatoire, besoin imageView
+
     }
 
     @Override
@@ -20,9 +22,18 @@ public class PoissonEnnemi extends ObjetJeu {
         vx = -100 * Math.pow(numNiveau, 0.33) + 200;
         vy = obtenirNombreAleatoire(-100, 100);
         ax = -500;
-        image = new Image(Assets.POISSON_1.choisirPoissonHasard());
+
+
+        //TODO: fix this mess, coz the image isnt changing size (adding a random size to the image of each fish)
+        var imageViewPoisson = new ImageView(Assets.choisirPoissonHasard());
+        imageViewPoisson.setFitHeight(GenerateurAleatoire.generateurAleatoire.nextDouble(HAUTEUR_MAX_IMAGE-HAUTEUR_MIN_IMAGE)+HAUTEUR_MIN_IMAGE);
+        imageViewPoisson.setPreserveRatio(true);
+
+
+        image = imageViewPoisson.getImage();
         w= image.getWidth();
         h= image.getHeight();
+
     }
 
 
@@ -31,9 +42,6 @@ public class PoissonEnnemi extends ObjetJeu {
         int min = (Main.HAUTEUR/5);
         int max= (Main.HAUTEUR/5)*4;
 
-
-//        int min = (int)((1.0/5.0) * Main.HAUTEUR);
-//        int max = (int)((4.0/5.0) * Main.HAUTEUR);
         return obtenirNombreAleatoire(min, max);
     }
 }
