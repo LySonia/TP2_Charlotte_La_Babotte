@@ -27,8 +27,13 @@ public class PoissonEnnemi extends ObjetJeu {
 
 
     private double obtenirHauteurDepart() {
-        int min = (int)((1.0/5.0) * Main.HAUTEUR); //TODO: Sketchy solution?
-        int max = (int)((4.0/5.0) * Main.HAUTEUR);
+        //Je divise la hauteur de l'écran par 5 pour obtenir des 5ème sans trouble de doubles
+        int min = (Main.HAUTEUR/5);
+        int max= (Main.HAUTEUR/5)*4;
+
+
+//        int min = (int)((1.0/5.0) * Main.HAUTEUR);
+//        int max = (int)((4.0/5.0) * Main.HAUTEUR);
         return obtenirNombreAleatoire(min, max);
     }
 }
