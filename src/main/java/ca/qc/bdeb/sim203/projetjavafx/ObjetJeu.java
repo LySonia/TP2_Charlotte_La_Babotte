@@ -16,6 +16,7 @@ public abstract class ObjetJeu {
     protected Image image;
 
     public ObjetJeu() {
+        initialiserVariables();
         xCentre = x + (w/2);
         yCentre = y + (h/2);
     }

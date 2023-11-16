@@ -25,7 +25,7 @@ public class PoissonEnnemi extends ObjetJeu {
 
 
         h = obtenirNombreAleatoire(50, 120);
-        image = new Image(Assets.POISSON_1.choisirPoissonHasard(), 0, h, true, false); //ugly code, to change
+        image = new Image(Assets.choisirPoissonHasard(), 0, h, true, false); //ugly code, to change
         w = image.getWidth();
 
     }
