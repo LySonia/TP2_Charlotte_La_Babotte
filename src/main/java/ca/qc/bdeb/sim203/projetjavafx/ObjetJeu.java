@@ -20,6 +20,8 @@ public abstract class ObjetJeu {
         yCentre = y + (h/2);
     }
 
+    protected abstract void initialiserVariables();
+
     public void mettreAJourPhysique(double deltaTemps) {
         vx += deltaTemps * ax;
         vy += deltaTemps * ay;

@@ -12,6 +12,11 @@ public class Charlotte extends ObjetJeu {
     private Projectile projectileActuel;
 
     public Charlotte() {
+        initialiserVariables();
+    }
+
+    @Override
+    protected void initialiserVariables() {
         image = new Image(Assets.CHARLOTTE.getEmplacement());
         VITESSE_MAX = 300;
         w = W_CHARLOTTE;
