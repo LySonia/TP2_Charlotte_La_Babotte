@@ -54,12 +54,18 @@ public class Scenes {
 
         root.getChildren().add(canvas);
 
+        //TESTS:
         Charlotte charlotte = new Charlotte();
+        PoissonEnnemi poissonEnnemi1 = new PoissonEnnemi(1);
+        PoissonEnnemi poissonEnnemi2 = new PoissonEnnemi(1);
+        PoissonEnnemi poissonEnnemi3 = new PoissonEnnemi(1);
+        ArrayList<PoissonEnnemi> poissonEnnemis = new ArrayList<>();
+        poissonEnnemis.add(poissonEnnemi1);
+        poissonEnnemis.add(poissonEnnemi2);
+        poissonEnnemis.add(poissonEnnemi3);
         objetsJeu.add(charlotte);
-
-        for (int i = 0; i < 5; i++) { //TODO: Test
-            objetsJeu.add(new PoissonEnnemi(1));
-        }
+        objetsJeu.addAll(poissonEnnemis);
+        
 
         AnimationTimer timer = new AnimationTimer() {
             long lastTime = System.nanoTime();
@@ -68,14 +74,19 @@ public class Scenes {
                 double deltaTemps = (now - lastTime) * NANOSECONDE;
 
                 //region -- UPDATE --
-                charlotte.update(deltaTemps);
-                poissonEnnemi.mettreAJourPhysique(deltaTemps);
+                for (ObjetJeu objetJeu: objetsJeu) {
+                    for (ObjetJeu autreObjetJeu: objetsJeu) {
+
+                    }
+                    objetJeu.update(deltaTemps);
+                }
                 //endregion
 
                 //region -- DESSINER --
                 contexte.clearRect(0, 0, Main.LARGEUR, Main.HAUTEUR);
-                charlotte.dessiner(contexte);
-                poissonEnnemi.dessiner(contexte);
+                for (ObjetJeu objectJeu: objetsJeu) {
+                    objectJeu.dessiner(contexte);
+                }
 
                 if (estEnDebug) {
                     gererModeDebug(objetsJeu, canvas.getGraphicsContext2D());
@@ -232,7 +243,6 @@ public class Scenes {
             }
         }
     }
-
     private Pane creerRoot() {
         Pane root = new Pane();
         root.setStyle("-fx-background-color: #2A7FFF;"); // Pour faire de sorte que le fond est bleu

@@ -26,6 +26,7 @@ public class Charlotte extends ObjetJeu {
     }
 
     public void update(double deltaTemps) {
+        super.update(deltaTemps);
         boolean gauche = Input.isKeyPressed(KeyCode.LEFT);
         boolean haut = Input.isKeyPressed(KeyCode.UP);
         boolean droite = Input.isKeyPressed(KeyCode.RIGHT);
@@ -34,9 +35,9 @@ public class Charlotte extends ObjetJeu {
         //TODO: Faire une méthode pour mouvement horizontale et verticale!
         //region -- MOUVEMENT HORIZONTAL --
         if (gauche)
-            ax = -ACCELERATION_X;
+            ax -= ACCELERATION_X;
         else if (droite)
-            ax = ACCELERATION_X;
+            ax += ACCELERATION_X;
         else {
             // Code inspiré des NDC "Animations 5"
             ax = 0;
@@ -61,9 +62,9 @@ public class Charlotte extends ObjetJeu {
 
         //region -- MOUVEMENT VERTICAL --
         if (haut)
-            ay = -ACCELERATION_Y;
+            ay += -ACCELERATION_Y;  //TODO: ajouté +=
         else if (bas)
-            ay = ACCELERATION_Y;
+            ay += ACCELERATION_Y;
         else {
             ay = 0;
             int signeVitesse = trouverSigneVitesse(vy);
@@ -77,7 +78,6 @@ public class Charlotte extends ObjetJeu {
             }
         }
         //endregion
-        mettreAJourPhysique(deltaTemps);
     }
 
     @Override

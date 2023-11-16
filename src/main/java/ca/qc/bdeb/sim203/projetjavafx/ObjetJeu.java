@@ -22,6 +22,10 @@ public abstract class ObjetJeu {
 
     protected abstract void initialiserVariables();
 
+    public void update(double deltaTemps) {
+        mettreAJourPhysique(deltaTemps);
+    }
+
     public void mettreAJourPhysique(double deltaTemps) {
         vx += deltaTemps * ax;
         vy += deltaTemps * ay;
@@ -49,6 +53,22 @@ public abstract class ObjetJeu {
 
     public void dessiner(GraphicsContext contexte) {
         contexte.drawImage(image, x, y);
+    }
 
+    //Kinda weird car Charlotte est un child class
+    public boolean estEnCollisionAvecCharlotte(Charlotte charlotte){
+        boolean estEnCollision = false;
+
+        double posXGaucheCharlotte = charlotte.x;
+        double posXDroiteCharlotte = charlotte.x + charlotte.w;
+        double posYHautCharlotte = charlotte.y;
+        double posYBasCharlotte = charlotte.y + charlotte.h;
+
+        if (((posXGaucheCharlotte < this.x) && (this.x <posXDroiteCharlotte)) ||
+                ((posYHautCharlotte < this.y) && (this.y <posYBasCharlotte))) {
+            estEnCollision = true;
+        }
+
+        return estEnCollision;
     }
 }

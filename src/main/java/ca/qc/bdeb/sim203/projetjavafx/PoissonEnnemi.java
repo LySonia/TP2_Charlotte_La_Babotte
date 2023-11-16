@@ -2,6 +2,7 @@ package ca.qc.bdeb.sim203.projetjavafx;
 
 import javafx.scene.image.*;
 
+import static ca.qc.bdeb.sim203.projetjavafx.GenerateurAleatoire.generateurAleatoire;
 import static ca.qc.bdeb.sim203.projetjavafx.GenerateurAleatoire.obtenirNombreAleatoire;
 
 public class PoissonEnnemi extends ObjetJeu {
@@ -12,30 +13,22 @@ public class PoissonEnnemi extends ObjetJeu {
     public PoissonEnnemi(int numNiveau) {
         this.numNiveau = numNiveau;
         initialiserVariables();
-
     }
 
-    @Override
+    @Override //TODO: En faisant ça, tu t'assures pas nécessairement que les variables ont des valeurs: faudra mettre des arguments dans le master class
     protected void initialiserVariables() {
-        x = Main.LARGEUR - 100; //TODO: Test value
+        x = Main.LARGEUR - 120; //TODO: Test value
         y = obtenirHauteurDepart();
         vx = -100 * Math.pow(numNiveau, 0.33) + 200;
         vy = obtenirNombreAleatoire(-100, 100);
         ax = -500;
 
 
-        //TODO: fix this mess, coz the image isnt changing size (adding a random size to the image of each fish)
-        var imageViewPoisson = new ImageView(Assets.choisirPoissonHasard());
-        imageViewPoisson.setFitHeight(GenerateurAleatoire.generateurAleatoire.nextDouble(HAUTEUR_MAX_IMAGE-HAUTEUR_MIN_IMAGE)+HAUTEUR_MIN_IMAGE);
-        imageViewPoisson.setPreserveRatio(true);
-
-
-        image = imageViewPoisson.getImage();
-        w= image.getWidth();
-        h= image.getHeight();
+        h = obtenirNombreAleatoire(50, 120);
+        image = new Image(Assets.POISSON_1.choisirPoissonHasard(), 0, h, true, false); //ugly code, to change
+        w = image.getWidth();
 
     }
-
 
     private double obtenirHauteurDepart() {
         //Je divise la hauteur de l'écran par 5 pour obtenir des 5ème sans trouble de doubles
