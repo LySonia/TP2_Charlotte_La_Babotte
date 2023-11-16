@@ -80,6 +80,10 @@ public class Charlotte extends ObjetJeu {
         //endregion
     }
 
+    public void gererDommage() {
+        image = new Image(Assets.CHARLOTTE_OUTCH.getEmplacement());
+    }
+
     @Override
     public void mettreAJourPhysique(double deltaTemps) {
         super.mettreAJourPhysique(deltaTemps);
