@@ -75,8 +75,10 @@ public class Scenes {
 
                 //region -- UPDATE --
                 for (ObjetJeu objetJeu: objetsJeu) {
-                    for (ObjetJeu autreObjetJeu: objetsJeu) {
-
+                    if (!objetJeu.equals(charlotte)) {
+                        if (objetJeu.estEnCollisionAvecCharlotte(charlotte)){
+                            charlotte.gererDommage();
+                        }
                     }
                     objetJeu.update(deltaTemps);
                 }
