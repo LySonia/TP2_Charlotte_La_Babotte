@@ -1,6 +1,6 @@
 package ca.qc.bdeb.sim203.projetjavafx;
 
-import static ca.qc.bdeb.sim203.projetjavafx.GenerateurAleatoire.obtenirNombreAleatoire;
+import static ca.qc.bdeb.sim203.projetjavafx.Aleatoire.obtenirNombreAleatoire;
 
 public enum Assets {
     BARIL("baril.png"),
@@ -8,6 +8,7 @@ public enum Assets {
     CHARLOTTE("charlotte.png"),
     CHARLOTTE_AVANT("charlotte-avant.png"),
     CHARLOTTE_OUTCH("charlotte-outch.png"),
+    CHARLOTTE_OUTCH_TRANSPARENT("charlotte-outch-transparent.png"),
     CORAL_1("decor1.png"),
     CORAL_2("decor2.png"),
     CORAL_3("decor3.png"),

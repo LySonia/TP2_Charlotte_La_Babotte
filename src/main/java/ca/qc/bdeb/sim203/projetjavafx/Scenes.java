@@ -9,12 +9,13 @@ import javafx.scene.control.*;
 import javafx.scene.image.*;
 import javafx.scene.input.*;
 import javafx.scene.layout.*;
+import javafx.scene.paint.*;
 import javafx.scene.text.*;
 import javafx.stage.*;
 
 import java.util.*;
 
-import static ca.qc.bdeb.sim203.projetjavafx.GenerateurAleatoire.obtenirNombreAleatoire;
+import static ca.qc.bdeb.sim203.projetjavafx.Aleatoire.obtenirNombreAleatoire;
 
 public class Scenes {
     private Stage stage = new Stage();
@@ -30,70 +31,73 @@ public class Scenes {
         return stage;
     }
 
-    private void gererEvenementsGenerales(Scene scene) {
-        scene.setOnKeyPressed((e) -> {
-            Input.setKeyPressed(e.getCode(), true);
-
-            if (e.getCode() == KeyCode.ESCAPE) {
-                Platform.exit();
-            }
-        });
-
-        scene.setOnKeyReleased((e) -> {
-            Input.setKeyPressed(e.getCode(), false);
-        });
-    }
-
     public Scene getSceneJeu() {
+        PartieJeu partieJeu = new PartieJeu();
         Pane root = creerRoot();
-        //TODO: Créer un nouveau partie de jeu ici? genre l'objet...
+        Color couleurFond = (Color.hsb(partieJeu.getTeinte(), partieJeu.getSaturation(), partieJeu.getLuminosité()));
+        root.setBackground(new Background(new BackgroundFill(couleurFond, null, null)));
+
         var sceneJeu = new Scene(root, Main.LARGEUR, Main.HAUTEUR);
-        ArrayList<ObjetJeu> objetsJeu = new ArrayList<>();
         Canvas canvas = new Canvas(Main.LARGEUR, Main.HAUTEUR);
         GraphicsContext contexte = canvas.getGraphicsContext2D();
 
         root.getChildren().add(canvas);
 
-        //TESTS:
-        Charlotte charlotte = new Charlotte();
-        PoissonEnnemi poissonEnnemi1 = new PoissonEnnemi(1);
-        PoissonEnnemi poissonEnnemi2 = new PoissonEnnemi(1);
-        PoissonEnnemi poissonEnnemi3 = new PoissonEnnemi(1);
-        ArrayList<PoissonEnnemi> poissonEnnemis = new ArrayList<>();
-        poissonEnnemis.add(poissonEnnemi1);
-        poissonEnnemis.add(poissonEnnemi2);
-        poissonEnnemis.add(poissonEnnemi3);
-        objetsJeu.add(charlotte);
-        objetsJeu.addAll(poissonEnnemis);
-        
+        //TESTS: These should all be taken from partie jeu
+        Charlotte charlotte = partieJeu.getCharlotte();
+        ArrayList<PoissonEnnemi> poissonEnnemis = partieJeu.getPoissonsEnnemis();
+        ArrayList<ObjetJeu> objetsJeu = partieJeu.getObjetsJeu();
+
 
         AnimationTimer timer = new AnimationTimer() {
             long lastTime = System.nanoTime();
+            double tempsDepuisDerniersPoissons = System.nanoTime();
+
             @Override
             public void handle(long now) {
                 double deltaTemps = (now - lastTime) * NANOSECONDE;
 
-                //region -- UPDATE --
+                //-- UPDATE --
+                for (PoissonEnnemi poissonEnnemi: poissonEnnemis) {
+                    if (poissonEnnemi.estEnCollisionAvecCharlotte(charlotte))
+                        charlotte.gererDommage();
+                }
+
+                charlotte.gererImmortalite(now*NANOSECONDE);
+
                 for (ObjetJeu objetJeu: objetsJeu) {
-                    if (!objetJeu.equals(charlotte)) {
-                        if (objetJeu.estEnCollisionAvecCharlotte(charlotte)){
-                            charlotte.gererDommage();
-                        }
-                    }
                     objetJeu.update(deltaTemps);
                 }
-                //endregion
 
-                //region -- DESSINER --
+
+                //-- DESSINER --
                 contexte.clearRect(0, 0, Main.LARGEUR, Main.HAUTEUR);
                 for (ObjetJeu objectJeu: objetsJeu) {
                     objectJeu.dessiner(contexte);
                 }
 
+                if (charlotte.estEndommagee()) {
+
+                }
+
+                //Ajouter des poissons après quelques Nsecondes
+                tempsDepuisDerniersPoissons = (now * NANOSECONDE) - tempsDepuisDerniersPoissons;
+                if (tempsDepuisDerniersPoissons > partieJeu.getNSecondes()) {
+                    partieJeu.ajouterGroupePoissons();
+                    tempsDepuisDerniersPoissons = now * NANOSECONDE;
+                }
+
+                //Enlever les poissons qui sont hors-écran
+                for (PoissonEnnemi poissonEnnemi: poissonEnnemis) {
+
+                }
+
+                //Mettre ou enlever mode debug
                 if (estEnDebug) {
                     gererModeDebug(objetsJeu, canvas.getGraphicsContext2D());
                 }
-                //endregion
+
+
 
                 lastTime = now;
             }
@@ -123,6 +127,15 @@ public class Scenes {
         //endregion
 
         return sceneJeu;
+    }
+    public void gererModeDebug(ArrayList<ObjetJeu> objetsJeu, GraphicsContext contexte) {
+        //Mettre un rectangle jaune autour de tous les objets de jeu
+        //TODO: Quick and dirty fix: (le not equal to null)
+        if (objetsJeu != null) {
+            for (ObjetJeu objet : objetsJeu) {
+                objet.mettreContour(contexte);
+            }
+        }
     }
 
     public Scene getSceneAccueil() {
@@ -236,15 +249,20 @@ public class Scenes {
         return sceneInfo;
     }
 
-    public void gererModeDebug(ArrayList<ObjetJeu> objetsJeu, GraphicsContext contexte) {
-        //Mettre un rectangle jaune autour de tous les objets de jeu
-        //TODO: Quick and dirty fix: (le not equal to null)
-        if (objetsJeu != null) {
-            for (ObjetJeu objet : objetsJeu) {
-                objet.mettreContour(contexte);
+    private void gererEvenementsGenerales(Scene scene) {
+        scene.setOnKeyPressed((e) -> {
+            Input.setKeyPressed(e.getCode(), true);
+
+            if (e.getCode() == KeyCode.ESCAPE) {
+                Platform.exit();
             }
-        }
+        });
+
+        scene.setOnKeyReleased((e) -> {
+            Input.setKeyPressed(e.getCode(), false);
+        });
     }
+
     private Pane creerRoot() {
         Pane root = new Pane();
         root.setStyle("-fx-background-color: #2A7FFF;"); // Pour faire de sorte que le fond est bleu

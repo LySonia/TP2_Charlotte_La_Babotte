@@ -3,7 +3,7 @@ package ca.qc.bdeb.sim203.projetjavafx;
 import java.util.*;
 
 //Classe avec méthodes statiques, pcq j'ai la flemme de créer un nouveau object random à chaque fois que j'en ai besoin
-public class GenerateurAleatoire {
+public class Aleatoire {
     public static Random generateurAleatoire = new Random();
 
     public static int obtenirNombreAleatoire(int borneSuperieureExclue) {
