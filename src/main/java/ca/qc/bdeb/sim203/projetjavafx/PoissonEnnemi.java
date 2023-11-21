@@ -34,6 +34,7 @@ public class PoissonEnnemi extends ObjetJeu {
 
     public boolean estDansEcran() {
         //TODO: Remplacer ces valeurs quand on aura la caméra!
+        //Pour l'instant, on enlèeve les poisson quand ça dépasse la gauche
         return x > 0 - w;
     }
 

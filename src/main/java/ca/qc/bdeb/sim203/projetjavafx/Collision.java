@@ -1,7 +1,7 @@
 package ca.qc.bdeb.sim203.projetjavafx;
 
 public class Collision {
-    public static boolean estEnCollision(ObjetJeu objet1, ObjetJeu objet2){
+    public static boolean aIntersection(ObjetJeu objet1, ObjetJeu objet2){
         boolean coinHautGauche = verifierSiCoinDansObjet(objet1, objet2.getXGauche(), objet2.getYHaut());
         boolean coinBasGauche = verifierSiCoinDansObjet(objet1, objet2.getXGauche(), objet2.getYBas());
         boolean coinHautDroite = verifierSiCoinDansObjet(objet1, objet2.getXDroite(), objet2.getYHaut());

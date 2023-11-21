@@ -22,11 +22,9 @@ public class PartieJeu {
     private double tempsDebutNiveau = 0;
     private Color couleurFondNiveau;
     private double tempsEcouleDepuisDebutNiveau = 0;
-
-    //TOUT EN LIEN AVEC FOND -> VUE
     private double teinte;
-    private double saturation = 0.84;
-    private double luminosité = 1.0;
+    private final double saturation = 0.84;
+    private final double luminosité = 1.0;
 
     public PartieJeu() {
         objetsJeu.add(charlotte);
@@ -83,20 +81,19 @@ public class PartieJeu {
         objetsJeu.addAll(nouveauxPoissons);
     }
 
-    //TODO: À compléter
+    //Créer des coraux pour le niveau
     private void positionnerCoraux() {
+        //x = 0.0 pour le premier corail
         coraux.add(new Corail(0.0));
         double dernierePos = coraux.get(coraux.size() - 1).getXDroite();
 
+        //Tant que la position (du x de droite) du dernier corail ne touche pas à la fin du niveau, ajouter un corail
         while (dernierePos < LARGEUR_NIVEAU) {
             dernierePos = coraux.get(coraux.size() - 1).getXDroite();
             double nouvellePos = dernierePos + genererDistanceEntreCoraux();
             coraux.add(new Corail(nouvellePos));
-            System.out.println();
-            System.out.println("Ancienne pos: " + dernierePos);
-            System.out.println("Nouvelle pos: " + nouvellePos);
-
         }
+
         //Ajouter les coraux dans le ArrayList des objets de jeu
         objetsJeu.addAll(coraux);
     }
@@ -131,7 +128,6 @@ public class PartieJeu {
     public Color getCouleurFondNiveau() {
         return couleurFondNiveau;
     }
-
     public double getNSecondes() {
         return nSecondes;
     }

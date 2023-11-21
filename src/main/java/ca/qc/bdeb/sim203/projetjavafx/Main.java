@@ -1,14 +1,7 @@
 package ca.qc.bdeb.sim203.projetjavafx;
 
-import javafx.animation.*;
 import javafx.application.Application;
-import javafx.scene.*;
-import javafx.scene.canvas.*;
-import javafx.scene.input.*;
-import javafx.scene.layout.*;
 import javafx.stage.*;
-
-//Changement d'image dans update
 
 public class Main extends Application {
     public static void main(String[] args) {

@@ -23,7 +23,7 @@ public class Charlotte extends ObjetJeu {
 
     public Charlotte() {
         x = 0;
-        y = 0;
+        y = Main.HAUTEUR/2;
         w = W_CHARLOTTE;
         h = H_CHARLOTTE;
         vitesseMax = 300;

@@ -61,7 +61,7 @@ public abstract class ObjetJeu {
 
     //Kinda weird car Charlotte est un child class
     public boolean estEnCollisionAvecCharlotte(Charlotte charlotte) {
-        return Collision.estEnCollision(charlotte, this);
+        return Collision.aIntersection(charlotte, this);
     }
 
     protected double getXGauche(){

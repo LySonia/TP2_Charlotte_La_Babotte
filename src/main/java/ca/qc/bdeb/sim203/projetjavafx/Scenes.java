@@ -95,8 +95,15 @@ public class Scenes {
 
                 //Afficher numéro du niveau
                 if (tempsActuel - partieJeu.getTempsDebutNiveau() < TEMPS_AFFICHAGE_NIVEAU) {
+
+                    String texteNiveau = ("NIVEAU " + partieJeu.getNiveau());
+                    contexte.setFont(Font.font("Arial", 100));
+
                     //TODO: Remplacer Main.Largeur/2 et Main.Hauteur/2 par la position du centre de la caméra
-                    contexte.fillText("Niveau" + partieJeu.getNiveau(), Main.LARGEUR/2, Main.HAUTEUR/2);
+                    contexte.fillText(texteNiveau, 200, Main.HAUTEUR/2);
+
+                    //Remettre le font à la taille normale
+                    contexte.setFont(Font.font("Arial", 10));
                 }
 
                 //Gerer image de Charlotte

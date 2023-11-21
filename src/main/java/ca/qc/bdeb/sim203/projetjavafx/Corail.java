@@ -9,10 +9,6 @@ public class Corail extends ObjetJeu {
         this.h = 119;
         this.y = Main.HAUTEUR - h + 10;
         this.image = new Image(Assets.choisirAlgueHasard(), w, h, true, false);
-
-
-
-        System.out.println("Run");
     }
 
 }
