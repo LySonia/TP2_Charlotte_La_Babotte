@@ -2,12 +2,12 @@ package ca.qc.bdeb.sim203.projetjavafx;
 
 public class Camera {
     private static Camera camera = null;
-    private double posistionX;
+    private double positionX;
     private double positionY;
     private double vitesseX = 500;
 
     private Camera(){
-        posistionX=0;
+        positionX =0;
         positionY=0;
     }
 
@@ -21,7 +21,7 @@ public class Camera {
 
     //Pour savoir où dessiner les objets
     public double calculerXEcran(double x){
-        return x - posistionX;
+        return x - positionX;
     }
     public double calculerYEcran(double y){
         return y - positionY;

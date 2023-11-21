@@ -8,7 +8,6 @@ public class PoissonEnnemi extends ObjetJeu {
     private int numNiveau;
     private static final int HAUTEUR_MAX_IMAGE= 120;
     private static final int HAUTEUR_MIN_IMAGE=50;
-
     private boolean estDansEcran = false;
 
     public PoissonEnnemi(int numNiveau) {
@@ -19,14 +18,13 @@ public class PoissonEnnemi extends ObjetJeu {
         ax = -500;
 
 
-        h = obtenirNombreAleatoire(50, 120);
+        h = obtenirNombreAleatoire(HAUTEUR_MIN_IMAGE, HAUTEUR_MAX_IMAGE);
         image = new Image(Assets.choisirPoissonHasard(), 0, h, true, false); //ugly code, to change
         w = image.getWidth();
 
-        x = Main.LARGEUR - w; //TODO: Test value
+        x = Main.LARGEUR + w; //TODO: Test value
         y = obtenirHauteurDepart();
     }
-
 
     private double obtenirHauteurDepart() {
         //TODO: Revérifier
@@ -36,9 +34,9 @@ public class PoissonEnnemi extends ObjetJeu {
         return obtenirNombreAleatoire(min, max);
     }
 
-    public boolean estDansEcran(double xEcran, double yEcran, double wEcran, double hEcran) {
-        boolean estDansEcran = false;
-
+    public boolean estVisible() {
+        return x > 0 - w; //TODO: Dirty!!!
     }
+
 
 }

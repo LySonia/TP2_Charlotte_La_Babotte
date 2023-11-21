@@ -108,8 +108,6 @@ public class Charlotte extends ObjetJeu {
     }
 
     private void faireClignoter(double tempsActuel) {
-        System.out.println("temps écoulé :" + (tempsActuel - momentDernierClignotement)); //TODO: TEST
-
         if (tempsActuel - momentDernierClignotement > 0.25) {
             System.out.println();
             estVisible = !estVisible;

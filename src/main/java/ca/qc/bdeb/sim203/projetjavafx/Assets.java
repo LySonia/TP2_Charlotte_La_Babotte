@@ -59,4 +59,25 @@ public enum Assets {
         return poissonChoisi;
     }
 
+    public static String choisirAlgueHasard(){
+        String algueChoisi= null; // je sais pas si le mettre null is smarter
+        //Assets.POISSON_1.getEmplacement(); //Par défault
+
+        String[] algues = {
+                Assets.CORAL_1.getEmplacement(),
+                Assets.CORAL_2.getEmplacement(),
+                Assets.CORAL_3.getEmplacement(),
+                Assets.CORAL_4.getEmplacement(),
+                Assets.CORAL_5.getEmplacement(),
+                Assets.CORAL_6.getEmplacement()
+        };
+
+        int nbrAleatoire = obtenirNombreAleatoire(0, algues.length - 1);
+
+        for (int i = 0; i < algues.length; i++) {
+            if (nbrAleatoire == i)
+                algueChoisi = algues[i];
+        }
+        return algueChoisi;
+    }
 }

@@ -15,12 +15,12 @@ public class Collision {
     }
 
     private static boolean verifierSiCoinDansObjet(ObjetJeu objet, double xCoin, double yCoin){
-        boolean estDansCharlotte = false;
+        boolean estDansObjet = false;
 
         if (((objet.getXGauche() < xCoin) && (xCoin < objet.getXDroite())) && //Coin supérieur gauche
                 ((objet.getYHaut() < yCoin) && (yCoin < objet.getYBas()))) {
-            estDansCharlotte = true;
+            estDansObjet = true;
         }
-        return estDansCharlotte;
+        return estDansObjet;
     }
 }
