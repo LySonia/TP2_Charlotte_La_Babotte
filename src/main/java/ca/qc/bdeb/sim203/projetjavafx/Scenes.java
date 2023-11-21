@@ -22,7 +22,8 @@ public class Scenes {
     private boolean estEnDebug = false;
     public final static double NANOSECONDE = 1e-9;
     private PartieJeu partieJeu = new PartieJeu();
-    double tempsActuel = System.nanoTime() * NANOSECONDE;
+    private double tempsActuel = System.nanoTime() * NANOSECONDE;
+    private final double TEMPS_AFFICHAGE_NIVEAU = 4;
 
     public Scenes() {
         stage.setScene(getSceneAccueil()); //Par défault, c'est la scène d'accueil
@@ -37,9 +38,8 @@ public class Scenes {
         tempsActuel = System.nanoTime() * NANOSECONDE;
         System.out.println("Premier tempsActuel: " + tempsActuel);
         partieJeu.demarrerNiveau(tempsActuel);
-        Pane root = creerRoot();
-        Color couleurFond = (Color.hsb(partieJeu.getTeinte(), partieJeu.getSaturation(), partieJeu.getLuminosité()));
-        root.setBackground(new Background(new BackgroundFill(couleurFond, null, null)));
+        var root = new Pane();
+
 
         var sceneJeu = new Scene(root, Main.LARGEUR, Main.HAUTEUR);
         Canvas canvas = new Canvas(Main.LARGEUR, Main.HAUTEUR);
@@ -52,22 +52,28 @@ public class Scenes {
         ArrayList<ObjetJeu> objetsJeu = partieJeu.getObjetsJeu();
 
         AnimationTimer timer = new AnimationTimer() {
-            long lastTime = System.nanoTime();
+            double lastTime = System.nanoTime() * NANOSECONDE;
+            double tempsActuel = System.nanoTime()  * NANOSECONDE;
+            double deltaTemps = tempsActuel - lastTime;
             double tempsDerniersPoissons = System.nanoTime() * NANOSECONDE;
 
             @Override
             public void handle(long now) {
-                double deltaTemps = (now - lastTime) * NANOSECONDE;
+                Color couleurFond = partieJeu.getCouleurFondNiveau();
+                root.setBackground(new Background(new BackgroundFill(couleurFond, null, null)));
+
+                deltaTemps = (now - lastTime) * NANOSECONDE;
                 tempsActuel = now * NANOSECONDE;
                 System.out.println("Deuxième tempsActuel: " + tempsActuel);
-                //TEST
 
+                //ajusterLaCouleurDeFond
+                ajusterCouleurFond();
 
                 //Gérer les collisions entre chaque poisson et Charlotte
-                gererCollisionsEntrePoissonsEtCharlotte(tempsActuel, charlotte, poissonsEnnemis);
+                gererCollisionsEntrePoissonsEtCharlotte();
 
                 //Mettre à jour chacun des objets de jeu
-                mettreAJour(deltaTemps, objetsJeu);
+                mettreAJour();
 
                 //Dessiner chaque objet de jeu
                 dessiner(contexte, objetsJeu);
@@ -80,93 +86,100 @@ public class Scenes {
 
                 //Enlever les poissons qui sont hors-écran
                     //TODO: Maybe have to check null cases
-                enleverPoissonsHorsEcran(partieJeu, poissonsEnnemis);
-
+                enleverPoissonsHorsEcran();
 
                 //Mettre ou enlever mode debug
                 if (estEnDebug) {
-                    gererModeDebug(objetsJeu, canvas.getGraphicsContext2D());
+                    gererModeDebug();
                 }
 
                 //Afficher numéro du niveau
-                if (tempsActuel - partieJeu.getTempsDebutNiveau() > )
+                if (tempsActuel - partieJeu.getTempsDebutNiveau() < TEMPS_AFFICHAGE_NIVEAU) {
+                    //TODO: Remplacer Main.Largeur/2 et Main.Hauteur/2 par la position du centre de la caméra
+                    contexte.fillText("Niveau" + partieJeu.getNiveau(), Main.LARGEUR/2, Main.HAUTEUR/2);
+                }
 
-
+                //Gerer image de Charlotte
+                gererImageCharlotte();
 
                 lastTime = now;
             }
 
+            private void ajusterCouleurFond() {
+            }
+
+            private void gererImageCharlotte() { //Code dans la bonne classe?
+                if (charlotte.estVisible()) {
+                    if (charlotte.estEndommagee()) {
+                        charlotte.setImage(Assets.CHARLOTTE_OUTCH.getEmplacement());
+                    } else if (charlotte.estEnMouvement()){
+                        charlotte.setImage(Assets.CHARLOTTE_AVANT.getEmplacement());
+                    } else {
+                        charlotte.setImage(Assets.CHARLOTTE.getEmplacement());
+                    }
+                } else {
+                    charlotte.setImage(Assets.CHARLOTTE_OUTCH_TRANSPARENT.getEmplacement());
+                }
+            }
+
+            private void enleverPoissonsHorsEcran() {
+                //TODO Delete this comment before giving in TP
+                //Ici, je dois me servir d'un for loop traditionnel au lieu du for each, sinon y'a erreur
+                for (int i = 0; i < poissonsEnnemis.size(); i++) {
+                    if (!poissonsEnnemis.get(i).estDansEcran()) {
+                        partieJeu.sortirPoisson(poissonsEnnemis.get(i));
+                    }
+                }
+            }
+
+            private void dessiner(GraphicsContext contexte, ArrayList<ObjetJeu> objetsJeu){
+                contexte.clearRect(0, 0, Main.LARGEUR, Main.HAUTEUR); //Clear le canvas
+                for (ObjetJeu objectJeu: objetsJeu) {
+                    objectJeu.dessiner(contexte);
+                }
+            }
+
+            private void mettreAJour() {
+                for (ObjetJeu objetJeu: objetsJeu) {
+                    objetJeu.update(deltaTemps);
+                }
+            }
+
+            //TODO: Trop de logique?
+            private void gererCollisionsEntrePoissonsEtCharlotte() {
+                for (PoissonEnnemi poissonEnnemi: poissonsEnnemis) {
+                    if (poissonEnnemi.estEnCollisionAvecCharlotte(charlotte)){
+                        charlotte.prendreDommage();
+                    }
+                    charlotte.gererImmortalite(tempsActuel);
+                }
+            }
+
+            private void gererModeDebug() {
+                //Mettre un rectangle jaune autour de tous les objets de jeu
+                //TODO: Quick and dirty fix: (le not equal to null)
+                if (objetsJeu != null) {
+                    for (ObjetJeu objet : objetsJeu) {
+                        objet.mettreContour(contexte);
+                    }
+                }
+
+                //Afficher les nombre de poissons dans le jeu
+                var texteNbrPoissons = "NB Poissons: " + partieJeu.getNbrPoissonsEnnemis();
+                contexte.fillText(texteNbrPoissons, 10, 55); //TEST
+
+                //Afficher le temps passé depuis le début du niveau
+                var texteTempsEcoule = "Temps écoulé: " + (tempsActuel - partieJeu.getTempsDebutNiveau());
+                contexte.fillText(texteTempsEcoule, 10, 70); //TEST
+            }
         };
         timer.start();
 
-
-        //region ÉVÉNEMENTS
-        //TODO: Fix le outrageous copié-collé icite :O)
-        sceneJeu.setOnKeyPressed((e) -> {
-            Input.setKeyPressed(e.getCode(), true);
-
-            if (e.getCode() == KeyCode.D) {
-                estEnDebug = !estEnDebug;
-            }
-
-            if (e.getCode() == KeyCode.ESCAPE) {
-                Platform.exit();
-            }
-        });
-
-        sceneJeu.setOnKeyReleased((e) -> {
-            Input.setKeyPressed(e.getCode(), false);
-        });
-        //endregion
+        gererEvenementsGenerales(sceneJeu);
 
         return sceneJeu;
     }
 
-    //region MÉTHODES POUR LE JEU
-    private void enleverPoissonsHorsEcran(PartieJeu partieJeu, ArrayList<PoissonEnnemi> poissonsEnnemis) {
-        //TODO Delete this comment before giving in TP
-        //Ici, je dois me servir d'un for loop traditionnel au lieu du for each, sinon y'a erreur
-        for (int i = 0; i < poissonsEnnemis.size(); i++) {
-            if (!poissonsEnnemis.get(i).estVisible()) {
-                partieJeu.sortirPoisson(poissonsEnnemis.get(i));
-            }
-
-        }
-    }
-
-    private void dessiner(GraphicsContext contexte, ArrayList<ObjetJeu> objetsJeu){
-        contexte.clearRect(0, 0, Main.LARGEUR, Main.HAUTEUR); //Clear le canvas
-        for (ObjetJeu objectJeu: objetsJeu) {
-            objectJeu.dessiner(contexte);
-        }
-    }
-
-    private void mettreAJour(double deltaTemps, ArrayList<ObjetJeu> objetsJeu) {
-        for (ObjetJeu objetJeu: objetsJeu) {
-            objetJeu.update(deltaTemps);
-        }
-    }
-    private void gererCollisionsEntrePoissonsEtCharlotte(double tempsActuel,
-                                                         Charlotte charlotte,
-                                                         ArrayList<PoissonEnnemi> poissonEnnemis) {
-        for (PoissonEnnemi poissonEnnemi: poissonEnnemis) {
-            if (poissonEnnemi.estEnCollisionAvecCharlotte(charlotte)){
-                charlotte.gererDommage();
-            }
-            charlotte.gererImmortalite(tempsActuel);
-        }
-    }
-
-    private void gererModeDebug(ArrayList<ObjetJeu> objetsJeu, GraphicsContext contexte) {
-        //Mettre un rectangle jaune autour de tous les objets de jeu
-        //TODO: Quick and dirty fix: (le not equal to null)
-        if (objetsJeu != null) {
-            for (ObjetJeu objet : objetsJeu) {
-                objet.mettreContour(contexte);
-            }
-        }
-    }
-    //endregion
 
     //region AUTRES SCENES
     public Scene getSceneAccueil() {
@@ -285,6 +298,11 @@ public class Scenes {
     private void gererEvenementsGenerales(Scene scene) {
         scene.setOnKeyPressed((e) -> {
             Input.setKeyPressed(e.getCode(), true);
+
+            //TODO: Sure about mode debug? T'as, en fait, seulement besoin de ce bouton si t'es dans la scène de jeu
+            if (e.getCode() == KeyCode.D) {
+                estEnDebug = !estEnDebug;
+            }
 
             if (e.getCode() == KeyCode.ESCAPE) {
                 Platform.exit();

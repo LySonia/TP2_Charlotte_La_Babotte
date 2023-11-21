@@ -5,21 +5,21 @@ import javafx.scene.paint.*;
 
 public class BarreVie extends ObjetJeu {
     private Charlotte charlotte;
-    private final double largeurTotal = 150.0;
+    private final double LARGEUR_TOTALE_BARRE = 150.0;
 
     public BarreVie(Charlotte charlotte) {
         this.charlotte = charlotte;
-        w = largeurTotal;
+        w = LARGEUR_TOTALE_BARRE;
 
         //Choisi de façon arbitraire:
-        x = 2;
-        y = 2;
+        x = 10;
+        y = 10;
         h = 25;
     }
 
     @Override
     public void update(double deltaTemps) {
-        w = (charlotte.getNbrVie() / charlotte.getNbrVieMax()) * largeurTotal;
+        w = (charlotte.getNbrVie() / charlotte.getNbrVieMax()) * LARGEUR_TOTALE_BARRE;
     }
 
     @Override
@@ -27,7 +27,7 @@ public class BarreVie extends ObjetJeu {
         contexte.setStroke(Color.WHITE);
         contexte.setFill(Color.WHITE);
         contexte.setLineWidth(1); //TODO: Transformer en constante
-        contexte.strokeRect(x, y, largeurTotal, h);
+        contexte.strokeRect(x, y, LARGEUR_TOTALE_BARRE, h);
         contexte.fillRect(x, y, w, h);
     }
 }

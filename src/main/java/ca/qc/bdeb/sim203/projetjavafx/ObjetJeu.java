@@ -5,18 +5,18 @@ import javafx.scene.image.*;
 import javafx.scene.paint.*;
 
 public abstract class ObjetJeu {
-    protected double x = 1;
+    protected double x = 0;
 
-    protected double y = 1;
+    protected double y = 0;
     //NOTE IMPORTANTE: LE X ET LE Y D'UN OBJET DE JEU DEVRAIT ÊTRE LE COIN EN HAUT À GAUCHE DU RECTANGLE
     private double xCentre = 1;
     private double yCentre = 1;
-    protected double w = 1;
-    protected double h = 1;
-    protected double vx = 1;
-    protected double vy = 1;
-    protected double ax = 1;
-    protected double ay = 1;
+    protected double w = 0;
+    protected double h = 0;
+    protected double vx = 0;
+    protected double vy = 0;
+    protected double ax = 0;
+    protected double ay = 0;
     protected double vitesseMax = 300; //TODO: Valeur de défaut déterminé par moi (Sonia)- on a whim, stai pour éviter un bug. Besoin meilleure solution.
     protected Image image;
 

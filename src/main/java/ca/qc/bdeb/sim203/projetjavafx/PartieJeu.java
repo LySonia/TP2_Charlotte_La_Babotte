@@ -1,5 +1,7 @@
 package ca.qc.bdeb.sim203.projetjavafx;
 
+import javafx.scene.paint.*;
+
 import java.util.*;
 
 import static ca.qc.bdeb.sim203.projetjavafx.Aleatoire.obtenirNombreAleatoire;
@@ -12,14 +14,13 @@ public class PartieJeu {
     private ArrayList<ObjetJeu> objetsJeu = new ArrayList<>();
     private Charlotte charlotte = new Charlotte();
     private ArrayList<PoissonEnnemi> poissonsEnnemis = new ArrayList<>();
+    private ArrayList<Corail> coraux = new ArrayList<>();
     private BarreVie barreVie = new BarreVie(charlotte);
-    private int nbrPoissonsEnnemis = 0;
     private int niveau = 1;
-    private final int NBR_NIVEAUX_TOTAL = 8;
-    private final int LARGEUR_TOTAL_NIVEAU = 8*Main.LARGEUR;
+    private final int LARGEUR_NIVEAU = 8*Main.LARGEUR;
     private double nSecondes = 1;
-
     private double tempsDebutNiveau = 0;
+    private Color couleurFondNiveau;
     private double tempsEcouleDepuisDebutNiveau = 0;
 
     //TOUT EN LIEN AVEC FOND -> VUE
@@ -29,7 +30,6 @@ public class PartieJeu {
 
     public PartieJeu() {
         objetsJeu.add(charlotte);
-        objetsJeu.addAll(poissonsEnnemis); //Will this be updated?
         objetsJeu.add(barreVie);
     }
 
@@ -51,6 +51,9 @@ public class PartieJeu {
 
         //Calculer à quelle fréquence les poissons enemies devraient apparaître dans ce niveau
         calculerNSecondes();
+
+        //Trouver le positionnement des coraux pour le niveau
+        positionnerCoraux();
     }
 
     private void calculerTempsEcouleDepuisDebutNiveau(double tempsActuel) {
@@ -59,6 +62,7 @@ public class PartieJeu {
 
     private void preparerFondNiveau() {
         teinte = obtenirNombreAleatoire(190, 270);
+        couleurFondNiveau = Color.hsb(teinte, saturation, luminosité);
     }
 
     public void ajouterGroupePoissons() {
@@ -74,35 +78,32 @@ public class PartieJeu {
        //Ajouter les nouveaux poissons dans le ArrayList de poissons ennemis
         poissonsEnnemis.addAll(nouveauxPoissons);
 
-        //Ajouter les nouveaux poissonds dans le ArrayList d'objet de jeu
+        //Ajouter les nouveaux poissons dans le ArrayList d'objet de jeu
         //TODO: Il y a sûrement un moyen plus efficace pour placer les nouveaux poissons dans les 2 ArrayLists
         objetsJeu.addAll(nouveauxPoissons);
     }
 
     //TODO: À compléter
-    private ArrayList<Double> trouverPositionsXAlgues() {
-        ArrayList<Double> posXAlgues = new ArrayList<>();
-        double dernierePos = 0;
-        posXAlgues.add(dernierePos);
+    private void positionnerCoraux() {
+        coraux.add(new Corail(0.0));
+        double dernierePos = coraux.get(coraux.size() - 1).getXDroite();
 
-        double distanceDeLaDerniere = choisirDistanceDeLaDerniere(); //Fix le copié-collé
-        double nouvellePos = dernierePos + distanceDeLaDerniere;
+        while (dernierePos < LARGEUR_NIVEAU) {
+            dernierePos = coraux.get(coraux.size() - 1).getXDroite();
+            double nouvellePos = dernierePos + genererDistanceEntreCoraux();
+            coraux.add(new Corail(nouvellePos));
+            System.out.println();
+            System.out.println("Ancienne pos: " + dernierePos);
+            System.out.println("Nouvelle pos: " + nouvellePos);
 
-        while (nouvellePos < LARGEUR_TOTAL_NIVEAU) {
-            posXAlgues.add(nouvellePos);
-            distanceDeLaDerniere = choisirDistanceDeLaDerniere();
-            nouvellePos = dernierePos + distanceDeLaDerniere;
         }
-
-        return posXAlgues;
+        //Ajouter les coraux dans le ArrayList des objets de jeu
+        objetsJeu.addAll(coraux);
     }
 
-    private double choisirDistanceDeLaDerniere() {
-        int nbrAleatoire = obtenirNombreAleatoire(1, 2);
-        double distanceChoisie = 50;
-        if (nbrAleatoire == 2)
-            distanceChoisie = 100;
-        return distanceChoisie;
+    private double genererDistanceEntreCoraux() {
+        //TODO: Write cleaner code here
+        return new Random().nextBoolean() ? 50.0 : 100.0;
     }
 
     public void sortirPoisson(PoissonEnnemi poisson) {
@@ -127,17 +128,8 @@ public class PartieJeu {
     public ArrayList<PoissonEnnemi> getPoissonsEnnemis() {
         return poissonsEnnemis;
     }
-
-    public double getTeinte() {
-        return teinte;
-    }
-
-    public double getSaturation() {
-        return saturation;
-    }
-
-    public double getLuminosité() {
-        return luminosité;
+    public Color getCouleurFondNiveau() {
+        return couleurFondNiveau;
     }
 
     public double getNSecondes() {
@@ -146,5 +138,13 @@ public class PartieJeu {
 
     public double getTempsDebutNiveau() {
         return tempsDebutNiveau;
+    }
+
+    public int getNiveau() {
+        return niveau;
+    }
+
+    public int getNbrPoissonsEnnemis() {
+        return poissonsEnnemis.size();
     }
 }

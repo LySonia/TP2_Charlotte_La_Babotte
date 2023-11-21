@@ -8,15 +8,17 @@ public class Charlotte extends ObjetJeu {
     private final double H_CHARLOTTE = 90;
     private final double ACCELERATION_X = 1000;
     private final double ACCELERATION_Y = 1000;
+    private final static double NBR_VIE_MAX = 4.0;
+    private final static int TEMPS_IMMORTALITE = 2;
     private int nbrVie = 4;
-    private final double NBR_VIE_MAX = 4.0;
-    private final int TEMPS_IMMORTALITE = 2;
     private double momentDommage = 0;
     private double momentDernierClignotement = 0;
     private boolean estImmortel = false;
 
+    private boolean estEnMouvement = false;
+    private boolean estMorte = false;
     private boolean estEndommagee = false;
-    boolean estVisible = true;
+    private boolean estVisible = true;
     private Projectile projectileActuel;
 
     public Charlotte() {
@@ -72,20 +74,7 @@ public class Charlotte extends ObjetJeu {
             }
         }
     }
-
-    //TODO: Fix this
-    private double gererAjustementAcceleration(boolean boutonNegatif, boolean boutonPositif, double acceleration) {
-        if (boutonNegatif) {
-            return -acceleration;
-        } else if (boutonPositif) {
-            return  acceleration;
-        } else {
-            return 0;
-        }
-    }
-
-    public void gererDommage() {
-        image = new Image(Assets.CHARLOTTE_OUTCH.getEmplacement());
+    public void prendreDommage() {
         if (!estImmortel) {
             nbrVie--;
         }
@@ -93,31 +82,27 @@ public class Charlotte extends ObjetJeu {
     }
 
     public void gererImmortalite(double tempsActuel) {
+        //TODO: Est-ce qu'il y a un cas que j'ai oublié de prendre en compte?
         if (!estImmortel && estEndommagee) {
             momentDommage = tempsActuel;
             estImmortel = true;
             momentDernierClignotement = tempsActuel;
-            faireClignoter(tempsActuel);
-        } else if ((tempsActuel - momentDommage) > TEMPS_IMMORTALITE){
+        } else if ((tempsActuel - momentDommage) > TEMPS_IMMORTALITE) {
             estImmortel = false;
             estEndommagee = false;
-            image = new Image(Assets.CHARLOTTE.getEmplacement());
-        } else if (estImmortel) {
-            faireClignoter(tempsActuel);
-        } //Ya un cas que tu ignores il semble
+        }
+        gererVisibilite(tempsActuel);
     }
 
-    private void faireClignoter(double tempsActuel) {
-        if (tempsActuel - momentDernierClignotement > 0.25) {
-            System.out.println();
-            estVisible = !estVisible;
-            momentDernierClignotement = tempsActuel;
-        }
-
-        if (estVisible) {
-            image = new Image(Assets.CHARLOTTE_OUTCH.getEmplacement());
+    //Va set le boolean estVisible à la bonne valeur
+    private void gererVisibilite (double tempsActuel) {
+        if (estEndommagee) {
+            if (tempsActuel - momentDernierClignotement > 0.25) {
+                estVisible = !estVisible;
+                momentDernierClignotement = tempsActuel;
+            }
         } else {
-            image = new Image(Assets.CHARLOTTE_OUTCH_TRANSPARENT.getEmplacement());
+            estVisible = true;
         }
     }
 
@@ -145,6 +130,10 @@ public class Charlotte extends ObjetJeu {
         return nbrVie;
     }
 
+    public void setNbrVie(int nbrVie) {
+        this.nbrVie = nbrVie;
+    }
+
     public double getNbrVieMax() {
         return NBR_VIE_MAX;
     }
@@ -152,12 +141,16 @@ public class Charlotte extends ObjetJeu {
     public boolean estEndommagee() {
         return estEndommagee;
     }
-    public boolean estImmortel() {
-        return estImmortel;
+
+    public boolean estEnMouvement() {
+        if (vx != 0 && vy != 0) {
+            return false;
+        }
+        return true;
     }
 
-    public void setEstImmortel(boolean estImmortel) {
-        this.estImmortel = estImmortel;
+    public boolean estVisible() {
+        return estVisible;
     }
 
     public void setImage(String emplacement) {
