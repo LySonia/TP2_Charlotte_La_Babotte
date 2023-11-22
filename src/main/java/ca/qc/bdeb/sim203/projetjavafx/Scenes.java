@@ -41,8 +41,8 @@ public class Scenes {
         var root = new Pane();
 
 
-        var sceneJeu = new Scene(root, Main.LARGEUR, Main.HAUTEUR);
-        Canvas canvas = new Canvas(Main.LARGEUR, Main.HAUTEUR);
+        var sceneJeu = new Scene(root, Main.LARGEUR_ECRAN, Main.HAUTEUR);
+        Canvas canvas = new Canvas(Main.LARGEUR_ECRAN, Main.HAUTEUR);
         GraphicsContext contexte = canvas.getGraphicsContext2D();
 
         root.getChildren().add(canvas);
@@ -74,6 +74,7 @@ public class Scenes {
 
                 //Mettre à jour chacun des objets de jeu
                 mettreAJour();
+
 
                 //Dessiner chaque objet de jeu
                 dessiner(contexte, objetsJeu);
@@ -140,13 +141,14 @@ public class Scenes {
             }
 
             private void dessiner(GraphicsContext contexte, ArrayList<ObjetJeu> objetsJeu){
-                contexte.clearRect(0, 0, Main.LARGEUR, Main.HAUTEUR); //Clear le canvas
+                contexte.clearRect(0, 0, Main.LARGEUR_ECRAN, Main.HAUTEUR); //Clear le canvas
                 for (ObjetJeu objectJeu: objetsJeu) {
                     objectJeu.dessiner(contexte);
                 }
             }
 
             private void mettreAJour() {
+                Camera.getCamera().update(charlotte, deltaTemps);
                 for (ObjetJeu objetJeu: objetsJeu) {
                     objetJeu.update(deltaTemps);
                 }
@@ -191,7 +193,7 @@ public class Scenes {
     //region AUTRES SCENES
     public Scene getSceneAccueil() {
         Pane root = creerRoot();
-        var sceneAccueil = new Scene(root, Main.LARGEUR, Main.HAUTEUR);
+        var sceneAccueil = new Scene(root, Main.LARGEUR_ECRAN, Main.HAUTEUR);
         var logo = new Image(Assets.LOGO.getEmplacement());
         var logoImageView = new ImageView(logo);
         logoImageView.setPreserveRatio(true);
@@ -202,7 +204,7 @@ public class Scenes {
 
         var vboxAccueil = new VBox();
         vboxAccueil.setPrefHeight(Main.HAUTEUR);
-        vboxAccueil.setPrefWidth(Main.LARGEUR);
+        vboxAccueil.setPrefWidth(Main.LARGEUR_ECRAN);
 
         var groupeBoutons = new HBox();
         groupeBoutons.getChildren().addAll(jouer, infos);
@@ -233,10 +235,10 @@ public class Scenes {
 
     public Scene getSceneInfo() {
         Pane root = creerRoot();
-        var sceneInfo = new Scene(root, Main.LARGEUR, Main.HAUTEUR);
+        var sceneInfo = new Scene(root, Main.LARGEUR_ECRAN, Main.HAUTEUR);
 
         var vbox = new VBox();
-        vbox.setPrefWidth(Main.LARGEUR);
+        vbox.setPrefWidth(Main.LARGEUR_ECRAN);
         vbox.setPrefHeight(Main.HAUTEUR);
 
         var titre = new Text("Charlotte la Barbotte");

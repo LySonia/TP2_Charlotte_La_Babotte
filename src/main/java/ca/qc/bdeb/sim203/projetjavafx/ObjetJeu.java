@@ -52,11 +52,11 @@ public abstract class ObjetJeu {
     public void mettreContour(GraphicsContext contexte) {
         contexte.setLineWidth(1); //TODO: Transformer en constante
         contexte.setStroke(Color.YELLOW);
-        contexte.strokeRect(x, y, w, h);
+        contexte.strokeRect(Camera.getCamera().calculerXEcran(x), Camera.getCamera().calculerYEcran(y), w, h);
     }
 
     public void dessiner(GraphicsContext contexte) {
-        contexte.drawImage(image, x, y);
+        contexte.drawImage(image, Camera.getCamera().calculerXEcran(x), Camera.getCamera().calculerYEcran(y));
     }
 
     //Kinda weird car Charlotte est un child class
@@ -78,5 +78,9 @@ public abstract class ObjetJeu {
 
     protected double getYBas(){
         return this.y + this.h;
+    }
+
+    public double getVx() {
+        return vx;
     }
 }

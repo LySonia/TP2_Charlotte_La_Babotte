@@ -120,10 +120,15 @@ public class Charlotte extends ObjetJeu {
     }
 
     private void assurerQueResteDansEcran() {
-        x = Math.max(0, x);
-        x = Math.min(x, (Main.LARGEUR - w));
+        x = Math.max(Camera.getCamera().getPositionX(), x); //position en X de la cam est la limite
+        x = Math.min(x, (Main.LARGEUR_ECRAN - w));
         y = Math.max(0, y);
         y = Math.min(y, (Main.HAUTEUR - h));
+
+//        x = Math.max(0, x);
+//        x = Math.min(x, (Main.LARGEUR_ECRAN - w));
+//        y = Math.max(0, y);
+//        y = Math.min(y, (Main.HAUTEUR - h));
     }
 
     public int getNbrVie(){
@@ -141,6 +146,7 @@ public class Charlotte extends ObjetJeu {
     public boolean estEndommagee() {
         return estEndommagee;
     }
+
 
     public boolean estEnMouvement() {
         if (vx != 0 && vy != 0) {

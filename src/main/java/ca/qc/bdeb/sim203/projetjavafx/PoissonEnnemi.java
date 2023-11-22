@@ -20,7 +20,7 @@ public class PoissonEnnemi extends ObjetJeu {
         image = new Image(Assets.choisirPoissonHasard(), 0, h, true, false);
         w = image.getWidth();
 
-        x = Main.LARGEUR + w; //TODO: À remplacer quand on aura la caméra!
+        x = Main.LARGEUR_ECRAN + w; //TODO: À remplacer quand on aura la caméra!
         y = obtenirHauteurDepart();
     }
 

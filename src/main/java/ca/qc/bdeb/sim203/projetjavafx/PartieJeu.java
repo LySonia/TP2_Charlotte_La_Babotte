@@ -17,7 +17,7 @@ public class PartieJeu {
     private ArrayList<Corail> coraux = new ArrayList<>();
     private BarreVie barreVie = new BarreVie(charlotte);
     private int niveau = 1;
-    private final int LARGEUR_NIVEAU = 8*Main.LARGEUR;
+
     private double nSecondes = 1;
     private double tempsDebutNiveau = 0;
     private Color couleurFondNiveau;
@@ -88,7 +88,7 @@ public class PartieJeu {
         double dernierePos = coraux.get(coraux.size() - 1).getXDroite();
 
         //Tant que la position (du x de droite) du dernier corail ne touche pas à la fin du niveau, ajouter un corail
-        while (dernierePos < LARGEUR_NIVEAU) {
+        while (dernierePos < Main.LARGEUR_MONDE) {
             dernierePos = coraux.get(coraux.size() - 1).getXDroite();
             double nouvellePos = dernierePos + genererDistanceEntreCoraux();
             coraux.add(new Corail(nouvellePos));
@@ -118,7 +118,7 @@ public class PartieJeu {
         return objetsJeu;
     }
 
-    public Charlotte getCharlotte() {
+    public  Charlotte getCharlotte() {
         return charlotte;
     }
 
