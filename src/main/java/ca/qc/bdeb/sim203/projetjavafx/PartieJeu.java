@@ -38,8 +38,13 @@ public class PartieJeu {
     public void demarrerNiveau(double tempsActuel) {
         tempsDebutNiveau = tempsActuel;
 
+
+
         //Calculer, pour une première fois, le temps écoulé depuis le début du niveau
         calculerTempsEcouleDepuisDebutNiveau(tempsActuel);
+
+        //On ajoute le baril à l'array de
+        objetsJeu.add(new Baril(tempsDebutNiveau));
 
         //Trouver une teinte aléatoire pour la couleur de fond du niveau -> Trop de vue?!? /TODO
         preparerFondNiveau();
@@ -73,7 +78,7 @@ public class PartieJeu {
             nouveauxPoissons.add(new PoissonEnnemi(niveau));
         }
 
-       //Ajouter les nouveaux poissons dans le ArrayList de poissons ennemis
+        //Ajouter les nouveaux poissons dans le ArrayList de poissons ennemis
         poissonsEnnemis.addAll(nouveauxPoissons);
 
         //Ajouter les nouveaux poissons dans le ArrayList d'objet de jeu
@@ -109,7 +114,7 @@ public class PartieJeu {
     }
 
     private void calculerNSecondes() {
-        nSecondes = 0.75 + 1/Math.pow(niveau, 0.5);
+        nSecondes = 0.75 + 1 / Math.pow(niveau, 0.5);
     }
 
 
@@ -118,16 +123,18 @@ public class PartieJeu {
         return objetsJeu;
     }
 
-    public  Charlotte getCharlotte() {
+    public Charlotte getCharlotte() {
         return charlotte;
     }
 
     public ArrayList<PoissonEnnemi> getPoissonsEnnemis() {
         return poissonsEnnemis;
     }
+
     public Color getCouleurFondNiveau() {
         return couleurFondNiveau;
     }
+
     public double getNSecondes() {
         return nSecondes;
     }

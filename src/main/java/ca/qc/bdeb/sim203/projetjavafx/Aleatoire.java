@@ -12,4 +12,8 @@ public class Aleatoire {
     public static int obtenirNombreAleatoire(int borneInférieureInclue, int borneSuperieureInclue) {
         return generateurAleatoire.nextInt(borneSuperieureInclue - borneInférieureInclue) + borneInférieureInclue; //TODO: Noms de variables horribles
     }
+
+    public static Random getGenerateurAleatoire() {
+        return generateurAleatoire;
+    }
 }

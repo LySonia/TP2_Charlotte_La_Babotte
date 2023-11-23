@@ -1,5 +1,8 @@
 package ca.qc.bdeb.sim203.projetjavafx;
 
-public class Projectile {
+public abstract class Projectile extends ObjetJeu {
+
+
+
 
 }
