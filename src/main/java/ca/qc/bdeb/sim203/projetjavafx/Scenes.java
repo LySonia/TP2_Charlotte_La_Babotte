@@ -63,12 +63,11 @@ public class Scenes {
             @Override
             public void handle(long now) {
 
-                sceneJeu.setOnKeyPressed(event -> {
-                    if(event.getCode() == KeyCode.SPACE){
-                        charlotte.utiliserProjectile(System.nanoTime()*NANOSECONDE);
-
-                    }
-                });
+//                sceneJeu.setOnKeyPressed(event -> {
+//                    if(event.getCode() == KeyCode.SPACE){
+//                        charlotte.utiliserProjectile(System.nanoTime()*NANOSECONDE);
+//                    }
+//                });
 
                 Color couleurFond = partieJeu.getCouleurFondNiveau();
                 root.setBackground(new Background(new BackgroundFill(couleurFond, null, null)));
@@ -85,7 +84,6 @@ public class Scenes {
 
                 //Mettre à jour chacun des objets de jeu
                 mettreAJour();
-
 
                 //Dessiner chaque objet de jeu
                 dessiner(contexte, objetsJeu);
@@ -120,6 +118,10 @@ public class Scenes {
 
                 //Gerer image de Charlotte
                 gererImageCharlotte();
+
+
+                //TODO: Fix copié-collé
+                //Gérer les événements
 
                 lastTime = now;
             }
@@ -192,10 +194,31 @@ public class Scenes {
                 var texteTempsEcoule = "Temps écoulé: " + (tempsActuel - partieJeu.getTempsDebutNiveau());
                 contexte.fillText(texteTempsEcoule, 10, 70); //TEST
             }
+
+
         };
         timer.start();
 
-        gererEvenementsGenerales(sceneJeu);
+        //Événements:
+        sceneJeu.setOnKeyPressed((e) -> {
+            Input.setKeyPressed(e.getCode(), true);
+            if (e.getCode() == KeyCode.D) {
+                estEnDebug = !estEnDebug;
+            }
+
+            if(e.getCode() == KeyCode.SPACE){
+                charlotte.utiliserProjectile(System.nanoTime()*NANOSECONDE);
+                System.out.println("Works?");
+            }
+
+            if (e.getCode() == KeyCode.ESCAPE) {
+                Platform.exit();
+            }
+        });
+
+        sceneJeu.setOnKeyReleased((e) -> {
+            Input.setKeyPressed(e.getCode(), false);
+        });
 
         return sceneJeu;
     }
@@ -318,8 +341,6 @@ public class Scenes {
     private void gererEvenementsGenerales(Scene scene) {
         scene.setOnKeyPressed((e) -> {
             Input.setKeyPressed(e.getCode(), true);
-
-            //TODO: Sure about mode debug? T'as, en fait, seulement besoin de ce bouton si t'es dans la scène de jeu
             if (e.getCode() == KeyCode.D) {
                 estEnDebug = !estEnDebug;
             }

@@ -20,7 +20,6 @@ public class Baril extends ObjetJeu {
 
     @Override
     public void update(double deltaTemps) {
-
         double t = (System.nanoTime() * Scenes.NANOSECONDE) - tempsDebutNiveau; //trouve le temps écoulé depuis le début du niveau
         y = (Main.HAUTEUR - h) / 2 * Math.sin((2 * Math.PI * t) / PERIODE) + (Main.HAUTEUR - h) / 2; // donne la position de y qui change selon le temps écouler depuis le debut du niveau
 
