@@ -84,6 +84,14 @@ public abstract class ObjetJeu {
         return vx;
     }
 
+    public double getW() {
+        return w;
+    }
+
+    public double getH() {
+        return h;
+    }
+
     public void setX(double x) {
         this.x = x;
     }

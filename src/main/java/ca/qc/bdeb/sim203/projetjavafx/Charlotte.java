@@ -93,8 +93,8 @@ public class Charlotte extends ObjetJeu {
         if(temps - tempsDernierProjectile> DELAIS_DE_TIR){
             tempsDernierProjectile = temps;
             projectileActuel.setEstTirer(true);
-            projectileActuel.setX((x+w)/2);
-            projectileActuel.setY(y);
+            projectileActuel.setX(x+(w/2)- projectileActuel.getW()/2); //pour que le projectile sorte du centre de charlotte
+            projectileActuel.setY(y+(h/2) - projectileActuel.getH()/2);
         }
 
 

@@ -208,7 +208,7 @@ public class Scenes {
 
             if(e.getCode() == KeyCode.SPACE){
                 charlotte.utiliserProjectile(System.nanoTime()*NANOSECONDE);
-                System.out.println("Works?");
+
             }
 
             if (e.getCode() == KeyCode.ESCAPE) {

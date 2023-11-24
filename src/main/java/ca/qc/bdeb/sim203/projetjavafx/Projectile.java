@@ -4,8 +4,7 @@ import javafx.scene.canvas.GraphicsContext;
 
 public abstract class Projectile extends ObjetJeu {
 private boolean estTirer = false;
-private double xCharlotte;
-private double yCharlotte;
+
 
     @Override
     public void dessiner(GraphicsContext contexte) {
