@@ -34,7 +34,7 @@ public class Charlotte extends ObjetJeu {
         h = H_CHARLOTTE;
         vitesseMax = 300;
         image = new Image(Assets.CHARLOTTE.getEmplacement()); //TODO: Trop de mélange MVC?
-        projectileActuel = new EtoileDeMer();
+        projectileActuel = new Hippocampes();
 
     }
 
@@ -92,9 +92,14 @@ public class Charlotte extends ObjetJeu {
     public void utiliserProjectile(double temps){
         if(temps - tempsDernierProjectile> DELAIS_DE_TIR){
             tempsDernierProjectile = temps;
+            projectileActuel.setTempsDeTir(temps);
+
+            double yCentre = y+(h/2) - projectileActuel.getH()/2;
+            double xCentre = x+(w/2)- projectileActuel.getW()/2;
+            projectileActuel.setyDeCentreCharlotte(yCentre);
             projectileActuel.setEstTirer(true);
-            projectileActuel.setX(x+(w/2)- projectileActuel.getW()/2); //pour que le projectile sorte du centre de charlotte
-            projectileActuel.setY(y+(h/2) - projectileActuel.getH()/2);
+            projectileActuel.setX(xCentre); //pour que le projectile sorte du centre de charlotte
+            projectileActuel.setY(yCentre);
         }
 
 

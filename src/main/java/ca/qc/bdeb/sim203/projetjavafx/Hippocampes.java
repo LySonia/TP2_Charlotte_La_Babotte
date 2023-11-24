@@ -2,12 +2,13 @@ package ca.qc.bdeb.sim203.projetjavafx;
 
 import javafx.scene.image.Image;
 
-public class Hyppocampes extends Projectile {
+public class Hippocampes extends Projectile {
 
     private double amplitude;
     private double periode;
 
-    public Hyppocampes() {
+
+    public Hippocampes() {
         w = 20;
         h = 36;
         image = new Image(Assets.HIPPOCAMPE.getEmplacement());
@@ -19,14 +20,14 @@ public class Hyppocampes extends Projectile {
             amplitude *= -1;
         }
         //periode aléatoire
-        periode = Aleatoire.obtenirNombreAleatoire(1,3);
+        periode = Aleatoire.obtenirNombreAleatoire(1, 3);
     }
 
     @Override
     public void update(double deltaTemps) {
         //TODO: aller chercher les bonnes valeurs
-        double t =0;
-        double yDeCentreCharlotte = 0;
-        y = amplitude * Math.sin((2*Math.PI*periode*t)/2) +  yDeCentreCharlotte;
+        double tempsEcoule = System.nanoTime()*Scenes.NANOSECONDE - tempsDeTir;
+        y = amplitude * Math.sin((2 * Math.PI * periode * tempsEcoule) / 2) + yDeCentreCharlotte;
+        x += deltaTemps * vx;
     }
 }
