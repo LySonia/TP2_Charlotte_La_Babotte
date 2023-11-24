@@ -51,7 +51,10 @@ public class Scenes {
         ArrayList<PoissonEnnemi> poissonsEnnemis = partieJeu.getPoissonsEnnemis();
         ArrayList<ObjetJeu> objetsJeu = partieJeu.getObjetsJeu();
 
+
         AnimationTimer timer = new AnimationTimer() {
+
+
             double lastTime = System.nanoTime() * NANOSECONDE;
             double tempsActuel = System.nanoTime()  * NANOSECONDE;
             double deltaTemps = tempsActuel - lastTime;
@@ -59,6 +62,14 @@ public class Scenes {
 
             @Override
             public void handle(long now) {
+
+                sceneJeu.setOnKeyPressed(event -> {
+                    if(event.getCode() == KeyCode.SPACE){
+                        charlotte.utiliserProjectile(System.nanoTime()*NANOSECONDE);
+
+                    }
+                });
+
                 Color couleurFond = partieJeu.getCouleurFondNiveau();
                 root.setBackground(new Background(new BackgroundFill(couleurFond, null, null)));
 

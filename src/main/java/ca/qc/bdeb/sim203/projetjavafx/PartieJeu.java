@@ -46,6 +46,9 @@ public class PartieJeu {
         //On ajoute le baril à l'array de
         objetsJeu.add(new Baril(tempsDebutNiveau));
 
+        //on Ajoute le projectile de Charlotte
+        objetsJeu.add(charlotte.getProjectileActuel());
+
         //Trouver une teinte aléatoire pour la couleur de fond du niveau -> Trop de vue?!? /TODO
         preparerFondNiveau();
 

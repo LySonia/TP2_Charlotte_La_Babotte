@@ -19,7 +19,13 @@ public class Charlotte extends ObjetJeu {
     private boolean estMorte = false;
     private boolean estEndommagee = false;
     private boolean estVisible = true;
+
+    //partie sur les projectiles
     private Projectile projectileActuel;
+
+    private double tempsDernierProjectile =0;
+
+    private static final double DELAIS_DE_TIR = 0.5;
 
     public Charlotte() {
         x = 0;
@@ -28,6 +34,8 @@ public class Charlotte extends ObjetJeu {
         h = H_CHARLOTTE;
         vitesseMax = 300;
         image = new Image(Assets.CHARLOTTE.getEmplacement()); //TODO: Trop de mélange MVC?
+        projectileActuel = new EtoileDeMer();
+
     }
 
     public void update(double deltaTemps) {
@@ -79,6 +87,17 @@ public class Charlotte extends ObjetJeu {
             nbrVie--;
         }
         estEndommagee = true;
+    }
+
+    public void utiliserProjectile(double temps){
+        if(temps - tempsDernierProjectile> DELAIS_DE_TIR){
+            tempsDernierProjectile = temps;
+            projectileActuel.setEstTirer(true);
+            projectileActuel.setX((x+w)/2);
+            projectileActuel.setY(y);
+        }
+
+
     }
 
     public void gererImmortalite(double tempsActuel) {
@@ -158,5 +177,9 @@ public class Charlotte extends ObjetJeu {
 
     public void setImage(String emplacement) {
         image = new Image(emplacement);
+    }
+
+    public Projectile getProjectileActuel() {
+        return projectileActuel;
     }
 }
