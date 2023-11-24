@@ -169,6 +169,9 @@ public class Scenes {
 
             private void mettreAJour() {
                 Camera.getCamera().update(charlotte, deltaTemps);
+                if(charlotte.getProjectileActuel() instanceof Sardines){
+                    partieJeu.trouverAccelerationSardine();
+                }
                 for (ObjetJeu objetJeu : objetsJeu) {
                     objetJeu.update(deltaTemps);
                 }
@@ -196,7 +199,7 @@ public class Scenes {
                 for (int i = poissonsEnnemis.size() - 1; i>=0; i--) {
                     PoissonEnnemi temp = poissonsEnnemis.get(i);
 
-                    //si le poisson enemies est a droite de charlotte! (pour la boite de sardines)
+                    //si le poisson enemies est a droite de charlotte!
                     if (temp.getXGauche() > charlotte.getXGauche()) {
 
                         //si le projectile touche un poisson enemies
@@ -254,6 +257,7 @@ public class Scenes {
 
         return sceneJeu;
     }
+
 
 
     //region AUTRES SCENES

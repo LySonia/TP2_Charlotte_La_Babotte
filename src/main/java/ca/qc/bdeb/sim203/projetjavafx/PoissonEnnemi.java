@@ -9,6 +9,8 @@ public class PoissonEnnemi extends ObjetJeu {
     private static final int HAUTEUR_MAX_IMAGE= 120;
     private static final int HAUTEUR_MIN_IMAGE = 50;
 
+    private static final int CHARGE_Q = -100;
+
     public PoissonEnnemi(int numNiveau) {
         this.numNiveau = numNiveau;
 

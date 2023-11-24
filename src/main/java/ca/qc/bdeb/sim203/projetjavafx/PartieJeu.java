@@ -126,6 +126,15 @@ public class PartieJeu {
         }
 
     }
+    public void trouverAccelerationSardine(){
+        for(PoissonEnnemi poissonEnnemi: poissonsEnnemis){
+            if(poissonEnnemi.getXGauche() > charlotte.getXGauche()){ //si le poisson est à droite de charlotte
+                //TODO: finish this
+
+            }
+        }
+
+    }
 
     private void calculerNSecondes() {
         nSecondes = 0.75 + 1 / Math.pow(niveau, 0.5);

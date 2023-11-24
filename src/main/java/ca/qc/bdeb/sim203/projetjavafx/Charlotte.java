@@ -3,6 +3,8 @@ package ca.qc.bdeb.sim203.projetjavafx;
 import javafx.scene.image.*;
 import javafx.scene.input.*;
 
+import java.util.ArrayList;
+
 public class Charlotte extends ObjetJeu {
     private final double W_CHARLOTTE = 102;
     private final double H_CHARLOTTE = 90;
@@ -23,6 +25,7 @@ public class Charlotte extends ObjetJeu {
     //partie sur les projectiles
     private Projectile projectileActuel;
 
+    private ArrayList<Projectile> projectilesTires;
     private double tempsDernierProjectile =0;
 
     private static final double DELAIS_DE_TIR = 0.5;
