@@ -56,7 +56,7 @@ public class Scenes {
 
 
             double lastTime = System.nanoTime() * NANOSECONDE;
-            double tempsActuel = System.nanoTime()  * NANOSECONDE;
+            double tempsActuel = System.nanoTime() * NANOSECONDE;
             double deltaTemps = tempsActuel - lastTime;
             double tempsDerniersPoissons = System.nanoTime() * NANOSECONDE;
 
@@ -82,6 +82,12 @@ public class Scenes {
                 //Gérer les collisions entre chaque poisson et Charlotte
                 gererCollisionsEntrePoissonsEtCharlotte();
 
+                //Gérer les collisions entre les projectiles et les poissons enemies
+                gererCollisionProjectile();
+
+                //Gérer les collisions entre le baril et Charlotte
+                gererCollisionBaril();
+
                 //Mettre à jour chacun des objets de jeu
                 mettreAJour();
 
@@ -95,7 +101,7 @@ public class Scenes {
                 }
 
                 //Enlever les poissons qui sont hors-écran
-                    //TODO: Maybe have to check null cases
+                //TODO: Maybe have to check null cases
                 enleverPoissonsHorsEcran();
 
                 //Mettre ou enlever mode debug
@@ -110,7 +116,7 @@ public class Scenes {
                     contexte.setFont(Font.font("Arial", 100));
 
                     //TODO: Remplacer Main.Largeur/2 et Main.Hauteur/2 par la position du centre de la caméra
-                    contexte.fillText(texteNiveau, 200, Main.HAUTEUR/2);
+                    contexte.fillText(texteNiveau, 200, Main.HAUTEUR / 2);
 
                     //Remettre le font à la taille normale
                     contexte.setFont(Font.font("Arial", 10));
@@ -133,7 +139,7 @@ public class Scenes {
                 if (charlotte.estVisible()) {
                     if (charlotte.estEndommagee()) {
                         charlotte.setImage(Assets.CHARLOTTE_OUTCH.getEmplacement());
-                    } else if (charlotte.estEnMouvement()){
+                    } else if (charlotte.estEnMouvement()) {
                         charlotte.setImage(Assets.CHARLOTTE_AVANT.getEmplacement());
                     } else {
                         charlotte.setImage(Assets.CHARLOTTE.getEmplacement());
@@ -153,28 +159,54 @@ public class Scenes {
                 }
             }
 
-            private void dessiner(GraphicsContext contexte, ArrayList<ObjetJeu> objetsJeu){
+
+            private void dessiner(GraphicsContext contexte, ArrayList<ObjetJeu> objetsJeu) {
                 contexte.clearRect(0, 0, Main.LARGEUR_ECRAN, Main.HAUTEUR); //Clear le canvas
-                for (ObjetJeu objectJeu: objetsJeu) {
+                for (ObjetJeu objectJeu : objetsJeu) {
                     objectJeu.dessiner(contexte);
                 }
             }
 
             private void mettreAJour() {
                 Camera.getCamera().update(charlotte, deltaTemps);
-                for (ObjetJeu objetJeu: objetsJeu) {
+                for (ObjetJeu objetJeu : objetsJeu) {
                     objetJeu.update(deltaTemps);
                 }
             }
 
             //TODO: Trop de logique?
             private void gererCollisionsEntrePoissonsEtCharlotte() {
-                for (PoissonEnnemi poissonEnnemi: poissonsEnnemis) {
-                    if (poissonEnnemi.estEnCollisionAvecCharlotte(charlotte)){
+                for (PoissonEnnemi poissonEnnemi : poissonsEnnemis) {
+                    if (poissonEnnemi.estEnCollisionAvecCharlotte(charlotte)) {
                         charlotte.prendreDommage();
                     }
                     charlotte.gererImmortalite(tempsActuel);
                 }
+            }
+
+            private void gererCollisionBaril(){
+                if(Collision.aIntersection(partieJeu.getBaril(), charlotte)){
+                    partieJeu.ouvrirBaril();
+                }
+
+            }
+
+            private void gererCollisionProjectile() {
+
+                for (int i = poissonsEnnemis.size() - 1; i>=0; i--) {
+                    PoissonEnnemi temp = poissonsEnnemis.get(i);
+
+                    //si le poisson enemies est a droite de charlotte! (pour la boite de sardines)
+                    if (temp.getXGauche() > charlotte.getXGauche()) {
+
+                        //si le projectile touche un poisson enemies
+                        if (Collision.aIntersection(temp, charlotte.getProjectileActuel())) {
+                            partieJeu.sortirPoisson(temp);
+                        }
+                    }
+                }
+
+
             }
 
             private void gererModeDebug() {
@@ -206,8 +238,8 @@ public class Scenes {
                 estEnDebug = !estEnDebug;
             }
 
-            if(e.getCode() == KeyCode.SPACE){
-                charlotte.utiliserProjectile(System.nanoTime()*NANOSECONDE);
+            if (e.getCode() == KeyCode.SPACE) {
+                charlotte.utiliserProjectile(System.nanoTime() * NANOSECONDE);
 
             }
 
@@ -354,6 +386,7 @@ public class Scenes {
             Input.setKeyPressed(e.getCode(), false);
         });
     }
+
     private Pane creerRoot() {
         Pane root = new Pane();
         root.setStyle("-fx-background-color: #2A7FFF;"); // Pour faire de sorte que le fond est bleu

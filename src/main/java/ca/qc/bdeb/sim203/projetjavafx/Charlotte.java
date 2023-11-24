@@ -98,7 +98,9 @@ public class Charlotte extends ObjetJeu {
             double xCentre = x+(w/2)- projectileActuel.getW()/2;
             projectileActuel.setyDeCentreCharlotte(yCentre);
             projectileActuel.setEstTirer(true);
-            projectileActuel.setX(xCentre); //pour que le projectile sorte du centre de charlotte
+
+            //pour que le projectile sorte du centre de charlotte quand on les dessine
+            projectileActuel.setX(xCentre);
             projectileActuel.setY(yCentre);
         }
 
@@ -186,5 +188,9 @@ public class Charlotte extends ObjetJeu {
 
     public Projectile getProjectileActuel() {
         return projectileActuel;
+    }
+
+    public void setProjectileActuel(Projectile projectileActuel) {
+        this.projectileActuel = projectileActuel;
     }
 }

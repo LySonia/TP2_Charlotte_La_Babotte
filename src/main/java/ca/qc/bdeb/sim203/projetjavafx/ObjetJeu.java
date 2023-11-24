@@ -99,4 +99,8 @@ public abstract class ObjetJeu {
     public void setY(double y) {
         this.y = y;
     }
+
+    public void setImage(Image image) {
+        this.image = image;
+    }
 }

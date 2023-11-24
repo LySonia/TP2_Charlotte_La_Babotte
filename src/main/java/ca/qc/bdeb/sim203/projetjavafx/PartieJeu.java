@@ -1,5 +1,6 @@
 package ca.qc.bdeb.sim203.projetjavafx;
 
+import javafx.scene.image.Image;
 import javafx.scene.paint.*;
 
 import java.util.*;
@@ -16,6 +17,7 @@ public class PartieJeu {
     private ArrayList<PoissonEnnemi> poissonsEnnemis = new ArrayList<>();
     private ArrayList<Corail> coraux = new ArrayList<>();
     private BarreVie barreVie = new BarreVie(charlotte);
+    private Baril baril;
     private int niveau = 1;
 
     private double nSecondes = 1;
@@ -39,12 +41,12 @@ public class PartieJeu {
         tempsDebutNiveau = tempsActuel;
 
 
-
         //Calculer, pour une première fois, le temps écoulé depuis le début du niveau
         calculerTempsEcouleDepuisDebutNiveau(tempsActuel);
 
         //On ajoute le baril à l'array de
-        objetsJeu.add(new Baril(tempsDebutNiveau));
+        baril = new Baril(tempsDebutNiveau);
+        objetsJeu.add(baril);
 
         //on Ajoute le projectile de Charlotte
         objetsJeu.add(charlotte.getProjectileActuel());
@@ -115,6 +117,15 @@ public class PartieJeu {
         poissonsEnnemis.remove(poisson);
         objetsJeu.remove(poisson);
     }
+    public void ouvrirBaril(){
+        if(!baril.isEstOuvert()){
+            baril.setEstOuvert(true);
+            baril.setImage(new Image(Assets.BARIL_OUVERT.getEmplacement()));
+            charlotte.setProjectileActuel(baril.donnerProjectile(charlotte.getProjectileActuel()));
+            //TODO: fix make it so the projectile gets added to array of objet de jeu
+        }
+
+    }
 
     private void calculerNSecondes() {
         nSecondes = 0.75 + 1 / Math.pow(niveau, 0.5);
@@ -152,5 +163,9 @@ public class PartieJeu {
 
     public int getNbrPoissonsEnnemis() {
         return poissonsEnnemis.size();
+    }
+
+    public Baril getBaril() {
+        return baril;
     }
 }
