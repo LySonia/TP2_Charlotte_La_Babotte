@@ -1,5 +1,6 @@
 package ca.qc.bdeb.sim203.projetjavafx;
 
+import javafx.scene.canvas.*;
 import javafx.scene.image.*;
 import javafx.scene.input.*;
 
@@ -83,6 +84,12 @@ public class Charlotte extends ObjetJeu {
         assurerQueResteDansEcran();
 
         super.mettreAJourPhysique(deltaTemps);
+    }
+
+    @Override
+    public void dessiner(GraphicsContext contexte) {
+        gererImageCharlotte();
+        super.dessiner(contexte);
     }
 
     public void prendreDommage() {
@@ -184,7 +191,7 @@ public class Charlotte extends ObjetJeu {
 
     public void setProjectileActuel(Projectile projectileActuel) {
         this.projectileActuel = projectileActuel;
-        //Add projectile actuel to the Arraylist
+        //Add projectile actuel to the ArrayList
         this.projectilesTires.add(new EtoileDeMer());
     }
 

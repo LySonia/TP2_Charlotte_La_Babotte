@@ -68,4 +68,16 @@ public class Camera {
     public double getXCamera() {
         return xCamera;
     }
+
+    public void setXCamera(double xCamera) {
+        this.xCamera = xCamera;
+    }
+
+    public void setYCamera(double yCamera) {
+        this.yCamera = yCamera;
+    }
+
+    public void setEstALaFin(boolean estALaFin) {
+        this.estALaFin = estALaFin;
+    }
 }

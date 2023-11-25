@@ -3,6 +3,7 @@ package ca.qc.bdeb.sim203.projetjavafx;
 import javafx.scene.canvas.*;
 import javafx.scene.image.Image;
 import javafx.scene.paint.*;
+import javafx.scene.text.*;
 
 import java.util.*;
 
@@ -25,36 +26,47 @@ public class PartieJeu {
     private double nSecondes = 1;
     private double tempsDebutNiveau = 0;
     private double tempsDerniersPoissons = 0;
-
+    private final double TEMPS_AFFICHAGE_NIVEAU = 4;
+    private final double TEMPS_AFFICHAGE_FIN_JEU = 3;
     //Attributs autres :
     private Color couleurFondNiveau;
     private boolean estDebug = false;
-    private int numNiveau = 1;
-    private boolean estALaFin = false;
+    private int numNiveau = 0;
+    private boolean estALaFinNiveau = false;
+
     //Constructeur :
     public PartieJeu(double tempsActuel) {
         this.tempsActuel = tempsActuel;
-        objetsJeu.add(charlotte);
-        objetsJeu.add(barreVie);
+
         demarrerNiveau(tempsActuel);
     }
 
     //Méthodes :
     public void demarrerNiveau(double tempsActuel) {
+        numNiveau++;
         tempsDebutNiveau = tempsActuel;
+        objetsJeu.clear();
+        poissonsEnnemis.clear();
+        decors.clear();
+
+        objetsJeu.add(charlotte);
+        objetsJeu.add(barreVie);
 
         baril = new Baril(tempsDebutNiveau);
         objetsJeu.add(baril);
+
+        //Ça serait plus facile de créer une nouvelle caméra à chaque fois qu'on démarre un niveau...
+        //Repositionner la caméra à (0,0) dans le monde
+        Camera.getCamera().setXCamera(0);
+        Camera.getCamera().setYCamera(0);
+        Camera.getCamera().setEstALaFin(false);
+
         preparerFondNiveau(); //TODO: Cette méthode -> trop de vue?
         replacerCharlotte();
         ajouterGroupePoissons();
         calculerNSecondes();
         positionnerDecor();
         calculerEstALaFin();
-
-        if (estALaFin && charlotte.estVivante()) {
-            demarrerNiveau(tempsActuel);
-        }
     }
 
     private void replacerCharlotte() {
@@ -74,8 +86,16 @@ public class PartieJeu {
         mettreAJourObjets();
         enleverPoissonsHorsEcran();
         Camera.getCamera().update(charlotte, deltaTemps); //Mettre à jour la caméra
-    }
+        calculerEstALaFin();
 
+        if (!charlotte.estVivante()) {
+            //Code for death
+        }
+
+        if (estALaFinNiveau && charlotte.estVivante()) {
+            demarrerNiveau(tempsActuel);
+        }
+    }
 
 
     private void enleverPoissonsHorsEcran() {
@@ -85,14 +105,15 @@ public class PartieJeu {
             }
         }
     }
+
     private void gererCollisionBaril() {
-        if(Collision.estEnCollision(baril, charlotte)){
+        if (Collision.estEnCollision(baril, charlotte)) {
             ouvrirBaril();
         }
     }
 
     private void gererGenerationPoissons() {
-        if ((tempsActuel - tempsDerniersPoissons) > nSecondes){
+        if ((tempsActuel - tempsDerniersPoissons) > nSecondes) {
             ajouterGroupePoissons();
             tempsDerniersPoissons = tempsActuel;
         }
@@ -114,10 +135,10 @@ public class PartieJeu {
     }
 
     private void gererCollisionsProjectiles() { //Code à Camille
-        for (int i = poissonsEnnemis.size() - 1; i>=0; i--) {
+        for (int i = poissonsEnnemis.size() - 1; i >= 0; i--) {
             PoissonEnnemi temp = poissonsEnnemis.get(i);
 
-            //si le poisson enemies est a droite de charlotte!
+            //si le poisson enemies est à droite de charlotte!
             if (temp.getXGauche() > charlotte.getXGauche()) {
 
                 //si le projectile touche un poisson enemies
@@ -128,12 +149,6 @@ public class PartieJeu {
         }
     }
 
-    private void preparerFondNiveau() {
-        final double saturation = 0.84;
-        final double luminosité = 1.0;
-        final double teinte = obtenirNombreAleatoire(190, 270);
-        couleurFondNiveau = Color.hsb(teinte, saturation, luminosité);
-    }
 
     public void ajouterGroupePoissons() {
         tempsDerniersPoissons = tempsActuel;
@@ -151,7 +166,6 @@ public class PartieJeu {
         poissonsEnnemis.addAll(nouveauxPoissons);
 
         //Ajouter les nouveaux poissons dans le ArrayList d'objet de jeu
-        //TODO: Il y a sûrement un moyen plus efficace pour placer les nouveaux poissons dans les 2 ArrayLists
         objetsJeu.addAll(nouveauxPoissons);
     }
 
@@ -208,12 +222,27 @@ public class PartieJeu {
     //TOUT CE QUI EST "DESSIN" :
     public void dessiner(GraphicsContext contexte) {
         contexte.clearRect(0, 0, Main.LARGEUR_ECRAN, Main.HAUTEUR);
-        for (ObjetJeu objetJeu: objetsJeu){
+        for (ObjetJeu objetJeu : objetsJeu) {
             objetJeu.dessiner(contexte);
         }
         if (estDebug) {
             afficherDebug(contexte);
         }
+
+        if (tempsActuel - tempsDebutNiveau < TEMPS_AFFICHAGE_NIVEAU) {
+            afficherNumNiveau(contexte);
+        }
+    }
+
+    private void afficherNumNiveau(GraphicsContext contexte) {
+        String texteNiveau = ("NIVEAU " + numNiveau);
+        contexte.setFont(Font.font("Arial", 100));
+
+        //TODO: Remplacer Main.Largeur/2 et Main.Hauteur/2 par la position du centre de la caméra
+        contexte.fillText(texteNiveau, 200, Main.HAUTEUR / 2);
+
+        //Remettre le font à la taille normale
+        contexte.setFont(Font.font("Arial", 10));
     }
 
     private void afficherDebug(GraphicsContext contexte) {
@@ -226,9 +255,18 @@ public class PartieJeu {
         var texteNbrPoissons = "NB Poissons: " + getNbrPoissonsEnnemis();
         contexte.fillText(texteNbrPoissons, 10, 55); //TEST
     }
+
     private void calculerEstALaFin() {
-        estALaFin = charlotte.getXDroite() >= Main.LARGEUR_MONDE;
+        estALaFinNiveau = charlotte.getXDroite() >= Main.LARGEUR_MONDE;
     }
+
+    private void preparerFondNiveau() {
+        final double saturation = 0.84;
+        final double luminosité = 1.0;
+        final double teinte = obtenirNombreAleatoire(190, 270);
+        couleurFondNiveau = Color.hsb(teinte, saturation, luminosité);
+    }
+
 
     //GETTERS
 
