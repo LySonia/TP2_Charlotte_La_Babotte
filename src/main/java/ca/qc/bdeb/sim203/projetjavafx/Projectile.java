@@ -12,7 +12,6 @@ public abstract class Projectile extends ObjetJeu {
         if (estTirer) {
             super.dessiner(contexte);
         }
-
     }
 
     public void setEstTirer(boolean estTirer) {
@@ -23,7 +22,7 @@ public abstract class Projectile extends ObjetJeu {
         this.tempsDeTir = tempsDeTir;
     }
 
-    public void setyDeCentreCharlotte(double yDeCentreCharlotte) {
+    public void setYDeCentreCharlotte(double yDeCentreCharlotte) {
         this.yDeCentreCharlotte = yDeCentreCharlotte;
     }
 }

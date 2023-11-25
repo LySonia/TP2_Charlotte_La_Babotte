@@ -16,7 +16,7 @@ public class Sardines extends Projectile{
     }
 
     @Override
-    public void update(double deltaTemps) {
+    public void mettreAJourPhysique(double deltaTemps) {
         vy += deltaTemps * ay;
         x += deltaTemps * vx;
         y += deltaTemps * vy;

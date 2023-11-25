@@ -18,7 +18,7 @@ public class BarreVie extends ObjetJeu {
     }
 
     @Override
-    public void update(double deltaTemps) {
+    public void mettreAJourPhysique(double deltaTemps) {
         w = (charlotte.getNbrVie() / charlotte.getNbrVieMax()) * LARGEUR_TOTALE_BARRE;
     }
 

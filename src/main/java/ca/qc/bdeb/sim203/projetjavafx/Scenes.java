@@ -9,37 +9,29 @@ import javafx.scene.control.*;
 import javafx.scene.image.*;
 import javafx.scene.input.*;
 import javafx.scene.layout.*;
-import javafx.scene.paint.*;
 import javafx.scene.text.*;
 import javafx.stage.*;
 
 import java.util.*;
 
-import static ca.qc.bdeb.sim203.projetjavafx.Aleatoire.obtenirNombreAleatoire;
+import static ca.qc.bdeb.sim203.projetjavafx.Hasard.obtenirNombreAleatoire;
 
 public class Scenes {
-    private Stage stage = new Stage();
-    private boolean estEnDebug = false;
-    public final static double NANOSECONDE = 1e-9;
-    private PartieJeu partieJeu = new PartieJeu();
-    private double tempsActuel = System.nanoTime() * NANOSECONDE;
-    private final double TEMPS_AFFICHAGE_NIVEAU = 4;
+    public static final double NANOSECONDE = 1e-9; //Bon placement de la variable?
+    private static final String NOM_JEU = "Charlotte la Barbotte";
+    private Stage stage;
 
-    public Scenes() {
+    public Scenes(Stage stage) {
+        this.stage = stage;
         stage.setScene(getSceneAccueil()); //Par défault, c'est la scène d'accueil
-    }
-
-    public Stage getStage() {
-        return stage;
+        stage.setTitle(NOM_JEU);
     }
 
     public Scene getSceneJeu() {
-        //2 prochaines lignes sont des tests
-        tempsActuel = System.nanoTime() * NANOSECONDE;
-        System.out.println("Premier tempsActuel: " + tempsActuel);
-        partieJeu.demarrerNiveau(tempsActuel);
-        var root = new Pane();
+        PartieJeu partieJeu = new PartieJeu(System.nanoTime() * NANOSECONDE);
+        Charlotte charlotte = partieJeu.getCharlotte();
 
+        var root = new Pane();
 
         var sceneJeu = new Scene(root, Main.LARGEUR_ECRAN, Main.HAUTEUR);
         Canvas canvas = new Canvas(Main.LARGEUR_ECRAN, Main.HAUTEUR);
@@ -47,220 +39,79 @@ public class Scenes {
 
         root.getChildren().add(canvas);
 
-        Charlotte charlotte = partieJeu.getCharlotte();
-        ArrayList<PoissonEnnemi> poissonsEnnemis = partieJeu.getPoissonsEnnemis();
-        ArrayList<ObjetJeu> objetsJeu = partieJeu.getObjetsJeu();
-
-
         AnimationTimer timer = new AnimationTimer() {
-
-
-            double lastTime = System.nanoTime() * NANOSECONDE;
-            double tempsActuel = System.nanoTime() * NANOSECONDE;
-            double deltaTemps = tempsActuel - lastTime;
-            double tempsDerniersPoissons = System.nanoTime() * NANOSECONDE;
-
             @Override
             public void handle(long now) {
+                double tempsActuel = now * NANOSECONDE;
 
-//                sceneJeu.setOnKeyPressed(event -> {
-//                    if(event.getCode() == KeyCode.SPACE){
-//                        charlotte.utiliserProjectile(System.nanoTime()*NANOSECONDE);
-//                    }
-//                });
-
-                Color couleurFond = partieJeu.getCouleurFondNiveau();
+                //Ajuster la couleur de fond
+                var couleurFond = partieJeu.getCouleurFondNiveau();
                 root.setBackground(new Background(new BackgroundFill(couleurFond, null, null)));
 
-                deltaTemps = (now - lastTime) * NANOSECONDE;
-                tempsActuel = now * NANOSECONDE;
-                System.out.println("Deuxième tempsActuel: " + tempsActuel);
-
-                //ajusterLaCouleurDeFond
-                ajusterCouleurFond();
-
-                //Gérer les collisions entre chaque poisson et Charlotte
-                gererCollisionsEntrePoissonsEtCharlotte();
-
-                //Gérer les collisions entre les projectiles et les poissons enemies
-                gererCollisionProjectile();
-
-                //Gérer les collisions entre le baril et Charlotte
-                gererCollisionBaril();
-
-                //Mettre à jour chacun des objets de jeu
-                mettreAJour();
-
                 //Dessiner chaque objet de jeu
-                dessiner(contexte, objetsJeu);
-
-                //Ajouter des poissons après quelques Nsecondes
-                if ((tempsActuel - tempsDerniersPoissons) > partieJeu.getNSecondes()) {
-                    partieJeu.ajouterGroupePoissons();
-                    tempsDerniersPoissons = tempsActuel;
-                }
-
-                //Enlever les poissons qui sont hors-écran
-                //TODO: Maybe have to check null cases
-                enleverPoissonsHorsEcran();
-
-                //Mettre ou enlever mode debug
-                if (estEnDebug) {
-                    gererModeDebug();
-                }
-
-                //Afficher numéro du niveau
-                if (tempsActuel - partieJeu.getTempsDebutNiveau() < TEMPS_AFFICHAGE_NIVEAU) {
-
-                    String texteNiveau = ("NIVEAU " + partieJeu.getNiveau());
-                    contexte.setFont(Font.font("Arial", 100));
-
-                    //TODO: Remplacer Main.Largeur/2 et Main.Hauteur/2 par la position du centre de la caméra
-                    contexte.fillText(texteNiveau, 200, Main.HAUTEUR / 2);
-
-                    //Remettre le font à la taille normale
-                    contexte.setFont(Font.font("Arial", 10));
-                }
-
-                //Gerer image de Charlotte
-                gererImageCharlotte();
-
-
-                //TODO: Fix copié-collé
-                //Gérer les événements
-
-                lastTime = now;
-            }
-
-            private void ajusterCouleurFond() {
-            }
-
-            private void gererImageCharlotte() { //Code dans la bonne classe?
-                if (charlotte.estVisible()) {
-                    if (charlotte.estEndommagee()) {
-                        charlotte.setImage(Assets.CHARLOTTE_OUTCH.getEmplacement());
-                    } else if (charlotte.estEnMouvement()) {
-                        charlotte.setImage(Assets.CHARLOTTE_AVANT.getEmplacement());
-                    } else {
-                        charlotte.setImage(Assets.CHARLOTTE.getEmplacement());
-                    }
-                } else {
-                    charlotte.setImage(Assets.CHARLOTTE_OUTCH_TRANSPARENT.getEmplacement());
-                }
-            }
-
-            private void enleverPoissonsHorsEcran() {
-                //TODO Delete this comment before giving in TP
-                //Ici, je dois me servir d'un for loop traditionnel au lieu du for each, sinon y'a erreur
-                for (int i = 0; i < poissonsEnnemis.size(); i++) {
-                    if (!poissonsEnnemis.get(i).estDansEcran()) {
-                        partieJeu.sortirPoisson(poissonsEnnemis.get(i));
-                    }
-                }
-            }
-
-
-            private void dessiner(GraphicsContext contexte, ArrayList<ObjetJeu> objetsJeu) {
-                contexte.clearRect(0, 0, Main.LARGEUR_ECRAN, Main.HAUTEUR); //Clear le canvas
-                for (ObjetJeu objectJeu : objetsJeu) {
-                    objectJeu.dessiner(contexte);
-                }
-            }
-
-            private void mettreAJour() {
-                Camera.getCamera().update(charlotte, deltaTemps);
-                if(charlotte.getProjectileActuel() instanceof Sardines){
-                    partieJeu.trouverAccelerationSardine();
-                }
-                for (ObjetJeu objetJeu : objetsJeu) {
-                    objetJeu.update(deltaTemps);
-                }
-            }
-
-            //TODO: Trop de logique?
-            private void gererCollisionsEntrePoissonsEtCharlotte() {
-                for (PoissonEnnemi poissonEnnemi : poissonsEnnemis) {
-                    if (poissonEnnemi.estEnCollisionAvecCharlotte(charlotte)) {
-                        charlotte.prendreDommage();
-                    }
-                    charlotte.gererImmortalite(tempsActuel);
-                }
-            }
-
-            private void gererCollisionBaril(){
-                if(Collision.aIntersection(partieJeu.getBaril(), charlotte)){
-                    partieJeu.ouvrirBaril();
-                }
+                partieJeu.mettreAJourJeu(tempsActuel);
+                partieJeu.dessiner(contexte);
 
             }
-
-            private void gererCollisionProjectile() {
-
-                for (int i = poissonsEnnemis.size() - 1; i>=0; i--) {
-                    PoissonEnnemi temp = poissonsEnnemis.get(i);
-
-                    //si le poisson enemies est a droite de charlotte!
-                    if (temp.getXGauche() > charlotte.getXGauche()) {
-
-                        //si le projectile touche un poisson enemies
-                        if (Collision.aIntersection(temp, charlotte.getProjectileActuel())) {
-                            partieJeu.sortirPoisson(temp);
-                        }
-                    }
-                }
-
-
-            }
-
-            private void gererModeDebug() {
-                //Mettre un rectangle jaune autour de tous les objets de jeu
-                //TODO: Quick and dirty fix: (le not equal to null)
-                if (objetsJeu != null) {
-                    for (ObjetJeu objet : objetsJeu) {
-                        objet.mettreContour(contexte);
-                    }
-                }
-
-                //Afficher les nombre de poissons dans le jeu
-                var texteNbrPoissons = "NB Poissons: " + partieJeu.getNbrPoissonsEnnemis();
-                contexte.fillText(texteNbrPoissons, 10, 55); //TEST
-
-                //Afficher le temps passé depuis le début du niveau
-                var texteTempsEcoule = "Temps écoulé: " + (tempsActuel - partieJeu.getTempsDebutNiveau());
-                contexte.fillText(texteTempsEcoule, 10, 70); //TEST
-            }
-
 
         };
         timer.start();
 
-        //Événements:
+        //Événements :
+        sceneJeu.setOnKeyReleased((e) -> {
+            Input.setKeyPressed(e.getCode(), false);
+        });
+
         sceneJeu.setOnKeyPressed((e) -> {
-            Input.setKeyPressed(e.getCode(), true);
-            if (e.getCode() == KeyCode.D) {
-                estEnDebug = !estEnDebug;
-            }
-
-            if (e.getCode() == KeyCode.SPACE) {
-                charlotte.utiliserProjectile(System.nanoTime() * NANOSECONDE);
-
-            }
-
             if (e.getCode() == KeyCode.ESCAPE) {
-                Platform.exit();
+                timer.stop();
+
+                stage.setScene(getSceneAccueil());
+            } else {
+                Input.setKeyPressed(e.getCode(), true);
+                if (e.getCode() == KeyCode.D) {
+                    partieJeu.setEstDebug(!partieJeu.estDebug());
+                }
+
+                if (e.getCode() == KeyCode.SPACE) {
+                    charlotte.utiliserProjectile(System.nanoTime() * NANOSECONDE);
+                }
+
+                if (partieJeu.estDebug()) {
+                    gererKeyPressedDebug(charlotte, e);
+                }
             }
         });
 
         sceneJeu.setOnKeyReleased((e) -> {
-            Input.setKeyPressed(e.getCode(), false);
+            gererKeyReleasedGenerale(e);
         });
 
         return sceneJeu;
     }
 
+    private void gererKeyPressedDebug(Charlotte charlotte, KeyEvent e) {
+        if (e.getCode() == KeyCode.Q) {
+            //Code pour donner une étoile de mer comme projectile
+        }
 
+        if (e.getCode() == KeyCode.W) {
+            //Code pour donner des hippocampes comme projectile
+        }
 
-    //region AUTRES SCENES
+        if (e.getCode() == KeyCode.E) {
+            //Code pour donner une boîte de sardines comme projectile
+        }
+
+        if (e.getCode() == KeyCode.R) {
+            charlotte.donnerMaxVie();
+        }
+
+        if (e.getCode() == KeyCode.T) {
+
+        }
+    }
+
     public Scene getSceneAccueil() {
         Pane root = creerRoot();
         var sceneAccueil = new Scene(root, Main.LARGEUR_ECRAN, Main.HAUTEUR);
@@ -289,7 +140,13 @@ public class Scenes {
         root.getChildren().add(vboxAccueil);
 
         //region ÉVÉNEMENTS
-        gererEvenementsGenerales(sceneAccueil);
+        sceneAccueil.setOnKeyPressed((e) -> {
+            gererKeyPressedGenerale(e);
+        });
+
+        sceneAccueil.setOnKeyReleased((e) -> {
+            gererKeyReleasedGenerale(e);
+        });
 
         jouer.setOnAction((e) -> {
             stage.setScene(getSceneJeu());
@@ -314,7 +171,7 @@ public class Scenes {
         var titre = new Text("Charlotte la Barbotte");
         titre.setFont(Font.font(50));
         //TODO: Faire de sorte que c'est toujours un poisson au hasard qui est choisie
-        var poissonEnnemiImage = new Image(Assets.choisirPoissonHasard());
+        var poissonEnnemiImage = new Image(Hasard.choisirPoissonHasard());
         var poissonEnnemiImageView = new ImageView(poissonEnnemiImage);
 
 
@@ -362,7 +219,13 @@ public class Scenes {
         root.getChildren().add(vbox);
 
         //region ÉVÉNEMENTS
-        gererEvenementsGenerales(sceneInfo);
+        sceneInfo.setOnKeyPressed((e) -> {
+            gererKeyPressedGenerale(e);
+        });
+
+        sceneInfo.setOnKeyReleased((e) -> {
+            gererKeyReleasedGenerale(e);
+        });
 
         retour.setOnAction((e) -> {
             stage.setScene(getSceneAccueil());
@@ -371,24 +234,22 @@ public class Scenes {
 
         return sceneInfo;
     }
-    //endregion
 
     //region MÉTHODES GÉNÉRALES
-    private void gererEvenementsGenerales(Scene scene) {
-        scene.setOnKeyPressed((e) -> {
-            Input.setKeyPressed(e.getCode(), true);
-            if (e.getCode() == KeyCode.D) {
-                estEnDebug = !estEnDebug;
-            }
+    private void gererKeyPressedGenerale(KeyEvent e){
+        Input.setKeyPressed(e.getCode(), true);
 
-            if (e.getCode() == KeyCode.ESCAPE) {
-                Platform.exit();
-            }
-        });
+        if (e.getCode() == KeyCode.ESCAPE) {
+            Platform.exit();
+        }
+    }
 
-        scene.setOnKeyReleased((e) -> {
-            Input.setKeyPressed(e.getCode(), false);
-        });
+    private void gererKeyReleasedGenerale(KeyEvent e){
+        Input.setKeyPressed(e.getCode(), false);
+
+        if (e.getCode() == KeyCode.ESCAPE) {
+            Platform.exit();
+        }
     }
 
     private Pane creerRoot() {
@@ -397,7 +258,4 @@ public class Scenes {
         return root;
     }
     //endregion
-
-    //Mettre choisir poisson au hasard ici? /TODO
-
 }

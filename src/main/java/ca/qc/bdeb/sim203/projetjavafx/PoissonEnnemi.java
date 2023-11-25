@@ -2,7 +2,7 @@ package ca.qc.bdeb.sim203.projetjavafx;
 
 import javafx.scene.image.*;
 
-import static ca.qc.bdeb.sim203.projetjavafx.Aleatoire.obtenirNombreAleatoire;
+import static ca.qc.bdeb.sim203.projetjavafx.Hasard.obtenirNombreAleatoire;
 
 public class PoissonEnnemi extends ObjetJeu {
     private int numNiveau;
@@ -19,10 +19,10 @@ public class PoissonEnnemi extends ObjetJeu {
         ax = -500;
 
         h = obtenirNombreAleatoire(HAUTEUR_MIN_IMAGE, HAUTEUR_MAX_IMAGE);
-        image = new Image(Assets.choisirPoissonHasard(), 0, h, true, false);
+        image = new Image(Hasard.choisirPoissonHasard(), 0, h, true, false);
         w = image.getWidth();
 
-        x = Camera.getCamera().getPositionX()+w+ Main.LARGEUR_ECRAN; //TODO: À remplacer quand on aura la caméra!
+        x = Camera.getCamera().getXCamera()+w+ Main.LARGEUR_ECRAN; //TODO: À remplacer quand on aura la caméra!
         y = obtenirHauteurDepart();
     }
 

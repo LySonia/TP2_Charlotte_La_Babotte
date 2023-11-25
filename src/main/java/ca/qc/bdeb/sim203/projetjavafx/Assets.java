@@ -1,20 +1,18 @@
 package ca.qc.bdeb.sim203.projetjavafx;
 
-import static ca.qc.bdeb.sim203.projetjavafx.Aleatoire.obtenirNombreAleatoire;
-
 public enum Assets {
     BARIL("baril.png"),
     BARIL_OUVERT("baril-ouvert.png"),
     CHARLOTTE("charlotte.png"),
     CHARLOTTE_AVANT("charlotte-avant.png"),
     CHARLOTTE_OUTCH("charlotte-outch.png"),
-    CHARLOTTE_OUTCH_TRANSPARENT("charlotte-outch-transparent.png"),
-    CORAL_1("decor1.png"),
-    CORAL_2("decor2.png"),
-    CORAL_3("decor3.png"),
-    CORAL_4("decor4.png"),
-    CORAL_5("decor5.png"),
-    CORAL_6("decor6.png"),
+    CHARLOTTE_OUTCH_TRANSPARENT("charlotte-outch-transparent.png"), //TODO: Change this to no image
+    DECOR_1("decor1.png"),
+    DECOR_2("decor2.png"),
+    DECOR_3("decor3.png"),
+    DECOR_4("decor4.png"),
+    DECOR_5("decor5.png"),
+    DECOR_6("decor6.png"),
     ETOILE("etoile.png"),
     HIPPOCAMPE("hippocampe.png"),
     LOGO("logo.png"),
@@ -33,51 +31,5 @@ public enum Assets {
 
     public String getEmplacement() {
         return emplacement;
-    }
-
-    //TODO Avant, stai dans la classe "Scenes", mais j'ai l'impression que ici est mieux
-    //TODO J'aime pourtant pas comment il faut faire "Assets.[Poisson random}.ChoisirPoissonHasard()"
-    public static String choisirPoissonHasard(){
-        //TODO Façon plus efficace de faire?
-        String poissonChoisi= null; // je sais pas si le mettre null is smarter
-                //Assets.POISSON_1.getEmplacement(); //Par défault
-
-        String[] poissonsEnnemis = {
-                Assets.POISSON_1.getEmplacement(),
-                Assets.POISSON_2.getEmplacement(),
-                Assets.POISSON_3.getEmplacement(),
-                Assets.POISSON_4.getEmplacement(),
-                Assets.POISSON_5.getEmplacement()
-        };
-
-        int nbrAleatoire = obtenirNombreAleatoire(0, poissonsEnnemis.length - 1);
-
-        for (int i = 0; i < poissonsEnnemis.length; i++) {
-            if (nbrAleatoire == i)
-                poissonChoisi = poissonsEnnemis[i];
-        }
-        return poissonChoisi;
-    }
-
-    public static String choisirAlgueHasard(){
-        String algueChoisi= null; // je sais pas si le mettre null is smarter
-        //Assets.POISSON_1.getEmplacement(); //Par défault
-
-        String[] algues = {
-                Assets.CORAL_1.getEmplacement(),
-                Assets.CORAL_2.getEmplacement(),
-                Assets.CORAL_3.getEmplacement(),
-                Assets.CORAL_4.getEmplacement(),
-                Assets.CORAL_5.getEmplacement(),
-                Assets.CORAL_6.getEmplacement()
-        };
-
-        int nbrAleatoire = obtenirNombreAleatoire(0, algues.length - 1);
-
-        for (int i = 0; i < algues.length; i++) {
-            if (nbrAleatoire == i)
-                algueChoisi = algues[i];
-        }
-        return algueChoisi;
     }
 }

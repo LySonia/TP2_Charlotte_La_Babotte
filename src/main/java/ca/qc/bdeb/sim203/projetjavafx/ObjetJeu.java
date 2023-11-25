@@ -18,6 +18,7 @@ public abstract class ObjetJeu {
     protected double ax = 0;
     protected double ay = 0;
     protected double vitesseMax = 300; //TODO: Valeur de défaut déterminé par moi (Sonia)- on a whim, stai pour éviter un bug. Besoin meilleure solution.
+
     protected Image image;
 
     public ObjetJeu(){
@@ -25,11 +26,9 @@ public abstract class ObjetJeu {
         this.yCentre = (y+h)/2;
     }
 
-
-    public void update(double deltaTemps) {
+    public void mettreAJour(double deltaTemps) {
         mettreAJourPhysique(deltaTemps);
     }
-
     public void mettreAJourPhysique(double deltaTemps) {
         vx += deltaTemps * ax;
         vy += deltaTemps * ay;
@@ -50,7 +49,7 @@ public abstract class ObjetJeu {
     }
 
     public void mettreContour(GraphicsContext contexte) {
-        contexte.setLineWidth(1); //TODO: Transformer en constante
+        contexte.setLineWidth(1);
         contexte.setStroke(Color.YELLOW);
         contexte.strokeRect(Camera.getCamera().calculerXEcran(x), Camera.getCamera().calculerYEcran(y), w, h);
     }
@@ -59,11 +58,7 @@ public abstract class ObjetJeu {
         contexte.drawImage(image, Camera.getCamera().calculerXEcran(x), Camera.getCamera().calculerYEcran(y));
     }
 
-    //Kinda weird car Charlotte est un child class
-    public boolean estEnCollisionAvecCharlotte(Charlotte charlotte) {
-        return Collision.aIntersection(charlotte, this);
-    }
-
+    //GETTERS :
     protected double getXGauche(){
         return this.x;
     }
@@ -92,6 +87,7 @@ public abstract class ObjetJeu {
         return h;
     }
 
+    //SETTERS :
     public void setX(double x) {
         this.x = x;
     }
