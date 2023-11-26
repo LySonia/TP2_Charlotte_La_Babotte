@@ -23,6 +23,8 @@ public class Scenes {
         this.stage = stage;
         stage.setScene(getSceneAccueil()); //Par défault, c'est la scène d'accueil
         stage.setTitle(NOM_JEU);
+        stage.setResizable(false);
+        stage.getIcons().add(new Image(Assets.CHARLOTTE.getEmplacement()));
     }
 
     public Scene getSceneJeu() {
