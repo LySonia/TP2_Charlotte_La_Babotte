@@ -18,15 +18,6 @@ public class Baril extends ObjetJeu {
         x = Hasard.getGenerateurAleatoire().nextDouble(((double) Main.LARGEUR_MONDE / 5), ((double) (4 * Main.LARGEUR_MONDE) / 5));
         image = new Image(Assets.BARIL.getEmplacement());
         y = 0;
-        remplirArraylist();
-
-
-    }
-
-    private void remplirArraylist() {
-        listeProjectile.add(new EtoileDeMer());
-        listeProjectile.add(new Hippocampes());
-        listeProjectile.add(new Sardines());
     }
 
     @Override

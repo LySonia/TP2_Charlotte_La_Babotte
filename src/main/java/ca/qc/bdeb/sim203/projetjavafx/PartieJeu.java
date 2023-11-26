@@ -30,13 +30,14 @@ public class PartieJeu {
     private double tempsDernierTir = 0;
     private final double TEMPS_AFFICHAGE_NIVEAU = 4;
     private final double TEMPS_AFFICHAGE_FIN_JEU = 3;
-
     private final double DELAIS_TIR = 0.5;
+
     //Attributs autres :
     private Color couleurFondNiveau;
     private boolean estDebug = false;
     private int numNiveau = 0;
     private boolean estALaFinNiveau = false;
+    private TypesProjectiles typesProjectilesActuel = TypesProjectiles.ETOILE;
 
     //Constructeur :
     public PartieJeu(double tempsActuel) {
@@ -51,15 +52,14 @@ public class PartieJeu {
         tempsDebutNiveau = tempsActuel;
         viderListesObjets();
 
-
         objetsJeu.add(charlotte);
         objetsJeu.add(barreVie);
 
         baril = new Baril(tempsDebutNiveau);
         objetsJeu.add(baril);
 
-        Camera.getCamera().reinitialiserCamera();
         preparerFondNiveau(); //TODO: Cette méthode -> trop de vue?
+        Camera.getCamera().reinitialiserCamera();
         replacerCharlotte();
         ajouterGroupePoissons();
         calculerNSecondes();
@@ -105,18 +105,9 @@ public class PartieJeu {
     public void gererTireProjectile(){
         if ((tempsActuel - tempsDernierTir) > DELAIS_TIR) {
             tempsDernierTir = tempsActuel;
-            Projectile projectile = charlotte.getTypeProjectileActuel().getProjectile();
+            charlotte.tirer(typesProjectilesActuel);
 
-            double yCentre = charlotte.getYCentre() - projectile.getH()/2;
-            double xCentre = charlotte.getXCentre() - projectile.getW()/2;
-
-            projectile.setX(xCentre);
-            projectile.setY(yCentre);
-
-            projectile.setYDeCentreCharlotte(yCentre);
-            projectile.setEstTirer(true);
-
-            objetsJeu.add(projectile);
+            objetsJeu.add(charlotte.getProjectile());
         }
     }
 
@@ -164,9 +155,9 @@ public class PartieJeu {
             if (temp.getXGauche() > charlotte.getXGauche()) {
 
                 //si le projectile touche un poisson enemies
-                if (Collision.estEnCollision(temp, charlotte.getTypeProjectileActuel().getProjectile())) {
-                    sortirPoisson(temp);
-                }
+//                if (Collision.estEnCollision(temp, charlotte.getTypeProjectileActuel())) {
+//                    sortirPoisson(temp);
+//                }
             }
         }
     }
@@ -221,9 +212,7 @@ public class PartieJeu {
         if (!baril.isEstOuvert()) {
             baril.setEstOuvert(true);
             baril.setImage(new Image(Assets.BARIL_OUVERT.getEmplacement()));
-            TypesProjectiles dernierType = charlotte.getTypeProjectileActuel();
-            charlotte.setTypeProjectile(baril.donnerProjectile(dernierType));
-            //TODO: fix make it so the projectile gets added to array of objet de jeu
+            //TODO: Change the type of projectile
         }
 
     }
@@ -262,8 +251,7 @@ public class PartieJeu {
         String texteNiveau = ("NIVEAU " + numNiveau);
         contexte.setFont(Font.font("Arial", 100));
 
-        //TODO: Remplacer Main.Largeur/2 et Main.Hauteur/2 par la position du centre de la caméra
-        contexte.fillText(texteNiveau, 200, Main.HAUTEUR / 2);
+        contexte.fillText(texteNiveau, (Camera.getCamera().getXCamera() + Main.LARGEUR_ECRAN)/2, Main.HAUTEUR / 2);
 
         //Remettre le font à la taille normale
         contexte.setFont(Font.font("Arial", 10));
@@ -303,10 +291,6 @@ public class PartieJeu {
 
     public int getNbrPoissonsEnnemis() {
         return poissonsEnnemis.size();
-    }
-
-    public Baril getBaril() {
-        return baril;
     }
 
     public boolean estDebug() {
