@@ -154,10 +154,7 @@ public class Charlotte extends ObjetJeu {
         if (typesProjectiles.equals(TypesProjectiles.ETOILE)) {
             projectileActuel = new EtoileDeMer(this, tempsActuel);
         } else if (typesProjectiles.equals(TypesProjectiles.HIPPOCAMPES)) {
-
             projectileActuel = new Hippocampes(this, tempsActuel);
-
-
         } else if (typesProjectiles.equals(TypesProjectiles.SARDINE)) {
 
         }
