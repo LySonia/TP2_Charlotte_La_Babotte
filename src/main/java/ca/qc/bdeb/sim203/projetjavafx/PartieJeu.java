@@ -106,7 +106,7 @@ public class PartieJeu {
             charlotte.tirer(typesProjectilesActuel, tempsActuel);
 
             projectiles.add(charlotte.getProjectile());
-            objetsJeu.add(charlotte.getProjectile());
+            objetsJeu.addAll(charlotte.getProjectile());
         }
     }
 
@@ -196,7 +196,7 @@ public class PartieJeu {
             decors.add(new Decor(nouvellePos));
         }
 
-
+        objetsJeu.addAll(decors);
     }
 
     public void sortirPoisson(PoissonEnnemi poisson) {
@@ -243,10 +243,6 @@ public class PartieJeu {
             objetJeu.dessiner(contexte);
         }
 
-        for (Decor decor: decors) {
-            decor.dessiner(contexte);
-        }
-
         if (estDebug) {
             afficherDebug(contexte);
         }
@@ -274,8 +270,17 @@ public class PartieJeu {
 
         //Afficher les nombre de poissons dans le jeu
         var texteNbrPoissons = "NB Poissons: " + getNbrPoissonsEnnemis();
-        contexte.fillText(texteNbrPoissons, 10, 55); //TEST
+        contexte.fillText(texteNbrPoissons, 10, 55);
+
+        var texteNbrProjectiles = "NB Projectiles: " + getNbrProjectiles();
+        contexte.fillText(texteNbrProjectiles, 10, 70);
+
+        double pourcentagePosCharlotte = charlotte.x/Main.LARGEUR_MONDE; //TODO: why does charlotte.x work???
+        var textePosCharlotte = "pourcentagePosCharlotte: " + pourcentagePosCharlotte;
+        contexte.fillText(textePosCharlotte, 10, 95);
     }
+
+
 
 
     private void preparerFondNiveau() {
@@ -295,8 +300,11 @@ public class PartieJeu {
         return charlotte;
     }
 
-    public int getNbrPoissonsEnnemis() {
+    private int getNbrPoissonsEnnemis() {
         return poissonsEnnemis.size();
+    }
+    private int getNbrProjectiles() {
+        return projectiles.size();
     }
 
     public boolean estDebug() {
