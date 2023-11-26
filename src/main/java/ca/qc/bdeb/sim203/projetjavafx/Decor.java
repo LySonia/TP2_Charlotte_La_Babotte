@@ -9,6 +9,6 @@ public class Decor extends ObjetJeu {
         this.w = 80;
         this.h = 119;
         this.y = Main.HAUTEUR - h + 10;
-        this.image = new Image(Hasard.choisirDecorHasard(), w, h, true, false);
+        this.image = new Image(Hasard.choisirDecorHasard().getEmplacement(), w, h, true, false);
     }
 }

@@ -228,12 +228,12 @@ public class PartieJeu {
     public void ouvrirBaril() {
         if (!baril.isEstOuvert()) {
             baril.setEstOuvert(true);
-            TypesProjectiles nouvelTypeProjectile = baril.donnerProjectile(charlotte.getTypeProjectileActuel());
+            Assets nouvelTypeProjectile = baril.donnerProjectile(charlotte.getTypeProjectileActuel());
             changerTypeProjectile(nouvelTypeProjectile);
         }
     }
 
-    public void changerTypeProjectile(TypesProjectiles typeProjectile) {
+    public void changerTypeProjectile(Assets typeProjectile) {
         charlotte.setTypeProjectileActuel(typeProjectile);
     }
 

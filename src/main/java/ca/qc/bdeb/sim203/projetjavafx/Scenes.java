@@ -95,15 +95,15 @@ public class Scenes {
 
     private void gererKeyPressedDebug(PartieJeu partieJeu, KeyEvent e, double tempsActuel) {
         if (e.getCode() == KeyCode.Q) {
-            partieJeu.changerTypeProjectile(TypesProjectiles.ETOILE);
+            partieJeu.changerTypeProjectile(Assets.ETOILE);
         }
 
         if (e.getCode() == KeyCode.W) {
-            partieJeu.changerTypeProjectile(TypesProjectiles.HIPPOCAMPES);
+            partieJeu.changerTypeProjectile(Assets.HIPPOCAMPE);
         }
 
         if (e.getCode() == KeyCode.E) {
-            partieJeu.changerTypeProjectile(TypesProjectiles.SARDINE);
+            partieJeu.changerTypeProjectile(Assets.SARDINES);
         }
 
         if (e.getCode() == KeyCode.R) {
@@ -174,7 +174,7 @@ public class Scenes {
         var titre = new Text("Charlotte la Barbotte");
         titre.setFont(Font.font(50));
         //TODO: Faire de sorte que c'est toujours un poisson au hasard qui est choisie
-        var poissonEnnemiImage = new Image(Hasard.choisirPoissonHasard());
+        var poissonEnnemiImage = new Image(Hasard.choisirPoissonHasard().getEmplacement());
         var poissonEnnemiImageView = new ImageView(poissonEnnemiImage);
 
 

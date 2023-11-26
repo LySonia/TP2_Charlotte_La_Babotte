@@ -21,43 +21,50 @@ public class Hasard {
         return generateurAleatoire;
     }
 
-    public static String choisirPoissonHasard(){
-        String[] poissons = {
-                Assets.POISSON_1.getEmplacement(),
-                Assets.POISSON_2.getEmplacement(),
-                Assets.POISSON_3.getEmplacement(),
-                Assets.POISSON_4.getEmplacement(),
-                Assets.POISSON_5.getEmplacement()
+    public static Assets choisirPoissonHasard(){
+        Assets[] poissons = {
+                Assets.POISSON_1,
+                Assets.POISSON_2,
+                Assets.POISSON_3,
+                Assets.POISSON_4,
+                Assets.POISSON_5
         };
 
-        return choisirImageHasard(poissons);
+        return choisirAssetHasard(poissons);
     }
-    public static String choisirDecorHasard(){
-        String[] decors = {
-                Assets.DECOR_1.getEmplacement(),
-                Assets.DECOR_2.getEmplacement(),
-                Assets.DECOR_3.getEmplacement(),
-                Assets.DECOR_4.getEmplacement(),
-                Assets.DECOR_5.getEmplacement(),
-                Assets.DECOR_6.getEmplacement()
+    public static Assets choisirDecorHasard(){
+        Assets[] decors = {
+                Assets.DECOR_1,
+                Assets.DECOR_2,
+                Assets.DECOR_3,
+                Assets.DECOR_4,
+                Assets.DECOR_5,
+                Assets.DECOR_6
         };
 
-        return choisirImageHasard(decors);
+        return choisirAssetHasard(decors);
     }
-    private static String choisirImageHasard(String[] emplacements){
-        String imageChoisi = null;
 
-        int nbrAleatoire = nextInt(0, emplacements.length - 1);
+    public static Assets choisirTypeProjectileHasard(){
+        Assets[] projectiles = {
+                Assets.ETOILE,
+                Assets.HIPPOCAMPE,
+                Assets.SARDINES
+        };
 
-        for (int i = 0; i < emplacements.length; i++) {
+        return choisirAssetHasard(projectiles);
+    }
+    private static Assets choisirAssetHasard(Assets[] assets){
+        Assets assetChoisi = null;
+
+        int nbrAleatoire = nextInt(assets.length);
+
+        for (int i = 0; i < assets.length; i++) {
             if (nbrAleatoire == i)
-                imageChoisi = emplacements[i];
+                assetChoisi = assets[i];
         }
-        return imageChoisi;
+        return assetChoisi;
     }
 
-    public static TypesProjectiles choisirTypeProjectileHasard(){
-        int nbrAleatoire = nextInt(TypesProjectiles.values().length);
-        return TypesProjectiles.values()[nbrAleatoire];
-    }
+
 }

@@ -22,7 +22,7 @@ public class PoissonEnnemi extends ObjetJeu {
         ax = -500;
 
         h = nextDouble(HAUTEUR_MIN_IMAGE, HAUTEUR_MAX_IMAGE);
-        image = new Image(Hasard.choisirPoissonHasard(), 0, h, true, false);
+        image = new Image(Hasard.choisirPoissonHasard().getEmplacement(), 0, h, true, false);
         w = image.getWidth();
 
         x = Camera.getCamera().getXCamera() + w + Main.LARGEUR_ECRAN;

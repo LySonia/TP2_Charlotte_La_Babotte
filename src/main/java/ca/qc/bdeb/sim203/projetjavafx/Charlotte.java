@@ -27,7 +27,7 @@ public class Charlotte extends ObjetJeu {
     private double nbrVie = 4;
     private double momentDommage = 0;
     private double momentDernierClignotement = 0;
-    private TypesProjectiles typeProjectileActuel = TypesProjectiles.ETOILE; //Par défault, le projectile est une étoile
+    private Assets typeProjectileActuel = Assets.ETOILE; //Par défault, le projectile est une étoile
     private ArrayList<Projectile> projectiles = new ArrayList<>();
 
 
@@ -128,15 +128,14 @@ public class Charlotte extends ObjetJeu {
         y = Math.min(y, (Main.HAUTEUR - h));
     }
 
-    public void tirer(double tempsActuel) { //TODO: En vrai, cette classe pourrait être dans PartieJeu
-        //TODO: Y'a sûrement un moyen plus efficace pour coder ça
-        if (typeProjectileActuel.equals(TypesProjectiles.ETOILE)) {
+    public void tirer(double tempsActuel) {
+        if (typeProjectileActuel.equals(Assets.ETOILE)) {
             projectiles.add(new EtoileDeMer(this, tempsActuel));
-        } else if (typeProjectileActuel.equals(TypesProjectiles.HIPPOCAMPES)) {
+        } else if (typeProjectileActuel.equals(Assets.HIPPOCAMPE)) {
             for (int i = 0; i < NBR_HIPPOCAMPES_A_LA_FOIS; i++) {
                 projectiles.add(new Hippocampes(this, tempsActuel));
             }
-        } else if (typeProjectileActuel.equals(TypesProjectiles.SARDINE)) {
+        } else if (typeProjectileActuel.equals(Assets.SARDINES)) {
             projectiles.add(new Sardines(this, tempsActuel));
         }
 
@@ -169,7 +168,7 @@ public class Charlotte extends ObjetJeu {
     public void viderProjectiles() {
         projectiles.clear();
     }
-    public void setTypeProjectileActuel(TypesProjectiles typeProjectileActuel) {
+    public void setTypeProjectileActuel(Assets typeProjectileActuel) {
         this.typeProjectileActuel = typeProjectileActuel;
     }
 
@@ -186,7 +185,7 @@ public class Charlotte extends ObjetJeu {
     public ArrayList<Projectile> getProjectile() {
         return projectiles;
     }
-    public TypesProjectiles getTypeProjectileActuel() {
+    public Assets getTypeProjectileActuel() {
         return typeProjectileActuel;
     }
 }

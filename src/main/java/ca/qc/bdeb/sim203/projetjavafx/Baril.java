@@ -56,8 +56,8 @@ public class Baril extends ObjetJeu {
         }
     }
 
-    public TypesProjectiles donnerProjectile(TypesProjectiles dernierType) {
-        TypesProjectiles nouveauType = null;
+    public Assets donnerProjectile(Assets dernierType) {
+        Assets nouveauType = null;
         do {
             nouveauType = Hasard.choisirTypeProjectileHasard();
 
