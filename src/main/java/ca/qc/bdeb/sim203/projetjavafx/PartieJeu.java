@@ -82,11 +82,11 @@ public class PartieJeu {
         this.tempsActuel = tempsActuel;
 
         //TODO: Vérifier ordre d'exécution
+        mettreAJourObjets();
         gererGenerationPoissons();
         gererCollisionsPoissons();
         gererCollisionsProjectiles();
         gererCollisionBaril();
-        mettreAJourObjets();
         enleverObjetsHorsEcran();
         Camera.getCamera().update(charlotte, deltaTemps); //Mettre à jour la caméra
         calculerEstALaFin();
@@ -132,7 +132,6 @@ public class PartieJeu {
 
     private void gererGenerationPoissons() {
         if ((tempsActuel - tempsDerniersPoissons) > nSecondes) {
-            System.out.println("run?");
             ajouterGroupePoissons();
             tempsDerniersPoissons = tempsActuel;
         }
@@ -166,7 +165,6 @@ public class PartieJeu {
     }
 
     public void ajouterGroupePoissons() {
-        System.out.println("run1?");
         tempsDerniersPoissons = tempsActuel;
 
         //Génération d'un nombre aléatoire de poissons (entre 1 et 5):
@@ -193,14 +191,10 @@ public class PartieJeu {
         //Tant que la position (du x de droite) du dernier corail ne touche pas à la fin du niveau, ajouter un corail
         while (dernierePos < Main.LARGEUR_MONDE) {
             dernierePos = decors.get(decors.size() - 1).getXDroite();
-            double nouvellePos = dernierePos + genererDistanceEntreCoraux();
+            double distanceEntre = new Random().nextBoolean() ? 50.0 : 100.0; //distance entre coraux
+            double nouvellePos = dernierePos + distanceEntre;
             decors.add(new Decor(nouvellePos));
         }
-    }
-
-    private double genererDistanceEntreCoraux() {
-        //TODO: Write cleaner code here
-        return new Random().nextBoolean() ? 50.0 : 100.0;
     }
 
     public void sortirPoisson(PoissonEnnemi poisson) {

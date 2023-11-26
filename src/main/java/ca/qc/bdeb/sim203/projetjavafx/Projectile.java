@@ -26,8 +26,6 @@ public abstract class Projectile extends ObjetJeu {
 
             estDansEcran = true;
         }
-
-        System.out.println(estDansEcran);
         return estDansEcran;
     }
 }
