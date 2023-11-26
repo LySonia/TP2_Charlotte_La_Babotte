@@ -106,7 +106,7 @@ public class PartieJeu {
             charlotte.tirer(typesProjectilesActuel, tempsActuel);
 
             projectiles.add(charlotte.getProjectile());
-            objetsJeu.addAll(charlotte.getProjectile());
+            objetsJeu.add(charlotte.getProjectile());
         }
     }
 
