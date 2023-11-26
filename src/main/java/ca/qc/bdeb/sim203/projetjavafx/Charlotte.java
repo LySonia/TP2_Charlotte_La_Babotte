@@ -17,25 +17,19 @@ public class Charlotte extends ObjetJeu {
     //Attributs de temps:
     private final int TEMPS_IMMORTALITE = 2;
 
-    private double tempsDernierProjectile =0;
-
+    //Attributs boolean :
+    private boolean estImmortel = false;
+    private boolean estEndommagee = false;
+    private boolean estVisible = true;
 
     //Attributs autres :
     private final double NBR_HIPPOCAMPES_A_LA_FOIS = 3;
     private double nbrVie = 4;
     private double momentDommage = 0;
     private double momentDernierClignotement = 0;
-    private boolean estImmortel = false;
-    private boolean estEnMouvement = false;
-    private boolean estEndommagee = false;
-    private boolean estVisible = true;
-
     private TypesProjectiles typeProjectileActuel = TypesProjectiles.ETOILE; //Par défault, le projectile est une étoile
     private ArrayList<Projectile> projectiles = new ArrayList<>();
 
-
-
-    private static final double DELAIS_DE_TIR = 0.5;
 
     public Charlotte() {
         image = new Image(Assets.CHARLOTTE.getEmplacement());
@@ -86,11 +80,7 @@ public class Charlotte extends ObjetJeu {
         assurerQueResteDansEcran();
     }
 
-    @Override
-    public void dessiner(GraphicsContext contexte) {
-        gererImageCharlotte();
-        super.dessiner(contexte);
-    }
+
 
     public void prendreDommage() {
         if (!estImmortel) {
@@ -138,6 +128,27 @@ public class Charlotte extends ObjetJeu {
         y = Math.min(y, (Main.HAUTEUR - h));
     }
 
+    public void tirer(double tempsActuel) { //TODO: En vrai, cette classe pourrait être dans PartieJeu
+        //TODO: Y'a sûrement un moyen plus efficace pour coder ça
+        if (typeProjectileActuel.equals(TypesProjectiles.ETOILE)) {
+            projectiles.add(new EtoileDeMer(this, tempsActuel));
+        } else if (typeProjectileActuel.equals(TypesProjectiles.HIPPOCAMPES)) {
+            for (int i = 0; i < NBR_HIPPOCAMPES_A_LA_FOIS; i++) {
+                projectiles.add(new Hippocampes(this, tempsActuel));
+            }
+        } else if (typeProjectileActuel.equals(TypesProjectiles.SARDINE)) {
+            projectiles.add(new Sardines(this, tempsActuel));
+        }
+
+    }
+
+    //TOUT CE QUI EST "DESSIN" :
+    @Override
+    public void dessiner(GraphicsContext contexte) {
+        gererImageCharlotte();
+        super.dessiner(contexte);
+    }
+
     public void gererImageCharlotte() {
         if (estVisible) {
             if (estEndommagee) {
@@ -150,21 +161,6 @@ public class Charlotte extends ObjetJeu {
         }
     }
 
-    public void tirer(double tempsActuel) { //TODO: En vrai, cette classe pourrait être dans PartieJeu
-        //TODO: Y'a sûrement un moyen plus efficace pour coder ça
-        if (typeProjectileActuel.equals(TypesProjectiles.ETOILE)) {
-            projectiles.add(new EtoileDeMer(this, tempsActuel));
-        } else if (typeProjectileActuel.equals(TypesProjectiles.HIPPOCAMPES)) {
-            for (int i = 0; i < 3; i++) {
-                projectiles.add(new Hippocampes(this, tempsActuel));
-            }
-        } else if (typeProjectileActuel.equals(TypesProjectiles.SARDINE)) {
-            projectiles.add(new Sardines(this, tempsActuel));
-        }
-
-    }
-
-
 
     //SETTERS :
     public void donnerMaxVie(){
@@ -173,7 +169,6 @@ public class Charlotte extends ObjetJeu {
     public void viderProjectiles() {
         projectiles.clear();
     }
-
     public void setTypeProjectileActuel(TypesProjectiles typeProjectileActuel) {
         this.typeProjectileActuel = typeProjectileActuel;
     }
@@ -182,26 +177,15 @@ public class Charlotte extends ObjetJeu {
     public boolean estVivante() {
         return nbrVie > 0;
     }
-
     public double getNbrVie(){
         return nbrVie;
     }
-
     public double getNbrVieMax() {
         return NBR_VIE_MAX;
     }
-    public ArrayList<Projectile> getProjectile() { //TOOD: To modif
-        ArrayList<Projectile> tousProjectiles = new ArrayList<>();
-        System.out.println("Size of projectiles: " + projectiles.size());
-        for (int i = 0; i < projectiles.size(); i++) {
-            System.out.println(i);
-            tousProjectiles.add(projectiles.get(i));
-        }
-        System.out.println(tousProjectiles);
-        return tousProjectiles;
-
+    public ArrayList<Projectile> getProjectile() {
+        return projectiles;
     }
-
     public TypesProjectiles getTypeProjectileActuel() {
         return typeProjectileActuel;
     }

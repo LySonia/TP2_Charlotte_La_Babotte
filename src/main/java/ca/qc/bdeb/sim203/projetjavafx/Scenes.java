@@ -19,6 +19,8 @@ public class Scenes {
     private static final String NOM_JEU = "Charlotte la Barbotte";
     private Stage stage;
 
+    private AnimationTimer timer;
+
     public Scenes(Stage stage) {
         this.stage = stage;
         stage.setScene(getSceneAccueil()); //Par défault, c'est la scène d'accueil
@@ -38,7 +40,7 @@ public class Scenes {
 
         root.getChildren().add(canvas);
 
-        AnimationTimer timer = new AnimationTimer() {
+        timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
                 double tempsActuel = now * NANOSECONDE;
@@ -51,10 +53,16 @@ public class Scenes {
                 partieJeu.mettreAJourJeu(tempsActuel);
                 partieJeu.dessiner(contexte);
 
+                if (partieJeu.estFinPartie()) {
+                    if (tempsActuel - partieJeu.getMomentFinNiveau() > partieJeu.DUREE_AFFICHAGE_FIN_JEU) {
+                        timer.stop();
+                        stage.setScene(getSceneAccueil());
+                    }
+                }
             }
-
         };
         timer.start();
+
 
         //Événements :
         sceneJeu.setOnKeyPressed((e) -> {
@@ -73,7 +81,7 @@ public class Scenes {
                 }
 
                 if (partieJeu.estDebug()) {
-                    gererKeyPressedDebug(partieJeu, e);
+                    gererKeyPressedDebug(partieJeu, e, System.nanoTime() * NANOSECONDE);
                 }
             }
         });
@@ -85,17 +93,17 @@ public class Scenes {
         return sceneJeu;
     }
 
-    private void gererKeyPressedDebug(PartieJeu partieJeu, KeyEvent e) {
+    private void gererKeyPressedDebug(PartieJeu partieJeu, KeyEvent e, double tempsActuel) {
         if (e.getCode() == KeyCode.Q) {
-            //Code pour donner une étoile de mer comme projectile
+            partieJeu.changerTypeProjectile(TypesProjectiles.ETOILE);
         }
 
         if (e.getCode() == KeyCode.W) {
-            //Code pour donner des hippocampes comme projectile
+            partieJeu.changerTypeProjectile(TypesProjectiles.HIPPOCAMPES);
         }
 
         if (e.getCode() == KeyCode.E) {
-            //Code pour donner une boîte de sardines comme projectile
+            partieJeu.changerTypeProjectile(TypesProjectiles.SARDINE);
         }
 
         if (e.getCode() == KeyCode.R) {
@@ -103,7 +111,7 @@ public class Scenes {
         }
 
         if (e.getCode() == KeyCode.T) {
-
+            partieJeu.demarrerNiveau(tempsActuel);
         }
     }
 
