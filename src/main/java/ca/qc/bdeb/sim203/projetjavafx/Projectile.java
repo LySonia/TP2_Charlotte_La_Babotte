@@ -3,26 +3,31 @@ package ca.qc.bdeb.sim203.projetjavafx;
 import javafx.scene.canvas.GraphicsContext;
 
 public abstract class Projectile extends ObjetJeu {
-    private boolean estTirer = false;
-    protected double tempsDeTir;
-    protected double yDeCentreCharlotte;
+    protected Charlotte charlotte;
+    protected double momentTire;
+    public Projectile(Charlotte charlotte, double momentTire) {
+        this.charlotte = charlotte;
+        this.momentTire = momentTire;
+    }
 
-    @Override
-    public void dessiner(GraphicsContext contexte) {
-        if (estTirer) {
-            super.dessiner(contexte);
+    //TODO: Not amazing coding practices
+    protected void calculerPosInitial(){
+        this.x = charlotte.xCentre - w/2;
+        this.y = charlotte.yCentre - h/2;
+    }
+
+    public boolean estDansEcran() {
+        boolean estDansEcran = false;
+
+        if ((getXGauche() > Camera.getCamera().getXCamera()) &&
+                (getXDroite() < Camera.getCamera().getXCamera() + Main.LARGEUR_ECRAN) &&
+                (getYHaut() < Main.HAUTEUR) &&
+                (getYBas() > Camera.getCamera().getYCamera())) {
+
+            estDansEcran = true;
         }
-    }
 
-    public void setEstTirer(boolean estTirer) {
-        this.estTirer = estTirer;
-    }
-
-    public void setTempsDeTir(double tempsDeTir) {
-        this.tempsDeTir = tempsDeTir;
-    }
-
-    public void setYDeCentreCharlotte(double yDeCentreCharlotte) {
-        this.yDeCentreCharlotte = yDeCentreCharlotte;
+        System.out.println(estDansEcran);
+        return estDansEcran;
     }
 }

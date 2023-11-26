@@ -11,6 +11,8 @@ public class PoissonEnnemi extends ObjetJeu {
 
     private static final int CHARGE_Q = -100;
 
+
+
     public PoissonEnnemi(int numNiveau) {
         this.numNiveau = numNiveau;
 
@@ -22,7 +24,7 @@ public class PoissonEnnemi extends ObjetJeu {
         image = new Image(Hasard.choisirPoissonHasard(), 0, h, true, false);
         w = image.getWidth();
 
-        x = Camera.getCamera().getXCamera()+w+ Main.LARGEUR_ECRAN; //TODO: À remplacer quand on aura la caméra!
+        x = Camera.getCamera().getXCamera() + w + Main.LARGEUR_ECRAN;
         y = obtenirHauteurDepart();
     }
 
@@ -35,10 +37,14 @@ public class PoissonEnnemi extends ObjetJeu {
     }
 
     public boolean estDansEcran() {
-        //TODO: Remplacer ces valeurs quand on aura la caméra!
-        //Pour l'instant, on enlèeve les poisson quand ça dépasse la gauche
-        return x > 0 - w;
+        boolean estDansEcran = false;
+
+        if ((getXGauche() > Camera.getCamera().getXCamera()) &&
+                (getYHaut() < Main.HAUTEUR) &&
+                (getYBas() > Camera.getCamera().getYCamera())) {
+
+            estDansEcran = true;
+        }
+        return estDansEcran;
     }
-
-
 }

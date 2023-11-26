@@ -28,21 +28,6 @@ public class Camera {
 
     public void update(Charlotte charlotte, double deltaTemps) {
         verifierPositionCamera();
-
-//        if (!estALaFin) {
-//            if (calculerXEcran(charlotte.getXDroite()) >= (double) Main.LARGEUR_ECRAN / 5) { //charlotte est plus grande que 1/5 de l'écran
-//                vitesseX = charlotte.getVx();
-//            } else if (charlotte.getVx() == 0) {
-//                vitesseX = 0;
-//            } else if (calculerXEcran(charlotte.getXGauche()) <= positionX) {
-//                vitesseX = 0;
-//
-//            }
-//        } else {
-//            vitesseX = 0;
-//        }
-
-        //Code simplifié?:
         if (!estALaFin) {
             if (calculerXEcran(charlotte.getXDroite()) >= (double) Main.LARGEUR_ECRAN / 5) { //charlotte est plus grande que 1/5 de l'écran
                 vxCamera = charlotte.getVx();
@@ -73,6 +58,10 @@ public class Camera {
 
     public double getXCamera() {
         return xCamera;
+    }
+
+    public double getYCamera(){
+        return yCamera;
     }
 
     public void setXCamera(double xCamera) {

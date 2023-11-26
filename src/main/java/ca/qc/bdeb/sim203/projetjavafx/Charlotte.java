@@ -7,12 +7,20 @@ import javafx.scene.input.*;
 import java.util.ArrayList;
 
 public class Charlotte extends ObjetJeu {
+    //Attributs constantes :
     private final double W_CHARLOTTE = 102;
     private final double H_CHARLOTTE = 90;
     private final double ACCELERATION_X = 1000;
     private final double ACCELERATION_Y = 1000;
-    private final static double NBR_VIE_MAX = 4.0;
-    private final static int TEMPS_IMMORTALITE = 2;
+    private final double NBR_VIE_MAX = 4.0;
+
+    //Attributs de temps:
+    private final int TEMPS_IMMORTALITE = 2;
+
+    private double tempsDernierProjectile =0;
+
+
+    //Attributs autres :
     private double nbrVie = 4;
     private double momentDommage = 0;
     private double momentDernierClignotement = 0;
@@ -21,20 +29,18 @@ public class Charlotte extends ObjetJeu {
     private boolean estEndommagee = false;
     private boolean estVisible = true;
 
-    //partie sur les projectiles
-    private TypesProjectiles typeProjectileActuel;
-    private double tempsDernierProjectile =0;
+    private Projectile projectileActuel;
+
+
 
     private static final double DELAIS_DE_TIR = 0.5;
 
     public Charlotte() {
+        image = new Image(Assets.CHARLOTTE.getEmplacement());
         y = Main.HAUTEUR/2;
         w = W_CHARLOTTE;
         h = H_CHARLOTTE;
         vitesseMax = 300; //TODO: Constante?
-        image = new Image(Assets.CHARLOTTE.getEmplacement()); //TODO: Trop de mélange MVC?
-        typeProjectileActuel = TypesProjectiles.ETOILES; //TODO: dirty fix (it's the initial one)
-
     }
 
     @Override
@@ -92,33 +98,6 @@ public class Charlotte extends ObjetJeu {
         estEndommagee = true;
     }
 
-    public void utiliserProjectile(double tempsActuel){
-        if(tempsActuel - tempsDernierProjectile > DELAIS_DE_TIR) {
-            tempsDernierProjectile = tempsActuel;
-
-//            double yCentre = y+(h/2) - projectileActuel.getH()/2;
-//            double xCentre = x+(w/2) - projectileActuel.getW()/2;
-//            projectileActuel.setYDeCentreCharlotte(yCentre);
-//            projectileActuel.setEstTirer(true);
-//
-//            //pour que le projectile sorte du centre de charlotte quand on les dessine
-//            projectileActuel.setX(xCentre);
-//            projectileActuel.setY(yCentre);
-        }
-    }
-
-    public void gererImageCharlotte() { //Code dans la bonne classe?
-        if (estVisible) {
-            if (estEndommagee) {
-                image = new Image(Assets.CHARLOTTE_OUTCH.getEmplacement());
-            } else {
-                image = new Image(Assets.CHARLOTTE_AVANT.getEmplacement());
-            }
-        } else {
-            image = new Image(Assets.CHARLOTTE_OUTCH_TRANSPARENT.getEmplacement());
-        }
-    }
-
     public void gererImmortalite(double tempsActuel) {
         //TODO: Est-ce qu'il y a un cas que j'ai oublié de prendre en compte?
         if (!estImmortel && estEndommagee) {
@@ -158,32 +137,56 @@ public class Charlotte extends ObjetJeu {
         y = Math.min(y, (Main.HAUTEUR - h));
     }
 
-    public double getNbrVie(){
-        return nbrVie;
+    public void gererImageCharlotte() { //Code dans la bonne classe?
+        if (estVisible) {
+            if (estEndommagee) {
+                image = new Image(Assets.CHARLOTTE_OUTCH.getEmplacement());
+            } else {
+                image = new Image(Assets.CHARLOTTE_AVANT.getEmplacement());
+            }
+        } else {
+            image = new Image(Assets.CHARLOTTE_OUTCH_TRANSPARENT.getEmplacement());
+        }
     }
 
+    public void tirer(TypesProjectiles typesProjectiles, double tempsActuel) {
+        //TODO: Y'a sûrement un moyen plus efficace pour coder ça
+        if (typesProjectiles.equals(TypesProjectiles.ETOILE)) {
+            projectileActuel = new EtoileDeMer(this, tempsActuel);
+        } else if (typesProjectiles.equals(TypesProjectiles.HIPPOCAMPES)) {
+
+            projectileActuel = new Hippocampes(this, tempsActuel);
+
+
+        } else if (typesProjectiles.equals(TypesProjectiles.SARDINE)) {
+
+        }
+
+    }
+
+
+
+    //SETTERS :
     public void donnerMaxVie(){
         nbrVie = NBR_VIE_MAX;
+    }
+
+
+
+    //GETTERS :
+    public boolean estVivante() {
+        return nbrVie > 0;
+    }
+
+    public double getNbrVie(){
+        return nbrVie;
     }
 
     public double getNbrVieMax() {
         return NBR_VIE_MAX;
     }
-
-    public void setImage(String emplacement) {
-        image = new Image(emplacement);
+    public Projectile getProjectile() {
+        return projectileActuel;
     }
 
-    public TypesProjectiles getTypeProjectileActuel() {
-        return typeProjectileActuel;
-    }
-
-    public void setTypeProjectile(TypesProjectiles typeProjectile) {
-        this.typeProjectileActuel = typeProjectile;
-    }
-
-    //GETTERS
-    public boolean estVivante() {
-        return nbrVie > 0;
-    }
 }

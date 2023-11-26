@@ -30,13 +30,14 @@ public class PartieJeu {
     private double tempsDernierTir = 0;
     private final double TEMPS_AFFICHAGE_NIVEAU = 4;
     private final double TEMPS_AFFICHAGE_FIN_JEU = 3;
-
     private final double DELAIS_TIR = 0.5;
+
     //Attributs autres :
     private Color couleurFondNiveau;
     private boolean estDebug = false;
     private int numNiveau = 0;
     private boolean estALaFinNiveau = false;
+    private TypesProjectiles typesProjectilesActuel = TypesProjectiles.HIPPOCAMPES;
 
     //Constructeur :
     public PartieJeu(double tempsActuel) {
@@ -49,29 +50,26 @@ public class PartieJeu {
     public void demarrerNiveau(double tempsActuel) {
         numNiveau++;
         tempsDebutNiveau = tempsActuel;
-        viderListesObjets();
 
-
-        objetsJeu.add(charlotte);
-        objetsJeu.add(barreVie);
-
-        baril = new Baril(tempsDebutNiveau);
-        objetsJeu.add(baril);
-
-        Camera.getCamera().reinitialiserCamera();
-        preparerFondNiveau(); //TODO: Cette méthode -> trop de vue?
-        replacerCharlotte();
-        ajouterGroupePoissons();
-        calculerNSecondes();
-        positionnerDecor();
-        calculerEstALaFin();
-    }
-
-    private void viderListesObjets() {
+        //Vider les listes d'objets :
         objetsJeu.clear();
         poissonsEnnemis.clear();
         decors.clear();
         projectiles.clear();
+
+        //Rajouter les objets de Jeu :
+        objetsJeu.add(charlotte);
+        replacerCharlotte();
+        objetsJeu.add(barreVie);
+        ajouterGroupePoissons();
+        positionnerDecor();
+        baril = new Baril(tempsDebutNiveau);
+        objetsJeu.add(baril);
+
+        preparerFondNiveau();
+        Camera.getCamera().reinitialiserCamera();
+        calculerNSecondes();
+
     }
 
     private void replacerCharlotte() {
@@ -84,12 +82,12 @@ public class PartieJeu {
         this.tempsActuel = tempsActuel;
 
         //TODO: Vérifier ordre d'exécution
+        gererGenerationPoissons();
         gererCollisionsPoissons();
         gererCollisionsProjectiles();
         gererCollisionBaril();
-        gererGenerationPoissons();
         mettreAJourObjets();
-        enleverPoissonsHorsEcran();
+        enleverObjetsHorsEcran();
         Camera.getCamera().update(charlotte, deltaTemps); //Mettre à jour la caméra
         calculerEstALaFin();
 
@@ -105,25 +103,23 @@ public class PartieJeu {
     public void gererTireProjectile(){
         if ((tempsActuel - tempsDernierTir) > DELAIS_TIR) {
             tempsDernierTir = tempsActuel;
-            Projectile projectile = charlotte.getTypeProjectileActuel().getProjectile();
+            charlotte.tirer(typesProjectilesActuel, tempsActuel);
 
-            double yCentre = charlotte.getYCentre() - projectile.getH()/2;
-            double xCentre = charlotte.getXCentre() - projectile.getW()/2;
-
-            projectile.setX(xCentre);
-            projectile.setY(yCentre);
-
-            projectile.setYDeCentreCharlotte(yCentre);
-            projectile.setEstTirer(true);
-
-            objetsJeu.add(projectile);
+            projectiles.add(charlotte.getProjectile());
+            objetsJeu.add(charlotte.getProjectile());
         }
     }
 
-    private void enleverPoissonsHorsEcran() {
+    private void enleverObjetsHorsEcran() {
         for (int i = 0; i < poissonsEnnemis.size(); i++) {
-            if (!poissonsEnnemis.get(i).estDansEcran()) {
+            if (!poissonsEnnemis.get(i).estDansEcran()){
                 sortirPoisson(poissonsEnnemis.get(i));
+            }
+        }
+
+        for (int i = 0; i < projectiles.size(); i++) {
+            if (!projectiles.get(i).estDansEcran()){
+                sortirProjectile(projectiles.get(i));
             }
         }
     }
@@ -136,6 +132,7 @@ public class PartieJeu {
 
     private void gererGenerationPoissons() {
         if ((tempsActuel - tempsDerniersPoissons) > nSecondes) {
+            System.out.println("run?");
             ajouterGroupePoissons();
             tempsDerniersPoissons = tempsActuel;
         }
@@ -156,23 +153,20 @@ public class PartieJeu {
         }
     }
 
-    private void gererCollisionsProjectiles() { //Code à Camille
-        for (int i = poissonsEnnemis.size() - 1; i >= 0; i--) {
-            PoissonEnnemi temp = poissonsEnnemis.get(i);
-
-            //si le poisson enemies est à droite de charlotte!
-            if (temp.getXGauche() > charlotte.getXGauche()) {
-
-                //si le projectile touche un poisson enemies
-                if (Collision.estEnCollision(temp, charlotte.getTypeProjectileActuel().getProjectile())) {
-                    sortirPoisson(temp);
+    private void gererCollisionsProjectiles() {
+        for (int i = 0; i < projectiles.size(); i++) { //Analyser chaque projectile
+            Projectile projectileAnalyse = projectiles.get(i);
+            for (int j = 0; j < poissonsEnnemis.size(); j++) { //Analyser chaque poisson
+                PoissonEnnemi poissonEnnemiAnalyse = poissonsEnnemis.get(j);
+                if (Collision.estEnCollision(poissonEnnemiAnalyse, projectileAnalyse)) {
+                    sortirPoisson(poissonEnnemiAnalyse);
                 }
             }
         }
     }
 
-
     public void ajouterGroupePoissons() {
+        System.out.println("run1?");
         tempsDerniersPoissons = tempsActuel;
 
         //Génération d'un nombre aléatoire de poissons (entre 1 et 5):
@@ -202,9 +196,6 @@ public class PartieJeu {
             double nouvellePos = dernierePos + genererDistanceEntreCoraux();
             decors.add(new Decor(nouvellePos));
         }
-
-        //Ajouter les coraux dans le ArrayList des objets de jeu
-        objetsJeu.addAll(decors);
     }
 
     private double genererDistanceEntreCoraux() {
@@ -217,13 +208,16 @@ public class PartieJeu {
         objetsJeu.remove(poisson);
     }
 
+    public void sortirProjectile(Projectile projectile) {
+        projectiles.remove(projectile);
+        objetsJeu.remove(projectile);
+    }
+
     public void ouvrirBaril() {
         if (!baril.isEstOuvert()) {
             baril.setEstOuvert(true);
             baril.setImage(new Image(Assets.BARIL_OUVERT.getEmplacement()));
-            TypesProjectiles dernierType = charlotte.getTypeProjectileActuel();
-            charlotte.setTypeProjectile(baril.donnerProjectile(dernierType));
-            //TODO: fix make it so the projectile gets added to array of objet de jeu
+            //TODO: Change the type of projectile
         }
 
     }
@@ -242,6 +236,9 @@ public class PartieJeu {
         nSecondes = 0.75 + 1 / Math.pow(numNiveau, 0.5);
     }
 
+    private void calculerEstALaFin() {
+        estALaFinNiveau = charlotte.getXDroite() >= Main.LARGEUR_MONDE;
+    }
 
     //TOUT CE QUI EST "DESSIN" :
     public void dessiner(GraphicsContext contexte) {
@@ -249,6 +246,11 @@ public class PartieJeu {
         for (ObjetJeu objetJeu : objetsJeu) {
             objetJeu.dessiner(contexte);
         }
+
+        for (Decor decor: decors) {
+            decor.dessiner(contexte);
+        }
+
         if (estDebug) {
             afficherDebug(contexte);
         }
@@ -262,8 +264,7 @@ public class PartieJeu {
         String texteNiveau = ("NIVEAU " + numNiveau);
         contexte.setFont(Font.font("Arial", 100));
 
-        //TODO: Remplacer Main.Largeur/2 et Main.Hauteur/2 par la position du centre de la caméra
-        contexte.fillText(texteNiveau, 200, Main.HAUTEUR / 2);
+        contexte.fillText(texteNiveau, (Camera.getCamera().getXCamera() + Main.LARGEUR_ECRAN)/2, Main.HAUTEUR / 2);
 
         //Remettre le font à la taille normale
         contexte.setFont(Font.font("Arial", 10));
@@ -280,9 +281,6 @@ public class PartieJeu {
         contexte.fillText(texteNbrPoissons, 10, 55); //TEST
     }
 
-    private void calculerEstALaFin() {
-        estALaFinNiveau = charlotte.getXDroite() >= Main.LARGEUR_MONDE;
-    }
 
     private void preparerFondNiveau() {
         final double saturation = 0.84;
@@ -303,10 +301,6 @@ public class PartieJeu {
 
     public int getNbrPoissonsEnnemis() {
         return poissonsEnnemis.size();
-    }
-
-    public Baril getBaril() {
-        return baril;
     }
 
     public boolean estDebug() {

@@ -58,10 +58,6 @@ public class Scenes {
         timer.start();
 
         //Événements :
-        sceneJeu.setOnKeyReleased((e) -> {
-            Input.setKeyPressed(e.getCode(), false);
-        });
-
         sceneJeu.setOnKeyPressed((e) -> {
             if (e.getCode() == KeyCode.ESCAPE) {
                 timer.stop();

@@ -9,8 +9,8 @@ public abstract class ObjetJeu {
 
     protected double y = 0;
     //NOTE IMPORTANTE: LE X ET LE Y D'UN OBJET DE JEU DEVRAIT ÊTRE LE COIN EN HAUT À GAUCHE DU RECTANGLE
-    private double xCentre = 1;
-    private double yCentre = 1;
+    protected double xCentre = 0;
+    protected double yCentre = 0;
     protected double w = 0;
     protected double h = 0;
     protected double vx = 0;
@@ -20,11 +20,6 @@ public abstract class ObjetJeu {
     protected double vitesseMax = 300; //TODO: Valeur de défaut déterminé par moi (Sonia)- on a whim, stai pour éviter un bug. Besoin meilleure solution.
 
     protected Image image;
-
-    public ObjetJeu(){
-        this.xCentre = x + (w/2);
-        this.yCentre = y + (h/2);
-    }
 
     public void mettreAJour(double deltaTemps) {
         mettreAJourPhysique(deltaTemps);
@@ -37,6 +32,9 @@ public abstract class ObjetJeu {
 
         x += deltaTemps * vx;
         y += deltaTemps * vy;
+
+        xCentre = x + (w/2);
+        yCentre = y + (h/2);
     }
 
     private double assurerQueVitesseDansLesBornes(double vitesse) {
@@ -57,6 +55,7 @@ public abstract class ObjetJeu {
     public void dessiner(GraphicsContext contexte) {
         contexte.drawImage(image, Camera.getCamera().calculerXEcran(x), Camera.getCamera().calculerYEcran(y));
     }
+
 
     //GETTERS :
     protected double getXGauche(){
