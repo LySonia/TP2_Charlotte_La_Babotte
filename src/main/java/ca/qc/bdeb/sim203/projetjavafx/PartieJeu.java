@@ -59,16 +59,16 @@ public class PartieJeu {
 
         //Rajouter les objets de Jeu :
         objetsJeu.add(charlotte);
-        replacerCharlotte();
         objetsJeu.add(barreVie);
-        ajouterGroupePoissons();
-        positionnerDecor();
         baril = new Baril(tempsDebutNiveau);
         objetsJeu.add(baril);
 
         preparerFondNiveau();
         Camera.getCamera().reinitialiserCamera();
         calculerNSecondes();
+        replacerCharlotte();
+        ajouterGroupePoissons();
+        positionnerDecor();
 
     }
 
@@ -195,6 +195,8 @@ public class PartieJeu {
             double nouvellePos = dernierePos + distanceEntre;
             decors.add(new Decor(nouvellePos));
         }
+
+
     }
 
     public void sortirPoisson(PoissonEnnemi poisson) {
@@ -258,7 +260,7 @@ public class PartieJeu {
         String texteNiveau = ("NIVEAU " + numNiveau);
         contexte.setFont(Font.font("Arial", 100));
 
-        contexte.fillText(texteNiveau, (Camera.getCamera().getXCamera() + Main.LARGEUR_ECRAN)/2, Main.HAUTEUR / 2);
+        contexte.fillText(texteNiveau, 200, Main.HAUTEUR / 2);
 
         //Remettre le font à la taille normale
         contexte.setFont(Font.font("Arial", 10));

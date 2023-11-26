@@ -40,7 +40,7 @@ public class Charlotte extends ObjetJeu {
         y = Main.HAUTEUR/2;
         w = W_CHARLOTTE;
         h = H_CHARLOTTE;
-        vitesseMax = 300; //TODO: Constante?
+        vitesseMax = 300;
     }
 
     @Override
@@ -80,9 +80,8 @@ public class Charlotte extends ObjetJeu {
             }
         }
         //endregion
-        assurerQueResteDansEcran();
-
         super.mettreAJourPhysique(deltaTemps);
+        assurerQueResteDansEcran();
     }
 
     @Override
@@ -130,14 +129,14 @@ public class Charlotte extends ObjetJeu {
         return -1;
     }
 
-    private void assurerQueResteDansEcran() { // trop de mélange MVC?
-        x = Math.max(Camera.getCamera().getXCamera(), x); //position en X de la cam est la limite
+    private void assurerQueResteDansEcran() {
+        x = Math.max(Camera.getCamera().getXCamera(), x);
         x = Math.min(x, (Main.LARGEUR_MONDE - w));
         y = Math.max(0, y);
         y = Math.min(y, (Main.HAUTEUR - h));
     }
 
-    public void gererImageCharlotte() { //Code dans la bonne classe?
+    public void gererImageCharlotte() {
         if (estVisible) {
             if (estEndommagee) {
                 image = new Image(Assets.CHARLOTTE_OUTCH.getEmplacement());
@@ -167,8 +166,6 @@ public class Charlotte extends ObjetJeu {
     public void donnerMaxVie(){
         nbrVie = NBR_VIE_MAX;
     }
-
-
 
     //GETTERS :
     public boolean estVivante() {
