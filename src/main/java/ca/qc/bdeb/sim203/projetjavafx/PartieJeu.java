@@ -275,7 +275,7 @@ public class PartieJeu {
     }
 
     private void dessinerProjectileDroiteBarre(GraphicsContext contexte) {
-        contexte.drawImage(new Image(charlotte.getTypeProjectileActuel().getEmplacement()), 180, 10);
+        contexte.drawImage(new Image(charlotte.getTypeProjectileActuel().getEmplacement()), 175, 8);
         ;
     }
 
@@ -301,18 +301,18 @@ public class PartieJeu {
         }
 
         contexte.setFont(Font.font(10));
-        contexte.fillText("NB Poissons: " + getNbrPoissonsEnnemis(), 10, 55);
-        contexte.fillText("NB Projectiles: " + getNbrProjectiles(), 10, 70);
+        contexte.fillText("NB Poissons: " + getNbrPoissonsEnnemis(), 15, 55);
+        contexte.fillText("NB Projectiles: " + getNbrProjectiles(), 15, 70);
 
         double pourcentagePosCharlotte = (charlotte.getXGauche()/Main.LARGEUR_MONDE)*100;
         contexte.fillText("pourcentagePosCharlotte: " + pourcentagePosCharlotte + "%", 10, 85);
 
-        contexte.fillText("Q: Étoiles de mer", Main.LARGEUR_ECRAN - 200, 15);
-        contexte.fillText("W: Trios d'hippocampes", Main.LARGEUR_ECRAN - 200, 30);
-        contexte.fillText("E: Boîtes de sardines", Main.LARGEUR_ECRAN - 200, 45);
-        contexte.fillText("R: Donner max vie à Charlotte", Main.LARGEUR_ECRAN - 200, 60);
-        contexte.fillText("T: Passer au prochain niveau", Main.LARGEUR_ECRAN - 200, 75);
-        contexte.fillText("nSecondes:" + nSecondes, Main.LARGEUR_ECRAN - 200, 90);
+        contexte.fillText("Q: Étoiles de mer", Main.LARGEUR_ECRAN - 150, 15);
+        contexte.fillText("W: Trios d'hippocampes", Main.LARGEUR_ECRAN - 150, 30);
+        contexte.fillText("E: Boîtes de sardines", Main.LARGEUR_ECRAN - 150, 45);
+        contexte.fillText("R: Donner max vie à Charlotte", Main.LARGEUR_ECRAN - 150, 60);
+        contexte.fillText("T: Passer au prochain niveau", Main.LARGEUR_ECRAN - 150, 75);
+        contexte.fillText("nSecondes:" + nSecondes, Main.LARGEUR_ECRAN - 150, 90);
     }
 
     private void preparerFondNiveau() {

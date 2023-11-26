@@ -12,8 +12,8 @@ public class BarreVie extends ObjetJeu {
         w = LARGEUR_TOTALE_BARRE;
 
         //Choisi de façon arbitraire:
-        x = 10;
-        y = 10;
+        x = 15;
+        y = 15;
         h = 25;
     }
 
