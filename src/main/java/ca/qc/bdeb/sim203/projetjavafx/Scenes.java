@@ -74,7 +74,7 @@ public class Scenes {
                 }
 
                 if (e.getCode() == KeyCode.SPACE) {
-                    charlotte.utiliserProjectile(System.nanoTime() * NANOSECONDE);
+                    partieJeu.gererTireProjectile();
                 }
 
                 if (partieJeu.estDebug()) {

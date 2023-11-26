@@ -20,6 +20,12 @@ public class Camera {
         return camera;
     }
 
+    public void reinitialiserCamera() {
+        xCamera = 0;
+        yCamera = 0; //TODO: Est-ce que le y sert à quelque chose?
+        estALaFin = false;
+    }
+
     public void update(Charlotte charlotte, double deltaTemps) {
         verifierPositionCamera();
 

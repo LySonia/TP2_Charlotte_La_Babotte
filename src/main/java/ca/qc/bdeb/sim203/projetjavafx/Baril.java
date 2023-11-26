@@ -23,11 +23,12 @@ public class Baril extends ObjetJeu {
 
     }
 
-    private void remplirArraylist(){
+    private void remplirArraylist() {
         listeProjectile.add(new EtoileDeMer());
         listeProjectile.add(new Hippocampes());
         listeProjectile.add(new Sardines());
     }
+
     @Override
     public void mettreAJourPhysique(double deltaTemps) {
         double t = (System.nanoTime() * Scenes.NANOSECONDE) - tempsDebutNiveau; //trouve le temps écoulé depuis le début du niveau
@@ -42,14 +43,14 @@ public class Baril extends ObjetJeu {
     public void setEstOuvert(boolean estOuvert) {
         this.estOuvert = estOuvert;
     }
-    public Projectile donnerProjectile(Projectile projectileActuel){
-        Projectile projectileChoisit = null;
-        do{
-            int choix = Hasard.obtenirNombreAleatoire(listeProjectile.size());
-            projectileChoisit = listeProjectile.get(choix);
 
-        }while(projectileChoisit.getClass().equals(projectileActuel.getClass()));
+    public TypesProjectiles donnerProjectile(TypesProjectiles dernierType) {
+        TypesProjectiles nouveauType = null;
+        do {
+            nouveauType = Hasard.choisirTypeProjectileHasard();
 
-        return  projectileChoisit;
+        } while (nouveauType.equals(dernierType));
+
+        return nouveauType;
     }
 }

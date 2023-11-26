@@ -22,8 +22,8 @@ public abstract class ObjetJeu {
     protected Image image;
 
     public ObjetJeu(){
-        this.xCentre = (x+w)/2;
-        this.yCentre = (y+h)/2;
+        this.xCentre = x + (w/2);
+        this.yCentre = y + (h/2);
     }
 
     public void mettreAJour(double deltaTemps) {
@@ -85,6 +85,14 @@ public abstract class ObjetJeu {
 
     public double getH() {
         return h;
+    }
+
+    public double getXCentre() {
+        return xCentre;
+    }
+
+    public double getYCentre() {
+        return yCentre;
     }
 
     //SETTERS :

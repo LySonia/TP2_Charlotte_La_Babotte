@@ -42,7 +42,7 @@ public class Hasard {
         return choisirImageHasard(decors);
     }
     private static String choisirImageHasard(String[] emplacements){
-        String imageChoisi = "";
+        String imageChoisi = null;
 
         int nbrAleatoire = obtenirNombreAleatoire(0, emplacements.length - 1);
 
@@ -51,5 +51,10 @@ public class Hasard {
                 imageChoisi = emplacements[i];
         }
         return imageChoisi;
+    }
+
+    public static TypesProjectiles choisirTypeProjectileHasard(){
+        int nbrAleatoire = obtenirNombreAleatoire(TypesProjectiles.values().length);
+        return TypesProjectiles.values()[nbrAleatoire];
     }
 }

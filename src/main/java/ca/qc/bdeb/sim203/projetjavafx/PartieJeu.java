@@ -18,6 +18,7 @@ public class PartieJeu {
     //Attributs listes d'objets :
     private ArrayList<ObjetJeu> objetsJeu = new ArrayList<>();
     private ArrayList<PoissonEnnemi> poissonsEnnemis = new ArrayList<>();
+    private ArrayList<Projectile> projectiles = new ArrayList<>();
     private ArrayList<Decor> decors = new ArrayList<>();
 
     //Attributs de temps :
@@ -26,8 +27,11 @@ public class PartieJeu {
     private double nSecondes = 1;
     private double tempsDebutNiveau = 0;
     private double tempsDerniersPoissons = 0;
+    private double tempsDernierTir = 0;
     private final double TEMPS_AFFICHAGE_NIVEAU = 4;
     private final double TEMPS_AFFICHAGE_FIN_JEU = 3;
+
+    private final double DELAIS_TIR = 0.5;
     //Attributs autres :
     private Color couleurFondNiveau;
     private boolean estDebug = false;
@@ -45,9 +49,8 @@ public class PartieJeu {
     public void demarrerNiveau(double tempsActuel) {
         numNiveau++;
         tempsDebutNiveau = tempsActuel;
-        objetsJeu.clear();
-        poissonsEnnemis.clear();
-        decors.clear();
+        viderListesObjets();
+
 
         objetsJeu.add(charlotte);
         objetsJeu.add(barreVie);
@@ -55,18 +58,20 @@ public class PartieJeu {
         baril = new Baril(tempsDebutNiveau);
         objetsJeu.add(baril);
 
-        //Ça serait plus facile de créer une nouvelle caméra à chaque fois qu'on démarre un niveau...
-        //Repositionner la caméra à (0,0) dans le monde
-        Camera.getCamera().setXCamera(0);
-        Camera.getCamera().setYCamera(0);
-        Camera.getCamera().setEstALaFin(false);
-
+        Camera.getCamera().reinitialiserCamera();
         preparerFondNiveau(); //TODO: Cette méthode -> trop de vue?
         replacerCharlotte();
         ajouterGroupePoissons();
         calculerNSecondes();
         positionnerDecor();
         calculerEstALaFin();
+    }
+
+    private void viderListesObjets() {
+        objetsJeu.clear();
+        poissonsEnnemis.clear();
+        decors.clear();
+        projectiles.clear();
     }
 
     private void replacerCharlotte() {
@@ -97,6 +102,23 @@ public class PartieJeu {
         }
     }
 
+    public void gererTireProjectile(){
+        if ((tempsActuel - tempsDernierTir) > DELAIS_TIR) {
+            tempsDernierTir = tempsActuel;
+            Projectile projectile = charlotte.getTypeProjectileActuel().getProjectile();
+
+            double yCentre = charlotte.getYCentre() - projectile.getH()/2;
+            double xCentre = charlotte.getXCentre() - projectile.getW()/2;
+
+            projectile.setX(xCentre);
+            projectile.setY(yCentre);
+
+            projectile.setYDeCentreCharlotte(yCentre);
+            projectile.setEstTirer(true);
+
+            objetsJeu.add(projectile);
+        }
+    }
 
     private void enleverPoissonsHorsEcran() {
         for (int i = 0; i < poissonsEnnemis.size(); i++) {
@@ -142,7 +164,7 @@ public class PartieJeu {
             if (temp.getXGauche() > charlotte.getXGauche()) {
 
                 //si le projectile touche un poisson enemies
-                if (Collision.estEnCollision(temp, charlotte.getProjectileActuel())) {
+                if (Collision.estEnCollision(temp, charlotte.getTypeProjectileActuel().getProjectile())) {
                     sortirPoisson(temp);
                 }
             }
@@ -199,7 +221,8 @@ public class PartieJeu {
         if (!baril.isEstOuvert()) {
             baril.setEstOuvert(true);
             baril.setImage(new Image(Assets.BARIL_OUVERT.getEmplacement()));
-            charlotte.setProjectileActuel(baril.donnerProjectile(charlotte.getProjectileActuel()));
+            TypesProjectiles dernierType = charlotte.getTypeProjectileActuel();
+            charlotte.setTypeProjectile(baril.donnerProjectile(dernierType));
             //TODO: fix make it so the projectile gets added to array of objet de jeu
         }
 
@@ -218,6 +241,7 @@ public class PartieJeu {
     private void calculerNSecondes() {
         nSecondes = 0.75 + 1 / Math.pow(numNiveau, 0.5);
     }
+
 
     //TOUT CE QUI EST "DESSIN" :
     public void dessiner(GraphicsContext contexte) {
@@ -269,34 +293,12 @@ public class PartieJeu {
 
 
     //GETTERS
-
-    public ArrayList<Projectile> getProjectilesCharlotte() {
-        objetsJeu.addAll(charlotte.getProjectileArrayList());
-        return charlotte.getProjectileArrayList();
-    }
-
-    public ArrayList<ObjetJeu> getObjetsJeu() {
-        return objetsJeu;
-    }
-
     public Color getCouleurFondNiveau() {
         return couleurFondNiveau;
     }
 
     public Charlotte getCharlotte() {
         return charlotte;
-    }
-
-    public ArrayList<PoissonEnnemi> getPoissonsEnnemis() {
-        return poissonsEnnemis;
-    }
-
-    public double getTempsDebutNiveau() {
-        return tempsDebutNiveau;
-    }
-
-    public int getNumNiveau() {
-        return numNiveau;
     }
 
     public int getNbrPoissonsEnnemis() {
