@@ -1,13 +1,12 @@
 package ca.qc.bdeb.sim203.projetjavafx;
 
 import javafx.scene.canvas.*;
-import javafx.scene.image.Image;
 import javafx.scene.paint.*;
 import javafx.scene.text.*;
 
 import java.util.*;
 
-import static ca.qc.bdeb.sim203.projetjavafx.Hasard.obtenirNombreAleatoire;
+import static ca.qc.bdeb.sim203.projetjavafx.Hasard.nextInt;
 
 public class PartieJeu {
     //Attributs objets de jeu:
@@ -59,6 +58,7 @@ public class PartieJeu {
 
         //Rajouter les objets de Jeu :
         objetsJeu.add(charlotte);
+        charlotte.viderProjectiles();
         objetsJeu.add(barreVie);
         baril = new Baril(tempsDebutNiveau);
         objetsJeu.add(baril);
@@ -69,7 +69,6 @@ public class PartieJeu {
         replacerCharlotte();
         ajouterGroupePoissons();
         positionnerDecor();
-
     }
 
     private void replacerCharlotte() {
@@ -78,6 +77,7 @@ public class PartieJeu {
 
     //TOUT CE QUI EST "MISE À JOUR" :
     public void mettreAJourJeu(double tempsActuel) {
+        charlotte.viderProjectiles(); //TODO: Bon endroit pour le placer?
         this.deltaTemps = tempsActuel - this.tempsActuel;
         this.tempsActuel = tempsActuel;
 
@@ -98,32 +98,43 @@ public class PartieJeu {
         if (estALaFinNiveau && charlotte.estVivante()) {
             demarrerNiveau(tempsActuel);
         }
+
+
     }
 
     public void gererTireProjectile(){
         if ((tempsActuel - tempsDernierTir) > DELAIS_TIR) {
             tempsDernierTir = tempsActuel;
-            charlotte.tirer(typesProjectilesActuel, tempsActuel);
+            charlotte.tirer(tempsActuel);
 
-            projectiles.add(charlotte.getProjectile());
-            objetsJeu.add(charlotte.getProjectile());
+            projectiles.addAll(charlotte.getProjectile());
+            objetsJeu.addAll(charlotte.getProjectile());
         }
     }
 
     private void enleverObjetsHorsEcran() {
         for (int i = 0; i < poissonsEnnemis.size(); i++) {
             if (!poissonsEnnemis.get(i).estDansEcran()){
-                sortirPoisson(poissonsEnnemis.get(i));
+                enleverPoissonDeListe(poissonsEnnemis.get(i));
             }
         }
 
         for (int i = 0; i < projectiles.size(); i++) {
             if (!projectiles.get(i).estDansEcran()){
-                sortirProjectile(projectiles.get(i));
+                enleverProjectileDeListe(projectiles.get(i));
             }
         }
     }
 
+    public void enleverPoissonDeListe(PoissonEnnemi poisson) {
+        poissonsEnnemis.remove(poisson);
+        objetsJeu.remove(poisson);
+    }
+
+    public void enleverProjectileDeListe(Projectile projectile) {
+        projectiles.remove(projectile);
+        objetsJeu.remove(projectile);
+    }
     private void gererCollisionBaril() {
         if (Collision.estEnCollision(baril, charlotte)) {
             ouvrirBaril();
@@ -158,7 +169,7 @@ public class PartieJeu {
             for (int j = 0; j < poissonsEnnemis.size(); j++) { //Analyser chaque poisson
                 PoissonEnnemi poissonEnnemiAnalyse = poissonsEnnemis.get(j);
                 if (Collision.estEnCollision(poissonEnnemiAnalyse, projectileAnalyse)) {
-                    sortirPoisson(poissonEnnemiAnalyse);
+                    enleverPoissonDeListe(poissonEnnemiAnalyse);
                 }
             }
         }
@@ -168,7 +179,7 @@ public class PartieJeu {
         tempsDerniersPoissons = tempsActuel;
 
         //Génération d'un nombre aléatoire de poissons (entre 1 et 5):
-        int nbrPoissonDansGroupe = Hasard.obtenirNombreAleatoire(1, 5);
+        int nbrPoissonDansGroupe = Hasard.nextInt(1, 5);
         ArrayList<PoissonEnnemi> nouveauxPoissons = new ArrayList<>();
 
         //Ajouter le nombre aléatoire de poissons dans le ArrayList<>
@@ -199,21 +210,13 @@ public class PartieJeu {
         objetsJeu.addAll(decors);
     }
 
-    public void sortirPoisson(PoissonEnnemi poisson) {
-        poissonsEnnemis.remove(poisson);
-        objetsJeu.remove(poisson);
-    }
 
-    public void sortirProjectile(Projectile projectile) {
-        projectiles.remove(projectile);
-        objetsJeu.remove(projectile);
-    }
 
     public void ouvrirBaril() {
         if (!baril.isEstOuvert()) {
             baril.setEstOuvert(true);
-            baril.setImage(new Image(Assets.BARIL_OUVERT.getEmplacement()));
-            //TODO: Change the type of projectile
+            TypesProjectiles nouvelTypeProjectile = baril.donnerProjectile(charlotte.getTypeProjectileActuel());
+            charlotte.setTypeProjectileActuel(nouvelTypeProjectile);
         }
 
     }
@@ -275,18 +278,15 @@ public class PartieJeu {
         var texteNbrProjectiles = "NB Projectiles: " + getNbrProjectiles();
         contexte.fillText(texteNbrProjectiles, 10, 70);
 
-        double pourcentagePosCharlotte = charlotte.x/Main.LARGEUR_MONDE; //TODO: why does charlotte.x work???
-        var textePosCharlotte = "pourcentagePosCharlotte: " + pourcentagePosCharlotte;
+        double pourcentagePosCharlotte = (charlotte.x/Main.LARGEUR_MONDE)*100; //TODO: why does charlotte.x work???
+        var textePosCharlotte = "pourcentagePosCharlotte: " + pourcentagePosCharlotte + "%";
         contexte.fillText(textePosCharlotte, 10, 95);
     }
-
-
-
 
     private void preparerFondNiveau() {
         final double saturation = 0.84;
         final double luminosité = 1.0;
-        final double teinte = obtenirNombreAleatoire(190, 270);
+        final double teinte = nextInt(190, 270);
         couleurFondNiveau = Color.hsb(teinte, saturation, luminosité);
     }
 
@@ -295,18 +295,12 @@ public class PartieJeu {
     public Color getCouleurFondNiveau() {
         return couleurFondNiveau;
     }
-
-    public Charlotte getCharlotte() {
-        return charlotte;
-    }
-
     private int getNbrPoissonsEnnemis() {
         return poissonsEnnemis.size();
     }
     private int getNbrProjectiles() {
         return projectiles.size();
     }
-
     public boolean estDebug() {
         return estDebug;
     }
@@ -314,5 +308,8 @@ public class PartieJeu {
     //SETTERS
     public void setEstDebug(boolean estDebug) {
         this.estDebug = estDebug;
+    }
+    public void donnerMaxVie() {
+        charlotte.donnerMaxVie();
     }
 }

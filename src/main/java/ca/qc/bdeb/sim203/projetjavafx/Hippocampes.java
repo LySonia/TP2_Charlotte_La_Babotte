@@ -19,12 +19,12 @@ public class Hippocampes extends Projectile {
         yInitial = y;
 
         //amplitude négative/positive aléatoire
-        amplitude = Hasard.obtenirNombreAleatoire(30, 60);
+        amplitude = Hasard.nextInt(30, 60);
         if (Hasard.getGenerateurAleatoire().nextBoolean()) {
             amplitude *= -1;
         }
         //periode aléatoire
-        periode = Hasard.obtenirNombreAleatoire(1, 3);
+        periode = Hasard.nextInt(1, 3);
     }
 
     @Override

@@ -7,7 +7,7 @@ public abstract class Projectile extends ObjetJeu {
     protected double momentTire;
     public Projectile(Charlotte charlotte, double momentTire) {
         this.charlotte = charlotte;
-        this.momentTire = momentTire;
+          this.momentTire = momentTire;
     }
 
     //TODO: Not amazing coding practices

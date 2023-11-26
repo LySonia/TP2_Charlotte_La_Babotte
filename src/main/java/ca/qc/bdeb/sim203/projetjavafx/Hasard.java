@@ -7,13 +7,16 @@ import java.util.*;
 public class Hasard {
     public static Random generateurAleatoire = new Random();
 
-    public static int obtenirNombreAleatoire(int borneSuperieureExclue) {
+    public static int nextInt(int borneSuperieureExclue) {
         return generateurAleatoire.nextInt(borneSuperieureExclue);
     }
-    public static int obtenirNombreAleatoire(int borneInférieureInclue, int borneSuperieureInclue) {
+    public static int nextInt(int borneInférieureInclue, int borneSuperieureInclue) {
         return generateurAleatoire.nextInt(borneSuperieureInclue - borneInférieureInclue) + borneInférieureInclue; //TODO: Noms de variables horribles
     }
 
+    public static double nextDouble(double borneInférieureInclue, double borneSuperieureInclue) {
+        return generateurAleatoire.nextDouble(borneSuperieureInclue - borneInférieureInclue) + borneInférieureInclue;
+    }
     public static Random getGenerateurAleatoire() {
         return generateurAleatoire;
     }
@@ -44,7 +47,7 @@ public class Hasard {
     private static String choisirImageHasard(String[] emplacements){
         String imageChoisi = null;
 
-        int nbrAleatoire = obtenirNombreAleatoire(0, emplacements.length - 1);
+        int nbrAleatoire = nextInt(0, emplacements.length - 1);
 
         for (int i = 0; i < emplacements.length; i++) {
             if (nbrAleatoire == i)
@@ -54,7 +57,7 @@ public class Hasard {
     }
 
     public static TypesProjectiles choisirTypeProjectileHasard(){
-        int nbrAleatoire = obtenirNombreAleatoire(TypesProjectiles.values().length);
+        int nbrAleatoire = nextInt(TypesProjectiles.values().length);
         return TypesProjectiles.values()[nbrAleatoire];
     }
 }

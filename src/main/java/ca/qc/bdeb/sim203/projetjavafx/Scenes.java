@@ -12,9 +12,7 @@ import javafx.scene.layout.*;
 import javafx.scene.text.*;
 import javafx.stage.*;
 
-import java.util.*;
-
-import static ca.qc.bdeb.sim203.projetjavafx.Hasard.obtenirNombreAleatoire;
+import static ca.qc.bdeb.sim203.projetjavafx.Hasard.nextInt;
 
 public class Scenes {
     public static final double NANOSECONDE = 1e-9; //Bon placement de la variable?
@@ -29,7 +27,6 @@ public class Scenes {
 
     public Scene getSceneJeu() {
         PartieJeu partieJeu = new PartieJeu(System.nanoTime() * NANOSECONDE);
-        Charlotte charlotte = partieJeu.getCharlotte();
 
         var root = new Pane();
 
@@ -74,7 +71,7 @@ public class Scenes {
                 }
 
                 if (partieJeu.estDebug()) {
-                    gererKeyPressedDebug(charlotte, e);
+                    gererKeyPressedDebug(partieJeu, e);
                 }
             }
         });
@@ -86,7 +83,7 @@ public class Scenes {
         return sceneJeu;
     }
 
-    private void gererKeyPressedDebug(Charlotte charlotte, KeyEvent e) {
+    private void gererKeyPressedDebug(PartieJeu partieJeu, KeyEvent e) {
         if (e.getCode() == KeyCode.Q) {
             //Code pour donner une étoile de mer comme projectile
         }
@@ -100,7 +97,7 @@ public class Scenes {
         }
 
         if (e.getCode() == KeyCode.R) {
-            charlotte.donnerMaxVie();
+            partieJeu.donnerMaxVie();
         }
 
         if (e.getCode() == KeyCode.T) {

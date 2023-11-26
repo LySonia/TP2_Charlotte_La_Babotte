@@ -4,7 +4,7 @@ import javafx.scene.canvas.*;
 import javafx.scene.image.*;
 import javafx.scene.input.*;
 
-import java.util.ArrayList;
+import java.util.*;
 
 public class Charlotte extends ObjetJeu {
     //Attributs constantes :
@@ -21,6 +21,7 @@ public class Charlotte extends ObjetJeu {
 
 
     //Attributs autres :
+    private final double NBR_HIPPOCAMPES_A_LA_FOIS = 3;
     private double nbrVie = 4;
     private double momentDommage = 0;
     private double momentDernierClignotement = 0;
@@ -29,7 +30,8 @@ public class Charlotte extends ObjetJeu {
     private boolean estEndommagee = false;
     private boolean estVisible = true;
 
-    private Projectile projectileActuel;
+    private TypesProjectiles typeProjectileActuel = TypesProjectiles.ETOILE; //Par défault, le projectile est une étoile
+    private ArrayList<Projectile> projectiles = new ArrayList<>();
 
 
 
@@ -148,14 +150,16 @@ public class Charlotte extends ObjetJeu {
         }
     }
 
-    public void tirer(TypesProjectiles typesProjectiles, double tempsActuel) {
+    public void tirer(double tempsActuel) { //TODO: En vrai, cette classe pourrait être dans PartieJeu
         //TODO: Y'a sûrement un moyen plus efficace pour coder ça
-        if (typesProjectiles.equals(TypesProjectiles.ETOILE)) {
-            projectileActuel = new EtoileDeMer(this, tempsActuel);
-        } else if (typesProjectiles.equals(TypesProjectiles.HIPPOCAMPES)) {
-            projectileActuel = new Hippocampes(this, tempsActuel);
-        } else if (typesProjectiles.equals(TypesProjectiles.SARDINE)) {
-
+        if (typeProjectileActuel.equals(TypesProjectiles.ETOILE)) {
+            projectiles.add(new EtoileDeMer(this, tempsActuel));
+        } else if (typeProjectileActuel.equals(TypesProjectiles.HIPPOCAMPES)) {
+            for (int i = 0; i < 3; i++) {
+                projectiles.add(new Hippocampes(this, tempsActuel));
+            }
+        } else if (typeProjectileActuel.equals(TypesProjectiles.SARDINE)) {
+            projectiles.add(new Sardines(this, tempsActuel));
         }
 
     }
@@ -165,6 +169,13 @@ public class Charlotte extends ObjetJeu {
     //SETTERS :
     public void donnerMaxVie(){
         nbrVie = NBR_VIE_MAX;
+    }
+    public void viderProjectiles() {
+        projectiles.clear();
+    }
+
+    public void setTypeProjectileActuel(TypesProjectiles typeProjectileActuel) {
+        this.typeProjectileActuel = typeProjectileActuel;
     }
 
     //GETTERS :
@@ -179,8 +190,19 @@ public class Charlotte extends ObjetJeu {
     public double getNbrVieMax() {
         return NBR_VIE_MAX;
     }
-    public Projectile getProjectile() {
-        return projectileActuel;
+    public ArrayList<Projectile> getProjectile() { //TOOD: To modif
+        ArrayList<Projectile> tousProjectiles = new ArrayList<>();
+        System.out.println("Size of projectiles: " + projectiles.size());
+        for (int i = 0; i < projectiles.size(); i++) {
+            System.out.println(i);
+            tousProjectiles.add(projectiles.get(i));
+        }
+        System.out.println(tousProjectiles);
+        return tousProjectiles;
+
     }
 
+    public TypesProjectiles getTypeProjectileActuel() {
+        return typeProjectileActuel;
+    }
 }

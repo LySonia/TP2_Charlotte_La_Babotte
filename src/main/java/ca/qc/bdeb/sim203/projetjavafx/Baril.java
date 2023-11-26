@@ -1,23 +1,30 @@
 package ca.qc.bdeb.sim203.projetjavafx;
 
+import javafx.scene.canvas.*;
 import javafx.scene.image.Image;
 
 import java.util.ArrayList;
+
+import static ca.qc.bdeb.sim203.projetjavafx.Hasard.nextDouble;
 
 public class Baril extends ObjetJeu {
     private static final int PERIODE = 3;
     private double tempsDebutNiveau;
     private boolean estOuvert = false;
-    private ArrayList<Projectile> listeProjectile = new ArrayList<>();
 
     public Baril(double tempsDebutNiveau) {
         this.tempsDebutNiveau = tempsDebutNiveau;
         w = 70;
         h = 83;
         //valeur aléatoire entre 1/5 et 4/5 de l'écran
-        x = Hasard.getGenerateurAleatoire().nextDouble(((double) Main.LARGEUR_MONDE / 5), ((double) (4 * Main.LARGEUR_MONDE) / 5));
+        trouverXInitial();
+        x = trouverXInitial();
         image = new Image(Assets.BARIL.getEmplacement());
         y = 0;
+    }
+
+    private double trouverXInitial() {
+        return nextDouble((1.0/5.0)* Main.LARGEUR_MONDE, (4.0/5.0)* Main.LARGEUR_MONDE);
     }
 
     @Override
@@ -27,12 +34,26 @@ public class Baril extends ObjetJeu {
 
     }
 
+    @Override
+    public void dessiner(GraphicsContext contexte) {
+        gererImage();
+        super.dessiner(contexte);
+    }
+
     public boolean isEstOuvert() {
         return estOuvert;
     }
 
     public void setEstOuvert(boolean estOuvert) {
         this.estOuvert = estOuvert;
+    }
+
+    private void gererImage() {
+        if (estOuvert) {
+            image = new Image(Assets.BARIL_OUVERT.getEmplacement());
+        } else {
+            image = new Image(Assets.BARIL.getEmplacement());
+        }
     }
 
     public TypesProjectiles donnerProjectile(TypesProjectiles dernierType) {

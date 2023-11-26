@@ -5,18 +5,12 @@ import javafx.scene.image.*;
 import javafx.scene.paint.*;
 
 public abstract class ObjetJeu {
-    protected double x = 0;
-
-    protected double y = 0;
     //NOTE IMPORTANTE: LE X ET LE Y D'UN OBJET DE JEU DEVRAIT ÊTRE LE COIN EN HAUT À GAUCHE DU RECTANGLE
-    protected double xCentre = 0;
-    protected double yCentre = 0;
-    protected double w = 0;
-    protected double h = 0;
-    protected double vx = 0;
-    protected double vy = 0;
-    protected double ax = 0;
-    protected double ay = 0;
+    protected double x = 0, y = 0;
+    protected double xCentre = 0, yCentre = 0;
+    protected double w = 0, h = 0;
+    protected double vx = 0, vy = 0;
+    protected double ax = 0, ay = 0;
     protected double vitesseMax = 300; //TODO: Valeur de défaut déterminé par moi (Sonia)- on a whim, stai pour éviter un bug. Besoin meilleure solution.
 
     protected Image image;
@@ -56,7 +50,6 @@ public abstract class ObjetJeu {
         contexte.drawImage(image, Camera.getCamera().calculerXEcran(x), Camera.getCamera().calculerYEcran(y));
     }
 
-
     //GETTERS :
     protected double getXGauche(){
         return this.x;
@@ -78,21 +71,6 @@ public abstract class ObjetJeu {
         return vx;
     }
 
-    public double getW() {
-        return w;
-    }
-
-    public double getH() {
-        return h;
-    }
-
-    public double getXCentre() {
-        return xCentre;
-    }
-
-    public double getYCentre() {
-        return yCentre;
-    }
 
     //SETTERS :
     public void setX(double x) {

@@ -2,7 +2,8 @@ package ca.qc.bdeb.sim203.projetjavafx;
 
 import javafx.scene.image.*;
 
-import static ca.qc.bdeb.sim203.projetjavafx.Hasard.obtenirNombreAleatoire;
+import static ca.qc.bdeb.sim203.projetjavafx.Hasard.nextDouble;
+import static ca.qc.bdeb.sim203.projetjavafx.Hasard.nextInt;
 
 public class PoissonEnnemi extends ObjetJeu {
     private int numNiveau;
@@ -17,10 +18,10 @@ public class PoissonEnnemi extends ObjetJeu {
         this.numNiveau = numNiveau;
 
         vx = -100 * Math.pow(numNiveau, 0.33) + 200;
-        vy = obtenirNombreAleatoire(-100, 100);
+        vy = nextInt(-100, 100);
         ax = -500;
 
-        h = obtenirNombreAleatoire(HAUTEUR_MIN_IMAGE, HAUTEUR_MAX_IMAGE);
+        h = nextDouble(HAUTEUR_MIN_IMAGE, HAUTEUR_MAX_IMAGE);
         image = new Image(Hasard.choisirPoissonHasard(), 0, h, true, false);
         w = image.getWidth();
 
@@ -30,16 +31,16 @@ public class PoissonEnnemi extends ObjetJeu {
 
     private double obtenirHauteurDepart() {
         //TODO: Revérifier calcul fraction
-        int min = (Main.HAUTEUR/5);
-        int max = (Main.HAUTEUR/5)*4;
+        double min = (Main.HAUTEUR/5);
+        double max = (Main.HAUTEUR/5)*4;
 
-        return obtenirNombreAleatoire(min, max);
+        return nextDouble(min, max);
     }
 
     public boolean estDansEcran() {
         boolean estDansEcran = false;
 
-        if ((getXGauche() > Camera.getCamera().getXCamera()) &&
+        if ((getXDroite() > Camera.getCamera().getXCamera()) &&
                 (getYHaut() < Main.HAUTEUR) &&
                 (getYBas() > Camera.getCamera().getYCamera())) {
 
