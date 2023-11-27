@@ -32,7 +32,7 @@ public abstract class ObjetJeu {
         yCentre = y + (h/2);
     }
 
-    private double assurerQueVitesseDansLesBornes(double vitesse) {
+    protected double assurerQueVitesseDansLesBornes(double vitesse) {
         if (vitesse > vitesseMax) {
             vitesse = vitesseMax;
         } else if (vitesse < -vitesseMax) {

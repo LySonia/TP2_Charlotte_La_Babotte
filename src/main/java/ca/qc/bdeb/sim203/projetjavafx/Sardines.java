@@ -11,16 +11,17 @@ public class Sardines extends Projectile {
     private double forceEnY = 0;
     private ArrayList<PoissonEnnemi> poissonsEnnemis;
 
+    //TODO: Est-ce que la liste de poisson est la
     public Sardines(Charlotte charlotte, double tempsActuel, ArrayList<PoissonEnnemi> poissonEnnemis) {
         super(charlotte, tempsActuel);
+        calculerPosInitial();
+        vitesseMax = 800;
         w = 35;
         h = 29;
         vx = 300;
-        vitesseMax = 800;
         vy = 0;
         ay = 0;
         image = new Image(Assets.SARDINES.getEmplacement());
-        calculerPosInitial();
         this.poissonsEnnemis = poissonEnnemis;
     }
 
@@ -30,9 +31,6 @@ public class Sardines extends Projectile {
         ax = forceEnX;
         ay = forceEnY;
 
-        System.out.println("ax: " + ax);
-        System.out.println("ay: " + ay);
-
         ajusterRebondissement();
         super.mettreAJourPhysique(deltaTemps);
 
@@ -40,12 +38,15 @@ public class Sardines extends Projectile {
     }
 
     private void ajusterRebondissement() {
+        //TODO: Ajuster pour glitch quand ça sort de l'écran pendant un deltaTemps
         if (this.getYBas() >= Main.HAUTEUR || this.getYHaut() <= 0) {
             vy *= -1;
         }
     }
-    private double calculerForceElectrique() { //TODO: Faire séparer pour clarifier code
+    private void calculerForceElectrique() {
         double forceElectrique = 0;
+        forceEnX = 0;
+        forceEnY = 0;
         for (PoissonEnnemi poisson: poissonsEnnemis) {
             if (verifierQuePoissonADroite(poisson)) {
                 double deltaX = x - poisson.x;
@@ -57,16 +58,15 @@ public class Sardines extends Projectile {
                     distance = 0.01;
                 }
 
-                double proportionX = deltaX/distance;
-                double proportionY = deltaY/distance;
+                double proportionX = deltaX / distance;
+                double proportionY = deltaY / distance;
 
-                forceElectrique += (K * poisson.getChargeQ() * this.CHARGE_Q)/Math.pow(distance, 2);
+                forceElectrique += (K * poisson.getChargeQ() * this.CHARGE_Q) / (Math.pow(distance, 2));
 
                 forceEnX += forceElectrique * proportionX;
                 forceEnY += forceElectrique * proportionY;
             }
         }
-        return forceElectrique;
     }
 
     private boolean verifierQuePoissonADroite(PoissonEnnemi poissonEnnemi) {
@@ -77,8 +77,11 @@ public class Sardines extends Projectile {
         double carreDeltaX = Math.pow(deltaX, 2);
         double carreDeltaY = Math.pow(deltaY, 2);
 
-        return Math.pow((carreDeltaX + carreDeltaY), 1/2);
+        return Math.pow((carreDeltaX + carreDeltaY), 1.0/2.0);
     }
 
+    public void updateListePoissons(ArrayList<PoissonEnnemi> poissonEnnemis) {
+        this.poissonsEnnemis = poissonEnnemis;
+    }
 
 }
