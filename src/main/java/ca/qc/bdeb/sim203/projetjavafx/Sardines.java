@@ -7,7 +7,6 @@ import java.util.*;
 public class Sardines extends Projectile {
     private final static int CHARGE_Q = 200;
     private final static int K = 1000;
-
     private double forceEnX = 0;
     private double forceEnY = 0;
     private ArrayList<PoissonEnnemi> poissonsEnnemis;
@@ -17,6 +16,7 @@ public class Sardines extends Projectile {
         w = 35;
         h = 29;
         vx = 300;
+        vitesseMax = 800;
         vy = 0;
         ay = 0;
         image = new Image(Assets.SARDINES.getEmplacement());
@@ -26,12 +26,17 @@ public class Sardines extends Projectile {
 
     @Override
     public void mettreAJourPhysique(double deltaTemps) {
-        System.out.println("does this run");
         calculerForceElectrique();
-        ajusterRebondissement();
         ax = forceEnX;
         ay = forceEnY;
+
+        System.out.println("ax: " + ax);
+        System.out.println("ay: " + ay);
+
+        ajusterRebondissement();
         super.mettreAJourPhysique(deltaTemps);
+
+        System.out.println(this + " vy: " + vy);
     }
 
     private void ajusterRebondissement() {
@@ -57,8 +62,8 @@ public class Sardines extends Projectile {
 
                 forceElectrique += (K * poisson.getChargeQ() * this.CHARGE_Q)/Math.pow(distance, 2);
 
-                forceEnX = forceElectrique * proportionX;
-                forceEnY = forceElectrique * proportionY;
+                forceEnX += forceElectrique * proportionX;
+                forceEnY += forceElectrique * proportionY;
             }
         }
         return forceElectrique;

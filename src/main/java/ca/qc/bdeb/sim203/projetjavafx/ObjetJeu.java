@@ -11,7 +11,7 @@ public abstract class ObjetJeu {
     protected double w = 0, h = 0;
     protected double vx = 0, vy = 0;
     protected double ax = 0, ay = 0;
-    protected double vitesseMax = 300; //TODO: Valeur de défaut déterminé par moi (Sonia)- on a whim, stai pour éviter un bug. Besoin meilleure solution.
+    protected double vitesseMax = 0;
 
     protected Image image;
 
@@ -27,6 +27,7 @@ public abstract class ObjetJeu {
         x += deltaTemps * vx;
         y += deltaTemps * vy;
 
+        //TODO: Y'a que Charlotte qui a besoin de ces valeurs, à déplacer?
         xCentre = x + (w/2);
         yCentre = y + (h/2);
     }

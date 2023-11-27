@@ -14,6 +14,7 @@ public class PoissonEnnemi extends ObjetJeu {
     public PoissonEnnemi(int numNiveau) {
         this.numNiveau = numNiveau;
 
+        vitesseMax = 300; //TODO: Déterminé arbitrairement
         vx = -100 * Math.pow(numNiveau, 0.33) + 200;
         vy = nextInt(-100, 100);
         ax = -500;
