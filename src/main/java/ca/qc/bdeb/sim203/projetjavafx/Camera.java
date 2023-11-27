@@ -48,6 +48,8 @@ public class Camera {
     }
 
     //Pour savoir où dessiner les objets
+
+    //TODO: Assurer que XEcra et YEcran seulement utilisé pour dessins
     public double calculerXEcran(double x) {
         return x - xCamera;
     }
@@ -63,4 +65,5 @@ public class Camera {
     public double getYCamera(){
         return yCamera;
     }
+
 }

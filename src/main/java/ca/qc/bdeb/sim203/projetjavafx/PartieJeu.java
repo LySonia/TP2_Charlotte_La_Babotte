@@ -18,7 +18,7 @@ public class PartieJeu {
     //Attributs listes d'objets :
     private ArrayList<ObjetJeu> objetsJeu = new ArrayList<>();
     private ArrayList<PoissonEnnemi> poissonsEnnemis = new ArrayList<>();
-    private ArrayList<Projectile> projectiles = new ArrayList<>();
+    private ArrayList<Projectile> projectilesTires = new ArrayList<>();
     private ArrayList<Decor> decors = new ArrayList<>();
 
     //Attributs de temps :
@@ -41,6 +41,7 @@ public class PartieJeu {
     //Attributs autres :
     private Color couleurFondNiveau;
     private int numNiveau = 0;
+    private final double NBR_HIPPOCAMPES_A_LA_FOIS = 3;
 
 
     //Constructeur :
@@ -63,10 +64,9 @@ public class PartieJeu {
         objetsJeu.clear();
         poissonsEnnemis.clear();
         decors.clear();
-        projectiles.clear();
+        projectilesTires.clear();
 
         //Rajouter les objets de Jeu :
-        charlotte.viderProjectiles();
         charlotte.setX(Camera.getCamera().getXCamera()); //Replacer Charlotte à gauche de la caméra
         objetsJeu.add(charlotte);
 
@@ -82,7 +82,6 @@ public class PartieJeu {
         this.deltaTemps = tempsActuel - this.tempsActuel;
         this.tempsActuel = tempsActuel;
 
-        charlotte.viderProjectiles(); //TODO: Bon endroit pour le placer?
         Camera.getCamera().update(charlotte, deltaTemps); //Mettre à jour la caméra
         mettreAJourObjets();
 
@@ -123,8 +122,8 @@ public class PartieJeu {
     }
 
     private void gererCollisionsProjectiles() {
-        for (int i = 0; i < projectiles.size(); i++) { //Analyser chaque projectile
-            Projectile projectileAnalyse = projectiles.get(i);
+        for (int i = 0; i < projectilesTires.size(); i++) { //Analyser chaque projectile
+            Projectile projectileAnalyse = projectilesTires.get(i);
             for (int j = 0; j < poissonsEnnemis.size(); j++) { //Analyser chaque poisson
                 PoissonEnnemi poissonEnnemiAnalyse = poissonsEnnemis.get(j);
                 if (Collision.estEnCollision(poissonEnnemiAnalyse, projectileAnalyse)) {
@@ -149,9 +148,9 @@ public class PartieJeu {
         }
 
         //Enlever projectiles hors écran
-        for (int i = 0; i < projectiles.size(); i++) {
-            if (!projectiles.get(i).estDansEcran()){
-                enleverProjectileDeListe(projectiles.get(i));
+        for (int i = 0; i < projectilesTires.size(); i++) {
+            if (!projectilesTires.get(i).estDansEcran()){
+                enleverProjectileDeListe(projectilesTires.get(i));
             }
         }
     }
@@ -166,10 +165,7 @@ public class PartieJeu {
     public void gererTireProjectile(){
         if ((tempsActuel - momentDernierTir) > DELAIS_TIR) {
             momentDernierTir = tempsActuel;
-            charlotte.tirer(tempsActuel);
-
-            projectiles.addAll(charlotte.getProjectile());
-            objetsJeu.addAll(charlotte.getProjectile());
+            tirer();
         }
     }
 
@@ -181,7 +177,7 @@ public class PartieJeu {
     }
 
     public void enleverProjectileDeListe(Projectile projectile) {
-        projectiles.remove(projectile);
+        projectilesTires.remove(projectile);
         objetsJeu.remove(projectile);
     }
 
@@ -237,14 +233,20 @@ public class PartieJeu {
         charlotte.setTypeProjectileActuel(typeProjectile);
     }
 
-    public void trouverAccelerationSardine() { //TODO: Je pense pas que ça devrait être dans cette classe
-        for (PoissonEnnemi poissonEnnemi : poissonsEnnemis) {
-            if (poissonEnnemi.getXGauche() > charlotte.getXGauche()) { //si le poisson est à droite de charlotte
-                //TODO: finish this
-
+    public void tirer() {
+        ArrayList<Projectile> nouvellesProjectiles = new ArrayList<>();
+        if (charlotte.getTypeProjectileActuel().equals(Assets.ETOILE)) {
+            nouvellesProjectiles.add(new EtoileDeMer(charlotte, tempsActuel));
+        } else if (charlotte.getTypeProjectileActuel().equals(Assets.HIPPOCAMPE)) {
+            for (int i = 0; i < NBR_HIPPOCAMPES_A_LA_FOIS; i++) {
+                nouvellesProjectiles.add(new Hippocampes(charlotte, tempsActuel));
             }
+        } else if (charlotte.getTypeProjectileActuel().equals(Assets.SARDINES)) {
+            nouvellesProjectiles.add(new Sardines(charlotte, tempsActuel, poissonsEnnemis));
         }
 
+        projectilesTires.addAll(nouvellesProjectiles);
+        objetsJeu.addAll(nouvellesProjectiles);
     }
 
     private void calculerNSecondes() {
@@ -276,7 +278,6 @@ public class PartieJeu {
 
     private void dessinerProjectileDroiteBarre(GraphicsContext contexte) {
         contexte.drawImage(new Image(charlotte.getTypeProjectileActuel().getEmplacement()), 175, 8);
-        ;
     }
 
     private void afficherNumNiveau(GraphicsContext contexte) {
@@ -330,7 +331,7 @@ public class PartieJeu {
         return poissonsEnnemis.size();
     }
     private int getNbrProjectiles() {
-        return projectiles.size();
+        return projectilesTires.size();
     }
     public boolean estDebug() {
         return estDebug;

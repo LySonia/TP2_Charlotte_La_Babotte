@@ -1,7 +1,5 @@
 package ca.qc.bdeb.sim203.projetjavafx;
 
-import javafx.scene.canvas.GraphicsContext;
-
 public abstract class Projectile extends ObjetJeu {
     protected Charlotte charlotte;
     protected double momentTire;

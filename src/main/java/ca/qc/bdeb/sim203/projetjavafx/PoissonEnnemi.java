@@ -9,10 +9,7 @@ public class PoissonEnnemi extends ObjetJeu {
     private int numNiveau;
     private static final int HAUTEUR_MAX_IMAGE= 120;
     private static final int HAUTEUR_MIN_IMAGE = 50;
-
-    private static final int CHARGE_Q = -100;
-
-
+    private static final int CHARGE_Q = -100; //TODO: Bonne idée de mettre ça static?
 
     public PoissonEnnemi(int numNiveau) {
         this.numNiveau = numNiveau;
@@ -47,5 +44,9 @@ public class PoissonEnnemi extends ObjetJeu {
             estDansEcran = true;
         }
         return estDansEcran;
+    }
+
+    public double getChargeQ(){
+        return CHARGE_Q;
     }
 }

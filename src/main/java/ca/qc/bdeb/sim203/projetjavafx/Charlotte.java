@@ -23,12 +23,11 @@ public class Charlotte extends ObjetJeu {
     private boolean estVisible = true;
 
     //Attributs autres :
-    private final double NBR_HIPPOCAMPES_A_LA_FOIS = 3;
+
     private double nbrVie = 4;
     private double momentDommage = 0;
     private double momentDernierClignotement = 0;
     private Assets typeProjectileActuel = Assets.ETOILE; //Par défault, le projectile est une étoile
-    private ArrayList<Projectile> projectiles = new ArrayList<>();
 
 
     public Charlotte() {
@@ -128,18 +127,7 @@ public class Charlotte extends ObjetJeu {
         y = Math.min(y, (Main.HAUTEUR - h));
     }
 
-    public void tirer(double tempsActuel) {
-        if (typeProjectileActuel.equals(Assets.ETOILE)) {
-            projectiles.add(new EtoileDeMer(this, tempsActuel));
-        } else if (typeProjectileActuel.equals(Assets.HIPPOCAMPE)) {
-            for (int i = 0; i < NBR_HIPPOCAMPES_A_LA_FOIS; i++) {
-                projectiles.add(new Hippocampes(this, tempsActuel));
-            }
-        } else if (typeProjectileActuel.equals(Assets.SARDINES)) {
-            projectiles.add(new Sardines(this, tempsActuel));
-        }
 
-    }
 
     //TOUT CE QUI EST "DESSIN" :
     @Override
@@ -165,9 +153,6 @@ public class Charlotte extends ObjetJeu {
     public void donnerMaxVie(){
         nbrVie = NBR_VIE_MAX;
     }
-    public void viderProjectiles() {
-        projectiles.clear();
-    }
     public void setTypeProjectileActuel(Assets typeProjectileActuel) {
         this.typeProjectileActuel = typeProjectileActuel;
     }
@@ -181,9 +166,6 @@ public class Charlotte extends ObjetJeu {
     }
     public double getNbrVieMax() {
         return NBR_VIE_MAX;
-    }
-    public ArrayList<Projectile> getProjectile() {
-        return projectiles;
     }
     public Assets getTypeProjectileActuel() {
         return typeProjectileActuel;
