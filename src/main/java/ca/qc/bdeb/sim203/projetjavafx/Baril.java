@@ -12,6 +12,11 @@ public class Baril extends ObjetJeu {
     private double tempsDebutNiveau;
     private boolean estOuvert = false;
 
+    /**
+     * Constructeur de l'objet baril
+     * @param tempsDebutNiveau le temps de début de niveau qui servira à trouver le temps écoulé depuis le début du
+     *                         niveau
+     */
     public Baril(double tempsDebutNiveau) {
         this.tempsDebutNiveau = tempsDebutNiveau;
         w = 70;
@@ -23,10 +28,18 @@ public class Baril extends ObjetJeu {
         y = 0;
     }
 
+    /**
+     * méthode qui appelle un Random pour trouver aléatoirement la position initiale en X du baril
+     * @return la position initiale du baril
+     */
     private double trouverXInitial() {
         return nextDouble((1.0/5.0)* Main.LARGEUR_MONDE, (4.0/5.0)* Main.LARGEUR_MONDE);
     }
 
+    /**
+     * Override de la methode mettreAJourPhysique de ObjetDeJeu, elle ajuste le mouvement du baril selon le temps
+     * @param deltaTemps difference de temps (pas utilisé dans cet override)
+     */
     @Override
     public void mettreAJourPhysique(double deltaTemps) {
         double t = (System.nanoTime() * Scenes.NANOSECONDE) - tempsDebutNiveau; //trouve le temps écoulé depuis le début du niveau
@@ -34,20 +47,19 @@ public class Baril extends ObjetJeu {
 
     }
 
+    /**
+     * Override de dessiner pour inclure une méthode changeant l'image si le baril est ouvert
+     * @param contexte pour dessiner
+     */
     @Override
     public void dessiner(GraphicsContext contexte) {
         gererImage();
         super.dessiner(contexte);
     }
 
-    public boolean isEstOuvert() {
-        return estOuvert;
-    }
-
-    public void setEstOuvert(boolean estOuvert) {
-        this.estOuvert = estOuvert;
-    }
-
+    /**
+     * Vérifie si le baril a été ouvert et ajuste l'image utilisé en conséquence
+     */
     private void gererImage() {
         if (estOuvert) {
             image = new Image(Assets.BARIL_OUVERT.getEmplacement());
@@ -56,6 +68,11 @@ public class Baril extends ObjetJeu {
         }
     }
 
+    /**
+     * Donne un nouveau projectile Random différent du type que Charlotte a déjà
+     * @param dernierType le type de projectile que Charlotte a en ce moment
+     * @return un nouveau type de projectile
+     */
     public Assets donnerProjectile(Assets dernierType) {
         Assets nouveauType = null;
         do {
@@ -64,5 +81,14 @@ public class Baril extends ObjetJeu {
         } while (nouveauType.equals(dernierType));
 
         return nouveauType;
+    }
+
+    //Getters et Setters
+    public boolean isEstOuvert() {
+        return estOuvert;
+    }
+
+    public void setEstOuvert(boolean estOuvert) {
+        this.estOuvert = estOuvert;
     }
 }

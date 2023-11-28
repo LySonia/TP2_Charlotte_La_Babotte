@@ -1,5 +1,8 @@
 package ca.qc.bdeb.sim203.projetjavafx;
 
+/**
+ * Enum avec tous les noms des images au même endroit
+ */
 public enum Assets {
     BARIL("baril.png"),
     BARIL_OUVERT("baril-ouvert.png"),
