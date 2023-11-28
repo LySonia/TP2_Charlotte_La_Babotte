@@ -9,10 +9,10 @@ public class PoissonEnnemi extends ObjetJeu {
     private int numNiveau;
     private static final int HAUTEUR_MAX_IMAGE= 120;
     private static final int HAUTEUR_MIN_IMAGE = 50;
-    private static final int CHARGE_Q = -100;
+    public static final int CHARGE_Q = -100;
 
     public PoissonEnnemi(int numNiveau) {
-        this.numNiveau = numNiveau;
+        this.numNiveau = numNiveau; //TODO: this is never used
 
         vitesseMax = 300; // Déterminé arbitrairement
         vx = -100 * Math.pow(numNiveau, 0.33) + 200;
@@ -34,7 +34,7 @@ public class PoissonEnnemi extends ObjetJeu {
         return nextDouble(min, max);
     }
 
-    public boolean estDansEcran() {
+   public boolean estDansEcran() {
         boolean estDansEcran = false;
 
         if ((getXDroite() > Camera.getCamera().getXCamera()) &&
@@ -46,7 +46,5 @@ public class PoissonEnnemi extends ObjetJeu {
         return estDansEcran;
     }
 
-    public double getChargeQ(){
-        return CHARGE_Q;
-    }
+
 }

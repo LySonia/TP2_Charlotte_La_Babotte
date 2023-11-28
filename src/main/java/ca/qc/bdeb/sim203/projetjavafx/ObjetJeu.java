@@ -30,6 +30,8 @@ public abstract class ObjetJeu {
 
     }
 
+
+
     protected double assurerQueVitesseDansLesBornes(double vitesse) {
         if (vitesse > vitesseMax) {
             vitesse = vitesseMax;

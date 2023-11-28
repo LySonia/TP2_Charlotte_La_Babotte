@@ -3,7 +3,6 @@ package ca.qc.bdeb.sim203.projetjavafx;
 import javafx.application.Application;
 import javafx.stage.*;
 
-//possibilité d'avoir 0 pour les vitesses des poissons à gérer! //TODO
 public class Main extends Application {
     public static void main(String[] args) {
         launch(args);

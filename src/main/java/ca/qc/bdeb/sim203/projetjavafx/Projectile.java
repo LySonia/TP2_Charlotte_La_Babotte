@@ -8,7 +8,6 @@ public abstract class Projectile extends ObjetJeu {
           this.momentTire = momentTire;
     }
 
-    //TODO: Not amazing coding practices
     protected void calculerPosInitial(){
         this.x = charlotte.xCentre - w/2;
         this.y = charlotte.yCentre - h/2;
@@ -18,7 +17,7 @@ public abstract class Projectile extends ObjetJeu {
         boolean estDansEcran = false;
 
         if ((getXGauche() > Camera.getCamera().getXCamera()) &&
-                (getXDroite() < Camera.getCamera().getXCamera() + Main.LARGEUR_ECRAN) &&
+                (getXGauche() < Camera.getCamera().getXCamera() + Main.LARGEUR_ECRAN) &&
                 (getYHaut() < Main.HAUTEUR) &&
                 (getYBas() > Camera.getCamera().getYCamera())) {
 

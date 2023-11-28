@@ -67,14 +67,18 @@ public class PartieJeu {
         projectilesTires.clear();
 
         //Rajouter les objets de Jeu :
+        positionnerDecor();
+
         charlotte.setX(Camera.getCamera().getXCamera()); //Replacer Charlotte à gauche de la caméra
         objetsJeu.add(charlotte);
 
-        objetsJeu.add(barreVie);
+
         baril = new Baril(momentDebutNiveau);
         objetsJeu.add(baril);
         ajouterGroupePoissons();
-        positionnerDecor();
+
+        objetsJeu.add(barreVie);
+
     }
 
     //TOUT CE QUI EST "MISE À JOUR" :
@@ -106,6 +110,7 @@ public class PartieJeu {
             demarrerNiveau(tempsActuel);
         }
     }
+
     private void mettreAJourObjets() {
         for (ObjetJeu objetJeu : objetsJeu) {
             objetJeu.mettreAJour(deltaTemps);
@@ -140,16 +145,17 @@ public class PartieJeu {
     }
 
     private void enleverObjetsHorsEcran() { //TODO: Code copié-collé?
+
         //Enlever poissons hors écran
         for (int i = 0; i < poissonsEnnemis.size(); i++) {
-            if (!poissonsEnnemis.get(i).estDansEcran()){
+            if (!poissonsEnnemis.get(i).estDansEcran()) {
                 enleverPoissonDeListe(poissonsEnnemis.get(i));
             }
         }
 
         //Enlever projectiles hors écran
         for (int i = 0; i < projectilesTires.size(); i++) {
-            if (!projectilesTires.get(i).estDansEcran()){
+            if (!projectilesTires.get(i).estDansEcran()) {
                 enleverProjectileDeListe(projectilesTires.get(i));
             }
         }
@@ -162,7 +168,7 @@ public class PartieJeu {
         }
     }
 
-    public void gererTireProjectile(){
+    public void gererTireProjectile() {
         if ((tempsActuel - momentDernierTir) > DELAIS_TIR) {
             momentDernierTir = tempsActuel;
             tirer();
@@ -170,6 +176,11 @@ public class PartieJeu {
     }
 
 
+   /* public void enleverObjetDeListe(ArrayList<ObjetJeu> listeObjet, ObjetJeu objetAEnleve){
+        //Array du même type que l'objet
+        listeObjet.remove(objetAEnleve);
+        objetsJeu.remove(objetAEnleve);
+    }*/
 
     public void enleverPoissonDeListe(PoissonEnnemi poisson) {
         poissonsEnnemis.remove(poisson);
@@ -234,19 +245,20 @@ public class PartieJeu {
     }
 
     public void tirer() {
-        ArrayList<Projectile> nouvellesProjectiles = new ArrayList<>();
-        if (charlotte.getTypeProjectileActuel().equals(Assets.ETOILE)) {
-            nouvellesProjectiles.add(new EtoileDeMer(charlotte, tempsActuel));
-        } else if (charlotte.getTypeProjectileActuel().equals(Assets.HIPPOCAMPE)) {
-            for (int i = 0; i < NBR_HIPPOCAMPES_A_LA_FOIS; i++) {
-                nouvellesProjectiles.add(new Hippocampes(charlotte, tempsActuel));
-            }
-        } else if (charlotte.getTypeProjectileActuel().equals(Assets.SARDINES)) {
-            nouvellesProjectiles.add(new Sardines(charlotte, tempsActuel, poissonsEnnemis));
-        }
+        ArrayList<Projectile> nouveauxProjectiles = new ArrayList<>();
 
-        projectilesTires.addAll(nouvellesProjectiles);
-        objetsJeu.addAll(nouvellesProjectiles);
+        switch (charlotte.getTypeProjectileActuel()) {
+            case ETOILE -> nouveauxProjectiles.add(new EtoileDeMer(charlotte, tempsActuel));
+            case HIPPOCAMPE -> {
+                for (int i = 0; i < NBR_HIPPOCAMPES_A_LA_FOIS; i++) {
+                    nouveauxProjectiles.add(new Hippocampes(charlotte, tempsActuel));
+                }
+            }
+            case SARDINES -> nouveauxProjectiles.add(new Sardines(charlotte, tempsActuel, poissonsEnnemis));
+
+        }
+        projectilesTires.addAll(nouveauxProjectiles);
+        objetsJeu.addAll(nouveauxProjectiles);
     }
 
     private void calculerNSecondes() {
@@ -284,13 +296,13 @@ public class PartieJeu {
         String texteNiveau = ("NIVEAU " + numNiveau);
         contexte.setFont(Font.font(80));
 
-        contexte.fillText(texteNiveau, 255,  277); //Valeurs de x et y choisies arbitrairement
+        contexte.fillText(texteNiveau, 255, 277); //Valeurs de x et y choisies arbitrairement
     }
 
     private void afficherFinPartie(GraphicsContext contexte) {
         String texteNiveau = ("FIN DE PARTIE ");
         contexte.setFill(Color.RED);
-        contexte.setFont(Font.font( 80));
+        contexte.setFont(Font.font(80));
 
         contexte.fillText(texteNiveau, 170, 277); //Valeurs de x et y choisies arbitrairement
     }
@@ -305,7 +317,7 @@ public class PartieJeu {
         contexte.fillText("NB Poissons: " + getNbrPoissonsEnnemis(), 15, 55);
         contexte.fillText("NB Projectiles: " + getNbrProjectiles(), 15, 70);
 
-        double pourcentagePosCharlotte = (charlotte.getXGauche()/Main.LARGEUR_MONDE)*100;
+        double pourcentagePosCharlotte = (charlotte.getXGauche() / Main.LARGEUR_MONDE) * 100;
         contexte.fillText("pourcentagePosCharlotte: " + pourcentagePosCharlotte + "%", 10, 85);
 
         contexte.fillText("Q: Étoiles de mer", Main.LARGEUR_ECRAN - 150, 15);
@@ -327,12 +339,15 @@ public class PartieJeu {
     public Color getCouleurFondNiveau() {
         return couleurFondNiveau;
     }
+
     private int getNbrPoissonsEnnemis() {
         return poissonsEnnemis.size();
     }
+
     private int getNbrProjectiles() {
         return projectilesTires.size();
     }
+
     public boolean estDebug() {
         return estDebug;
     }
@@ -349,6 +364,7 @@ public class PartieJeu {
     public void setEstDebug(boolean estDebug) {
         this.estDebug = estDebug;
     }
+
     public void donnerMaxVie() {
         charlotte.donnerMaxVie();
     }

@@ -21,6 +21,7 @@ public class Charlotte extends ObjetJeu {
     private boolean estImmortel = false;
     private boolean estEndommagee = false;
     private boolean estVisible = true;
+    private boolean estEnMouvement = false;
 
     //Attributs autres :
     protected double xCentre = 0, yCentre = 0;
@@ -32,7 +33,7 @@ public class Charlotte extends ObjetJeu {
 
     public Charlotte() {
         image = new Image(Assets.CHARLOTTE.getEmplacement());
-        y = Main.HAUTEUR/2;
+        y = Main.HAUTEUR / 2;
         w = W_CHARLOTTE;
         h = H_CHARLOTTE;
         vitesseMax = 300;
@@ -45,8 +46,11 @@ public class Charlotte extends ObjetJeu {
         boolean haut = Input.isKeyPressed(KeyCode.UP);
         boolean bas = Input.isKeyPressed(KeyCode.DOWN);
 
-        xCentre = x + (w/2);
-        yCentre = y + (h/2);
+        //pour ajuster l'image de Charlotte
+        estEnMouvement = gauche || droite || haut || bas;
+
+        xCentre = x + (w / 2);
+        yCentre = y + (h / 2);
 
         //region -- MOUVEMENT --
         if (gauche)
@@ -83,7 +87,6 @@ public class Charlotte extends ObjetJeu {
     }
 
 
-
     public void prendreDommage() {
         if (!estImmortel) {
             nbrVie--;
@@ -104,7 +107,7 @@ public class Charlotte extends ObjetJeu {
     }
 
     //Va set le boolean estVisible à la bonne valeur
-    private void gererVisibilite (double tempsActuel) {
+    private void gererVisibilite(double tempsActuel) {
         if (estEndommagee) {
             if (tempsActuel - momentDernierClignotement > 0.25) {
                 estVisible = !estVisible;
@@ -130,7 +133,6 @@ public class Charlotte extends ObjetJeu {
     }
 
 
-
     //TOUT CE QUI EST "DESSIN" :
     @Override
     public void dessiner(GraphicsContext contexte) {
@@ -142,8 +144,10 @@ public class Charlotte extends ObjetJeu {
         if (estVisible) {
             if (estEndommagee) {
                 image = new Image(Assets.CHARLOTTE_OUTCH.getEmplacement());
-            } else {
+            } else if(estEnMouvement){
                 image = new Image(Assets.CHARLOTTE_AVANT.getEmplacement());
+            }else{
+                image = new Image(Assets.CHARLOTTE.getEmplacement());
             }
         } else {
             image = null;
@@ -152,9 +156,10 @@ public class Charlotte extends ObjetJeu {
 
 
     //SETTERS :
-    public void donnerMaxVie(){
+    public void donnerMaxVie() {
         nbrVie = NBR_VIE_MAX;
     }
+
     public void setTypeProjectileActuel(Assets typeProjectileActuel) {
         this.typeProjectileActuel = typeProjectileActuel;
     }
@@ -163,12 +168,15 @@ public class Charlotte extends ObjetJeu {
     public boolean estVivante() {
         return nbrVie > 0;
     }
-    public double getNbrVie(){
+
+    public double getNbrVie() {
         return nbrVie;
     }
+
     public double getNbrVieMax() {
         return NBR_VIE_MAX;
     }
+
     public Assets getTypeProjectileActuel() {
         return typeProjectileActuel;
     }

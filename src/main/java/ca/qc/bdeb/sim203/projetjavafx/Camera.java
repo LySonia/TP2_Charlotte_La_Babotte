@@ -22,14 +22,14 @@ public class Camera {
 
     public void reinitialiserCamera() {
         xCamera = 0;
-        yCamera = 0; //TODO: Est-ce que le y sert à quelque chose?
+        yCamera = 0;
         estALaFin = false;
     }
 
     public void update(Charlotte charlotte, double deltaTemps) {
         verifierPositionCamera();
         if (!estALaFin) {
-            if (calculerXEcran(charlotte.getXDroite()) >= (double) Main.LARGEUR_ECRAN / 5) { //charlotte est plus grande que 1/5 de l'écran
+            if (calculerXEcran(charlotte.getXDroite()) >= Main.LARGEUR_ECRAN / 5) { //charlotte est plus grande que 1/5 de l'écran
                 vxCamera = charlotte.getVx();
             } else {
                 vxCamera = 0;
@@ -49,7 +49,7 @@ public class Camera {
 
     //Pour savoir où dessiner les objets
 
-    //TODO: Assurer que XEcra et YEcran seulement utilisé pour dessins
+    //TODO: Assurer que XEcran et YEcran seulement utilisé pour dessins
     public double calculerXEcran(double x) {
         return x - xCamera;
     }

@@ -11,7 +11,7 @@ public class Sardines extends Projectile {
     private double forceEnY = 0;
     private ArrayList<PoissonEnnemi> poissonsEnnemis;
 
-    //TODO: Est-ce que la liste de poisson est la
+
     public Sardines(Charlotte charlotte, double tempsActuel, ArrayList<PoissonEnnemi> poissonEnnemis) {
         super(charlotte, tempsActuel);
         calculerPosInitial();
@@ -34,11 +34,10 @@ public class Sardines extends Projectile {
         ajusterRebondissement();
         super.mettreAJourPhysique(deltaTemps);
 
-        System.out.println(this + " vy: " + vy);
+
     }
 
     private void ajusterRebondissement() {
-        //TODO: Ajuster pour glitch quand ça sort de l'écran pendant un deltaTemps
         if (this.getYBas() >= Main.HAUTEUR || this.getYHaut() <= 0) {
             vy *= -1;
         }
@@ -61,7 +60,7 @@ public class Sardines extends Projectile {
                 double proportionX = deltaX / distance;
                 double proportionY = deltaY / distance;
 
-                forceElectrique += (K * poisson.getChargeQ() * this.CHARGE_Q) / (Math.pow(distance, 2));
+                forceElectrique += (K * poisson.CHARGE_Q * this.CHARGE_Q) / (Math.pow(distance, 2));
 
                 forceEnX += forceElectrique * proportionX;
                 forceEnY += forceElectrique * proportionY;

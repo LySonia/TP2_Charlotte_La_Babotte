@@ -24,6 +24,13 @@ public class BarreVie extends ObjetJeu {
     }
 
     @Override
+    public void mettreContour(GraphicsContext contexte) {
+        contexte.setLineWidth(1);
+        contexte.setStroke(Color.YELLOW);
+        contexte.strokeRect(x, y, w, h);
+    }
+
+    @Override
     public void dessiner(GraphicsContext contexte) {
         contexte.setStroke(Color.WHITE);
         contexte.setFill(Color.WHITE);
