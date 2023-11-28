@@ -3,7 +3,7 @@ package ca.qc.bdeb.sim203.projetjavafx;
 import javafx.scene.canvas.*;
 import javafx.scene.image.Image;
 
-import java.util.ArrayList;
+
 
 import static ca.qc.bdeb.sim203.projetjavafx.Hasard.nextDouble;
 

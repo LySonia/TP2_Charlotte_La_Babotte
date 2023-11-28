@@ -29,9 +29,9 @@ public class PartieJeu {
     private double momentFinNiveau = 0;
     private double momentDerniersPoissons = 0;
     private double momentDernierTir = 0;
-    private final double DUREE_AFFICHAGE_NIVEAU = 4;
-    public final double DUREE_AFFICHAGE_FIN_JEU = 3;
-    private final double DELAIS_TIR = 0.5;
+    private static final double DUREE_AFFICHAGE_NIVEAU = 4;
+    public static final double DUREE_AFFICHAGE_FIN_JEU = 3;
+    private static final double DELAIS_TIR = 0.5;
 
     //Attributs boolean :
     private boolean estDebug = false;
@@ -41,7 +41,7 @@ public class PartieJeu {
     //Attributs autres :
     private Color couleurFondNiveau;
     private int numNiveau = 0;
-    private final double NBR_HIPPOCAMPES_A_LA_FOIS = 3;
+    private static final double NBR_HIPPOCAMPES_A_LA_FOIS = 3;
 
 
     //Constructeur :

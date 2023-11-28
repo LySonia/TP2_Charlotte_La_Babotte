@@ -5,23 +5,25 @@ import java.util.*;
 //Classe avec méthodes statiques, pcq j'ai la flemme de créer un nouveau object random à chaque fois que j'en ai besoin
 //Tout ce qui peut être généré par hasard peut se faire générer icite
 public class Hasard {
-    public static Random generateurAleatoire = new Random();
+    public static  Random generateurAleatoire = new Random();
 
-    public static int nextInt(int borneSuperieureExclue) {
-        return generateurAleatoire.nextInt(borneSuperieureExclue);
+    public static int nextInt(int borneSupExclue) {
+        return generateurAleatoire.nextInt(borneSupExclue);
     }
-    public static int nextInt(int borneInférieureInclue, int borneSuperieureInclue) {
-        return generateurAleatoire.nextInt(borneSuperieureInclue - borneInférieureInclue) + borneInférieureInclue; //TODO: Noms de variables horribles
+
+    public static int nextInt(int borneInfInclue, int borneSupInclue) {
+        return generateurAleatoire.nextInt(borneSupInclue - borneInfInclue) + borneInfInclue;
     }
 
     public static double nextDouble(double borneInférieureInclue, double borneSuperieureInclue) {
         return generateurAleatoire.nextDouble(borneSuperieureInclue - borneInférieureInclue) + borneInférieureInclue;
     }
+
     public static Random getGenerateurAleatoire() {
         return generateurAleatoire;
     }
 
-    public static Assets choisirPoissonHasard(){
+    public static Assets choisirPoissonHasard() {
         Assets[] poissons = {
                 Assets.POISSON_1,
                 Assets.POISSON_2,
@@ -32,7 +34,8 @@ public class Hasard {
 
         return choisirAssetHasard(poissons);
     }
-    public static Assets choisirDecorHasard(){
+
+    public static Assets choisirDecorHasard() {
         Assets[] decors = {
                 Assets.DECOR_1,
                 Assets.DECOR_2,
@@ -45,7 +48,7 @@ public class Hasard {
         return choisirAssetHasard(decors);
     }
 
-    public static Assets choisirTypeProjectileHasard(){
+    public static Assets choisirTypeProjectileHasard() {
         Assets[] projectiles = {
                 Assets.ETOILE,
                 Assets.HIPPOCAMPE,
@@ -54,7 +57,8 @@ public class Hasard {
 
         return choisirAssetHasard(projectiles);
     }
-    private static Assets choisirAssetHasard(Assets[] assets){
+
+    private static Assets choisirAssetHasard(Assets[] assets) {
         Assets assetChoisi = null;
 
         int nbrAleatoire = nextInt(assets.length);

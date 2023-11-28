@@ -9,12 +9,12 @@ public class PoissonEnnemi extends ObjetJeu {
     private int numNiveau;
     private static final int HAUTEUR_MAX_IMAGE= 120;
     private static final int HAUTEUR_MIN_IMAGE = 50;
-    private static final int CHARGE_Q = -100; //TODO: Bonne idée de mettre ça static?
+    private static final int CHARGE_Q = -100;
 
     public PoissonEnnemi(int numNiveau) {
         this.numNiveau = numNiveau;
 
-        vitesseMax = 300; //TODO: Déterminé arbitrairement
+        vitesseMax = 300; // Déterminé arbitrairement
         vx = -100 * Math.pow(numNiveau, 0.33) + 200;
         vy = nextInt(-100, 100);
         ax = -500;
@@ -28,7 +28,6 @@ public class PoissonEnnemi extends ObjetJeu {
     }
 
     private double obtenirHauteurDepart() {
-        //TODO: Revérifier calcul fraction
         double min = (Main.HAUTEUR/5);
         double max = (Main.HAUTEUR/5)*4;
 

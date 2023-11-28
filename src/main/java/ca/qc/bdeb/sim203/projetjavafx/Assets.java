@@ -6,7 +6,6 @@ public enum Assets {
     CHARLOTTE("charlotte.png"),
     CHARLOTTE_AVANT("charlotte-avant.png"),
     CHARLOTTE_OUTCH("charlotte-outch.png"),
-    CHARLOTTE_OUTCH_TRANSPARENT("charlotte-outch-transparent.png"), //TODO: Change this to no image
     DECOR_1("decor1.png"),
     DECOR_2("decor2.png"),
     DECOR_3("decor3.png"),

@@ -173,7 +173,7 @@ public class Scenes {
 
         var titre = new Text("Charlotte la Barbotte");
         titre.setFont(Font.font(50));
-        //TODO: Faire de sorte que c'est toujours un poisson au hasard qui est choisie
+
         var poissonEnnemiImage = new Image(Hasard.choisirPoissonHasard().getEmplacement());
         var poissonEnnemiImageView = new ImageView(poissonEnnemiImage);
 
@@ -201,7 +201,7 @@ public class Scenes {
         hBoxSonia.setSpacing(5);
 
 
-        var texteExplicatif = new Text("Travail remis à Nicolas Hurtubise et George Côté. " +
+        var texteExplicatif = new Text(" Travail remis à Nicolas Hurtubise et George Côté. " +
                 "Graphismes adaptés de https://games-icons.net/ et de https://openclipart.org/. " +
                 "Développé dans le cadre du cours 420-203-RE. " +
                 "Développement de programmes dans un environnement graphique, au Collège de Bois-de-Boulogne.");

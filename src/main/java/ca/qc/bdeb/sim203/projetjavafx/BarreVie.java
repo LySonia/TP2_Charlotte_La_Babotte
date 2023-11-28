@@ -5,7 +5,8 @@ import javafx.scene.paint.*;
 
 public class BarreVie extends ObjetJeu {
     private Charlotte charlotte;
-    private final double LARGEUR_TOTALE_BARRE = 150.0;
+    private static final double LARGEUR_TOTALE_BARRE = 150.0;
+    private static final int LARGEUR_TRAIT = 1;
 
     public BarreVie(Charlotte charlotte) {
         this.charlotte = charlotte;
@@ -26,7 +27,7 @@ public class BarreVie extends ObjetJeu {
     public void dessiner(GraphicsContext contexte) {
         contexte.setStroke(Color.WHITE);
         contexte.setFill(Color.WHITE);
-        contexte.setLineWidth(1); //TODO: Transformer en constante
+        contexte.setLineWidth(LARGEUR_TRAIT);
         contexte.strokeRect(x, y, LARGEUR_TOTALE_BARRE, h);
         contexte.fillRect(x, y, w, h);
     }

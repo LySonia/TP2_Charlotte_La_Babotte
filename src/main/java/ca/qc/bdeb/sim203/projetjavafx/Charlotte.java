@@ -8,14 +8,14 @@ import java.util.*;
 
 public class Charlotte extends ObjetJeu {
     //Attributs constantes :
-    private final double W_CHARLOTTE = 102;
-    private final double H_CHARLOTTE = 90;
-    private final double ACCELERATION_X = 1000;
-    private final double ACCELERATION_Y = 1000;
-    private final double NBR_VIE_MAX = 4.0;
+    private final static double W_CHARLOTTE = 102;
+    private final static double H_CHARLOTTE = 90;
+    private final static double ACCELERATION_X = 1000;
+    private final static double ACCELERATION_Y = 1000;
+    private final static double NBR_VIE_MAX = 4.0;
 
     //Attributs de temps:
-    private final int TEMPS_IMMORTALITE = 2;
+    private final static int TEMPS_IMMORTALITE = 2;
 
     //Attributs boolean :
     private boolean estImmortel = false;
@@ -23,7 +23,7 @@ public class Charlotte extends ObjetJeu {
     private boolean estVisible = true;
 
     //Attributs autres :
-
+    protected double xCentre = 0, yCentre = 0;
     private double nbrVie = 4;
     private double momentDommage = 0;
     private double momentDernierClignotement = 0;
@@ -44,6 +44,9 @@ public class Charlotte extends ObjetJeu {
         boolean droite = Input.isKeyPressed(KeyCode.RIGHT);
         boolean haut = Input.isKeyPressed(KeyCode.UP);
         boolean bas = Input.isKeyPressed(KeyCode.DOWN);
+
+        xCentre = x + (w/2);
+        yCentre = y + (h/2);
 
         //region -- MOUVEMENT --
         if (gauche)
@@ -89,7 +92,6 @@ public class Charlotte extends ObjetJeu {
     }
 
     public void gererImmortalite(double tempsActuel) {
-        //TODO: Est-ce qu'il y a un cas que j'ai oublié de prendre en compte?
         if (!estImmortel && estEndommagee) {
             momentDommage = tempsActuel;
             estImmortel = true;
@@ -144,7 +146,7 @@ public class Charlotte extends ObjetJeu {
                 image = new Image(Assets.CHARLOTTE_AVANT.getEmplacement());
             }
         } else {
-            image = new Image(Assets.CHARLOTTE_OUTCH_TRANSPARENT.getEmplacement());
+            image = null;
         }
     }
 

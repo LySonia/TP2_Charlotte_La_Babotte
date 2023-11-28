@@ -7,7 +7,7 @@ import javafx.scene.paint.*;
 public abstract class ObjetJeu {
     //NOTE IMPORTANTE: LE X ET LE Y D'UN OBJET DE JEU DEVRAIT ÊTRE LE COIN EN HAUT À GAUCHE DU RECTANGLE
     protected double x = 0, y = 0;
-    protected double xCentre = 0, yCentre = 0;
+
     protected double w = 0, h = 0;
     protected double vx = 0, vy = 0;
     protected double ax = 0, ay = 0;
@@ -27,9 +27,7 @@ public abstract class ObjetJeu {
         x += deltaTemps * vx;
         y += deltaTemps * vy;
 
-        //TODO: Y'a que Charlotte qui a besoin de ces valeurs, à déplacer?
-        xCentre = x + (w/2);
-        yCentre = y + (h/2);
+
     }
 
     protected double assurerQueVitesseDansLesBornes(double vitesse) {
