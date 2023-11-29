@@ -30,7 +30,9 @@ public class Charlotte extends ObjetJeu {
     private double momentDernierClignotement = 0;
     private Assets typeProjectileActuel = Assets.ETOILE; //Par défault, le projectile est une étoile
 
-
+    /**
+     * Constructeur de la Classe Charlotte
+     */
     public Charlotte() {
         image = new Image(Assets.CHARLOTTE.getEmplacement());
         y = Main.HAUTEUR / 2;
@@ -39,6 +41,11 @@ public class Charlotte extends ObjetJeu {
         vitesseMax = 300;
     }
 
+    /**
+     * Override de la méthode mettreAJourPhysique de objet de jeu qui prend en compte les touches utilisés par
+     * l'utilisateur pour faire bouger charlotte
+     * @param deltaTemps la différence de temps
+     */
     @Override
     public void mettreAJourPhysique(double deltaTemps) {
         boolean gauche = Input.isKeyPressed(KeyCode.LEFT);
@@ -87,6 +94,9 @@ public class Charlotte extends ObjetJeu {
     }
 
 
+    /**
+     * Méthode qui s'occupe de faire prendre du dommage à Charlotte lorsqu'elle est touché par un poisson ennemi
+     */
     public void prendreDommage() {
         if (!estImmortel) {
             nbrVie--;
@@ -94,6 +104,10 @@ public class Charlotte extends ObjetJeu {
         estEndommagee = true;
     }
 
+    /**
+     * Méthode qui gère le moment d'immortalité de charlotte après qu'elle aille prit du dommage
+     * @param tempsActuel utilisé pour savoir combien de temps charlotte reste immortelle
+     */
     public void gererImmortalite(double tempsActuel) {
         if (!estImmortel && estEndommagee) {
             momentDommage = tempsActuel;
@@ -107,6 +121,11 @@ public class Charlotte extends ObjetJeu {
     }
 
     //Va set le boolean estVisible à la bonne valeur
+
+    /**
+     *
+     * @param tempsActuel
+     */
     private void gererVisibilite(double tempsActuel) {
         if (estEndommagee) {
             if (tempsActuel - momentDernierClignotement > 0.25) {
