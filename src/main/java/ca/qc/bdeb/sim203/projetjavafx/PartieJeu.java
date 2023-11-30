@@ -46,6 +46,7 @@ public class PartieJeu {
 
     /**
      * Contructeur de la classe PartieJeu
+     *
      * @param tempsActuel le temps au moment de la création d'une instance de PartieJeu
      */
     public PartieJeu(double tempsActuel) {
@@ -55,8 +56,10 @@ public class PartieJeu {
     }
 
     //Méthodes :
+
     /**
      * Commencer un nouvel niveau
+     *
      * @param tempsActuel le temps au moment d'apeller cette méthode
      */
     public void demarrerNiveau(double tempsActuel) {
@@ -89,8 +92,10 @@ public class PartieJeu {
     }
 
     //TOUT CE QUI EST "MISE À JOUR" :
+
     /**
      * Méthode qui sert à avacer l'état de l'objet
+     *
      * @param tempsActuel le temps au moment de l'appel de cette méthode
      */
     public void mettreAJourJeu(double tempsActuel) {
@@ -208,6 +213,7 @@ public class PartieJeu {
 
     /**
      * Enlever un poisson des ArrayLists d'objets de jeu qui le contiennent
+     *
      * @param poisson le poisson à enlever
      */
     public void enleverPoissonDeListe(PoissonEnnemi poisson) {
@@ -217,6 +223,7 @@ public class PartieJeu {
 
     /**
      * Enlever un projectile des ArrayLists d'objets de jeu qui le contiennent
+     *
      * @param projectile le projectile à enlever
      */
     public void enleverProjectileDeListe(Projectile projectile) {
@@ -248,7 +255,7 @@ public class PartieJeu {
 
     /**
      * Vérifier si Charlotte est à la fin du niveau
-      */
+     */
     private void verifierCharlotteEstALaFinNiveau() {
         estALaFinNiveau = charlotte.getXDroite() >= Main.LARGEUR_MONDE;
     }
@@ -275,7 +282,7 @@ public class PartieJeu {
     /**
      * Ouvrir le baril
      */
-    public void ouvrirBaril() {
+    private void ouvrirBaril() {
         if (!baril.isEstOuvert()) {
             baril.setEstOuvert(true);
             Assets nouvelTypeProjectile = baril.donnerProjectile(charlotte.getTypeProjectileActuel());
@@ -285,6 +292,7 @@ public class PartieJeu {
 
     /**
      * Changer le type de projectile à Charlotte
+     *
      * @param typeProjectile le nouvel type de projectile à Charlotte
      */
     public void changerTypeProjectile(Assets typeProjectile) {
@@ -294,7 +302,7 @@ public class PartieJeu {
     /**
      * Tirer un projectile
      */
-    public void tirer() {
+    private void tirer() {
         ArrayList<Projectile> nouveauxProjectiles = new ArrayList<>();
 
         switch (charlotte.getTypeProjectileActuel()) {
@@ -319,8 +327,10 @@ public class PartieJeu {
     }
 
     //TOUT CE QUI EST "DESSIN" :
+
     /**
      * Méthode qui gère le dessin de tout ce qui doit être affiché sur l'écran de jeu à l'aide de JavaFX
+     *
      * @param contexte le GraphicsContext sur lequel on dessine ce qu'on a à dessiner
      */
     public void dessiner(GraphicsContext contexte) {
@@ -346,6 +356,7 @@ public class PartieJeu {
 
     /**
      * Dessine le type de projectile à droite de la barre de vie
+     *
      * @param contexte le GraphicsContext sur lequel on dessine
      */
     private void dessinerProjectileDroiteBarre(GraphicsContext contexte) {
@@ -354,6 +365,7 @@ public class PartieJeu {
 
     /**
      * Affiche le text qui indique le numéro du niveau
+     *
      * @param contexte le GraphicsContexte sur lequel on dessine
      */
     private void afficherNumNiveau(GraphicsContext contexte) {
@@ -365,6 +377,7 @@ public class PartieJeu {
 
     /**
      * Affiche le texte de fin de partie
+     *
      * @param contexte le GraphicsContext sur lequel on dessine
      */
     private void afficherFinPartie(GraphicsContext contexte) {
@@ -377,6 +390,7 @@ public class PartieJeu {
 
     /**
      * Afficher les informations à montrer dans le mode debug
+     *
      * @param contexte le GraphicsContext sur lequel on dessine
      */
     private void afficherDebug(GraphicsContext contexte) {
@@ -423,17 +437,13 @@ public class PartieJeu {
         return projectilesTires.size();
     }
 
-    public boolean estDebug() {
-        return estDebug;
-    }
-
-    public boolean estFinPartie() {
-        return estFinPartie;
-    }
-
     public double getMomentFinNiveau() {
         return momentFinNiveau;
     }
+
+    public boolean estDebug() {return estDebug;}
+
+    public boolean estFinPartie() {return estFinPartie;}
 
     //SETTERS
     public void setEstDebug(boolean estDebug) {

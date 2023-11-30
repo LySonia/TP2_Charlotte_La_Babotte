@@ -17,6 +17,7 @@ public abstract class ObjetJeu {
 
     /**
      * Mettre à jour l'objet
+     *
      * @param deltaTemps différence de temps
      */
     public void mettreAJour(double deltaTemps) {
@@ -25,6 +26,7 @@ public abstract class ObjetJeu {
 
     /**
      * Mettre à jour la physique de l'objet
+     *
      * @param deltaTemps différence de temps
      */
     public void mettreAJourPhysique(double deltaTemps) {
@@ -39,6 +41,7 @@ public abstract class ObjetJeu {
 
     /**
      * Assurer que la vitesse est dans les bornes
+     *
      * @param vitesse la vitesse à vérifier
      * @return la vitesse ajustée si elle est en dehors des bornes, la vitesse donnée en argument sinon
      */
@@ -52,8 +55,10 @@ public abstract class ObjetJeu {
     }
 
     //TOUT EN LIEN AVEC LE DESSIN:
+
     /**
      * Dessiner l'objet
+     *
      * @param contexte le GraphicsContext sur lequel on dessine
      */
     public void dessiner(GraphicsContext contexte) {
@@ -62,6 +67,7 @@ public abstract class ObjetJeu {
 
     /**
      * Mettre un contour autour de l'objet
+     *
      * @param contexte le GraphicsContext sur lequel on dessine
      */
     protected void mettreContour(GraphicsContext contexte) {
@@ -71,19 +77,19 @@ public abstract class ObjetJeu {
     }
 
     //GETTERS :
-    protected double getXGauche(){
+    protected double getXGauche() {
         return this.x;
     }
 
-    protected double getXDroite(){
+    protected double getXDroite() {
         return this.x + this.w;
     }
 
-    protected double getYHaut(){
+    protected double getYHaut() {
         return this.y;
     }
 
-    protected double getYBas(){
+    protected double getYBas() {
         return this.y + this.h;
     }
 
@@ -91,5 +97,5 @@ public abstract class ObjetJeu {
         return vx;
     }
 
-
+    public void setX(double x) {this.x = x;}
 }
