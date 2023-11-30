@@ -78,6 +78,7 @@ public class Scenes {
                 timer.stop();
 
                 stage.setScene(getSceneAccueil());
+                Input.touches.clear();
             } else {
                 Input.setKeyPressed(e.getCode(), true);
                 if (e.getCode() == KeyCode.D) {
@@ -283,6 +284,7 @@ public class Scenes {
 
         if (e.getCode() == KeyCode.ESCAPE) {
             Platform.exit();
+            Input.touches.clear();
         }
     }
 
