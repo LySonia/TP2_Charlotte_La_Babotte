@@ -404,7 +404,7 @@ public class PartieJeu {
         contexte.fillText("NB Projectiles: " + getNbrProjectiles(), 15, 70);
 
         double pourcentagePosCharlotte = (charlotte.getXGauche() / Main.LARGEUR_MONDE) * 100;
-        contexte.fillText("pourcentagePosCharlotte: " + pourcentagePosCharlotte + "%", 10, 85);
+        contexte.fillText("pourcentagePosCharlotte: " + pourcentagePosCharlotte + "%", 15, 85);
 
         contexte.fillText("Q: Étoiles de mer", Main.LARGEUR_ECRAN - 150, 15);
         contexte.fillText("W: Trios d'hippocampes", Main.LARGEUR_ECRAN - 150, 30);
@@ -419,9 +419,9 @@ public class PartieJeu {
      */
     private void preparerFondNiveau() {
         final double saturation = 0.84;
-        final double luminosité = 1.0;
+        final double luminosite = 1.0;
         final double teinte = nextInt(190, 270);
-        couleurFondNiveau = Color.hsb(teinte, saturation, luminosité);
+        couleurFondNiveau = Color.hsb(teinte, saturation, luminosite);
     }
 
     //GETTERS
