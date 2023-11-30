@@ -11,9 +11,11 @@ public class PoissonEnnemi extends ObjetJeu {
     private static final int HAUTEUR_MIN_IMAGE = 50;
     public static final int CHARGE_Q = -100;
 
+    /**
+     * Construteur de la classe PoissonEnnemi
+     * @param numNiveau le numéro du niveau
+     */
     public PoissonEnnemi(int numNiveau) {
-        this.numNiveau = numNiveau; //TODO: this is never used
-
         vitesseMax = 300; // Déterminé arbitrairement
         vx = -100 * Math.pow(numNiveau, 0.33) + 200;
         vy = nextInt(-100, 100);
@@ -24,22 +26,30 @@ public class PoissonEnnemi extends ObjetJeu {
         w = image.getWidth();
 
         x = Camera.getCamera().getXCamera() + w + Main.LARGEUR_ECRAN;
-        y = obtenirHauteurDepart();
+        y = trouverYDepart();
     }
 
-    private double obtenirHauteurDepart() {
+    /**
+     * Trouver le y de départ du poisson ennemi
+     * @return
+     */
+    private double trouverYDepart() {
         double min = (Main.HAUTEUR/5);
         double max = (Main.HAUTEUR/5)*4;
 
         return nextDouble(min, max);
     }
 
+    /**
+     * Trouver si le poisson ennemi est dans l'écran
+     * @return boolean qui est true si le poisson est dans l'écran
+     */
    public boolean estDansEcran() {
         boolean estDansEcran = false;
 
-        if ((getXDroite() > Camera.getCamera().getXCamera()) &&
-                (getYHaut() < Main.HAUTEUR) &&
-                (getYBas() > Camera.getCamera().getYCamera())) {
+        if ((getXDroite() > Camera.getCamera().getXCamera()) && //Vérifier gauche écran
+                (getYHaut() < Main.HAUTEUR) && //Vérifier bas écran
+                (getYBas() > Camera.getCamera().getYCamera())) { //Vérifier haut écran
 
             estDansEcran = true;
         }

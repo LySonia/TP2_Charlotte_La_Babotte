@@ -9,6 +9,7 @@ import javafx.scene.control.*;
 import javafx.scene.image.*;
 import javafx.scene.input.*;
 import javafx.scene.layout.*;
+import javafx.scene.paint.*;
 import javafx.scene.text.*;
 import javafx.stage.*;
 
@@ -18,9 +19,12 @@ public class Scenes {
     public static final double NANOSECONDE = 1e-9; //Bon placement de la variable?
     private static final String NOM_JEU = "Charlotte la Barbotte";
     private Stage stage;
-
     private AnimationTimer timer;
 
+    /**
+     * Constructeur de la classe Scenes
+     * @param stage le stage utilisé pour afficher le jeu
+     */
     public Scenes(Stage stage) {
         this.stage = stage;
         stage.setScene(getSceneAccueil()); //Par défault, c'est la scène d'accueil
@@ -29,6 +33,10 @@ public class Scenes {
         stage.getIcons().add(new Image(Assets.CHARLOTTE.getEmplacement()));
     }
 
+    /**
+     * Méthode qui construit la scène de jeu
+     * @return la scène de jeu
+     */
     public Scene getSceneJeu() {
         PartieJeu partieJeu = new PartieJeu(System.nanoTime() * NANOSECONDE);
 
@@ -93,6 +101,12 @@ public class Scenes {
         return sceneJeu;
     }
 
+    /**
+     * Gérer ce que le programme fait selon la saisie de l'utilisateur quand le jeu est en mode debug
+     * @param partieJeu un objet partieJeu
+     * @param e le KeyEvent quand l'utilisateur touche un bouton
+     * @param tempsActuel le temps actuel
+     */
     private void gererKeyPressedDebug(PartieJeu partieJeu, KeyEvent e, double tempsActuel) {
         if (e.getCode() == KeyCode.Q) {
             partieJeu.changerTypeProjectile(Assets.ETOILE);
@@ -115,6 +129,10 @@ public class Scenes {
         }
     }
 
+    /**
+     * Méthode qui construit la scène d'accueil
+     * @return la scène d'accueil
+     */
     public Scene getSceneAccueil() {
         Pane root = creerRoot();
         var sceneAccueil = new Scene(root, Main.LARGEUR_ECRAN, Main.HAUTEUR);
@@ -133,12 +151,14 @@ public class Scenes {
         var groupeBoutons = new HBox();
         groupeBoutons.getChildren().addAll(jouer, infos);
         groupeBoutons.setAlignment(Pos.CENTER);
+        groupeBoutons.setSpacing(5);
 
         vboxAccueil.getChildren().addAll(
                 logoImageView,
                 groupeBoutons
         );
         vboxAccueil.setAlignment(Pos.CENTER);
+        vboxAccueil.setSpacing(10);
 
         root.getChildren().add(vboxAccueil);
 
@@ -163,63 +183,77 @@ public class Scenes {
         return sceneAccueil;
     }
 
+    /**
+     * Méthode qui construit la scène d'info
+     * @return la scène de d'info
+     */
     public Scene getSceneInfo() {
         Pane root = creerRoot();
         var sceneInfo = new Scene(root, Main.LARGEUR_ECRAN, Main.HAUTEUR);
 
-        var vbox = new VBox();
-        vbox.setPrefWidth(Main.LARGEUR_ECRAN);
-        vbox.setPrefHeight(Main.HAUTEUR);
+        var vBox = new VBox();
+        vBox.setPrefWidth(Main.LARGEUR_ECRAN);
+        vBox.setPrefHeight(Main.HAUTEUR);
 
         var titre = new Text("Charlotte la Barbotte");
         titre.setFont(Font.font(50));
 
         var poissonEnnemiImage = new Image(Hasard.choisirPoissonHasard().getEmplacement());
         var poissonEnnemiImageView = new ImageView(poissonEnnemiImage);
+        poissonEnnemiImageView.setPreserveRatio(true);
+        poissonEnnemiImageView.setFitHeight(130);
 
+        var fontNoms = new Font(40);
 
         var par = new Text("Par");
+        par.setFont(Font.font(20));
         var camilleMarquis = new Text("Camille Marquis");
-        camilleMarquis.setFont(Font.font(30));
+        camilleMarquis.setFont(fontNoms);
         var hBoxCamille = new HBox();
         hBoxCamille.getChildren().addAll(
                 par,
                 camilleMarquis
         );
-        hBoxCamille.setAlignment(Pos.BOTTOM_CENTER);
+        hBoxCamille.setAlignment(Pos.CENTER);
         hBoxCamille.setSpacing(5);
 
         var et = new Text("et");
+        et.setFont(Font.font(20));
         var soniaLy = new Text("Sonia Ly");
-        soniaLy.setFont(Font.font(30));
+        soniaLy.setFont(fontNoms);
         var hBoxSonia = new HBox();
         hBoxSonia.getChildren().addAll(
                 et,
                 soniaLy
         );
-        hBoxSonia.setAlignment(Pos.BOTTOM_CENTER);
+        hBoxSonia.setAlignment(Pos.CENTER);
         hBoxSonia.setSpacing(5);
 
 
-        var texteExplicatif = new Text(" Travail remis à Nicolas Hurtubise et George Côté. " +
+        var texteExplicatif = new Text("Travail remis à Nicolas Hurtubise et George Côté. " +
                 "Graphismes adaptés de https://games-icons.net/ et de https://openclipart.org/. " +
-                "Développé dans le cadre du cours 420-203-RE. " +
+                "Développé dans le cadre du cours 420-203-RE - " +
                 "Développement de programmes dans un environnement graphique, au Collège de Bois-de-Boulogne.");
-        var texteExplicatifMieux = new TextFlow(texteExplicatif);
+        texteExplicatif.setFont(Font.font("Verdana", FontWeight.SEMI_BOLD, 12));
+        var texteExplicatifPlusieursLignes = new TextFlow(texteExplicatif);
+        texteExplicatifPlusieursLignes.setMaxWidth(700);
+        texteExplicatifPlusieursLignes.setTextAlignment(TextAlignment.JUSTIFY);
 
         var retour = new Button("Retour");
 
-        vbox.getChildren().addAll(
+        vBox.getChildren().addAll(
                 titre,
                 poissonEnnemiImageView,
                 hBoxCamille,
                 hBoxSonia,
-                texteExplicatifMieux,
+                texteExplicatifPlusieursLignes,
                 retour
         );
-        vbox.setAlignment(Pos.TOP_CENTER);
+        vBox.setAlignment(Pos.TOP_CENTER);
+        vBox.setSpacing(5);
+        vBox.setPadding(new Insets(10));
 
-        root.getChildren().add(vbox);
+        root.getChildren().add(vBox);
 
         //region ÉVÉNEMENTS
         sceneInfo.setOnKeyPressed((e) -> {
@@ -239,6 +273,11 @@ public class Scenes {
     }
 
     //region MÉTHODES GÉNÉRALES
+
+    /**
+     * Gérer ce que le programme fait selon la saisie de l'utilisateur quand on est dans la scène d'accueil ou d'info
+     * @param e le KeyEvent quand l'utilisateur touche un bouton
+     */
     private void gererKeyPressedGenerale(KeyEvent e){
         Input.setKeyPressed(e.getCode(), true);
 
@@ -247,17 +286,22 @@ public class Scenes {
         }
     }
 
+    /**
+     * Gérer ce que le programme fait quand l'utilisateur ne pèse plus sur un bouton.
+     * @param e le Keyevent quand l'utilisateur ne pèse plus sur le bouton
+     */
     private void gererKeyReleasedGenerale(KeyEvent e){
         Input.setKeyPressed(e.getCode(), false);
-
-        if (e.getCode() == KeyCode.ESCAPE) {
-            Platform.exit();
-        }
     }
 
+    /**
+     * Créer un root pou
+     * @return le root au fond blue
+     */
     private Pane creerRoot() {
-        Pane root = new Pane();
-        root.setStyle("-fx-background-color: #2A7FFF;"); // Pour faire de sorte que le fond est bleu
+        var root = new Pane();
+        var bleuEnonce = Color.web("#2A7FFF");
+        root.setBackground(new Background(new BackgroundFill(bleuEnonce, null, null)));
         return root;
     }
     //endregion
