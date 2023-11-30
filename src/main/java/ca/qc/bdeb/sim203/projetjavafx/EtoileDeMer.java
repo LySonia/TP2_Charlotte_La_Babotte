@@ -15,7 +15,6 @@ public class EtoileDeMer extends Projectile{
         w = 36;
         h = 35;
         vx = 800;
-        vitesseMax = 800;
         calculerPosInitial();
     }
 }

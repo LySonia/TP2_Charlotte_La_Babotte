@@ -4,8 +4,6 @@ import javafx.scene.canvas.*;
 import javafx.scene.image.*;
 import javafx.scene.input.*;
 
-import java.util.*;
-
 public class Charlotte extends ObjetJeu {
     //Attributs constantes :
     private final static double W_CHARLOTTE = 102;
@@ -13,6 +11,8 @@ public class Charlotte extends ObjetJeu {
     private final static double ACCELERATION_X = 1000;
     private final static double ACCELERATION_Y = 1000;
     private final static double NBR_VIE_MAX = 4.0;
+    private final static double VITESSE_MAX = 300;
+    private final static double VITESSE_MIN = -300;
 
     //Attributs de temps:
     private final static int TEMPS_IMMORTALITE = 2;
@@ -38,7 +38,6 @@ public class Charlotte extends ObjetJeu {
         y = Main.HAUTEUR / 2;
         w = W_CHARLOTTE;
         h = H_CHARLOTTE;
-        vitesseMax = 300;
     }
 
     /**
@@ -49,6 +48,27 @@ public class Charlotte extends ObjetJeu {
      */
     @Override
     public void mettreAJourPhysique(double deltaTemps) {
+        mettreAJourAccelerationSelonSaisie(deltaTemps);
+        super.mettreAJourPhysique(deltaTemps);
+        assurerQueResteDansEcran();
+    }
+
+    /**
+     * Mettre à jour la vitesse de Charlotte en considérant la vitesse maximale
+     * @param deltaTemps la différence de temps
+     */
+    @Override
+    protected void mettreAJourVitesse(double deltaTemps) {
+        super.mettreAJourVitesse(deltaTemps);
+        vx = assurerVitesseDansBornes(vx, VITESSE_MIN, VITESSE_MAX);
+        vy = assurerVitesseDansBornes(vy, VITESSE_MIN, VITESSE_MAX);
+    }
+
+    /**
+     * Ajuster l'accélération de Charlotte selon la saisie de l'utilisateur
+     * @param deltaTemps différence de temps
+     */
+    private void mettreAJourAccelerationSelonSaisie(double deltaTemps){
         boolean gauche = Input.isKeyPressed(KeyCode.LEFT);
         boolean droite = Input.isKeyPressed(KeyCode.RIGHT);
         boolean haut = Input.isKeyPressed(KeyCode.UP);
@@ -70,9 +90,6 @@ public class Charlotte extends ObjetJeu {
             vy = trouverVitesse(deltaTemps, ACCELERATION_Y, vy);
         }
 
-        //endregion
-        super.mettreAJourPhysique(deltaTemps);
-        assurerQueResteDansEcran();
     }
 
     /**

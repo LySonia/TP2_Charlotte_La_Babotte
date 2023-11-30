@@ -11,13 +11,11 @@ public abstract class ObjetJeu {
     protected double w = 0, h = 0;
     protected double vx = 0, vy = 0;
     protected double ax = 0, ay = 0;
-    protected double vitesseMax = 0;
 
     protected Image image;
 
     /**
      * Mettre à jour l'objet
-     *
      * @param deltaTemps différence de temps
      */
     public void mettreAJour(double deltaTemps) {
@@ -26,39 +24,50 @@ public abstract class ObjetJeu {
 
     /**
      * Mettre à jour la physique de l'objet
-     *
      * @param deltaTemps différence de temps
      */
     public void mettreAJourPhysique(double deltaTemps) {
+        mettreAJourVitesse(deltaTemps);
+        mettreAJourPosition(deltaTemps);
+    }
+
+    /**
+     * Effectuer les calculs pour mettre à jour la vitesse
+     * @param deltaTemps différence de temps
+     */
+    protected void mettreAJourVitesse(double deltaTemps) {
         vx += deltaTemps * ax;
         vy += deltaTemps * ay;
-        vx = assurerQueVitesseDansLesBornes(vx);
-        vy = assurerQueVitesseDansLesBornes(vy);
+    }
 
+    /**
+     * Calculs pour mettre à jour la position
+     * @param deltaTemps différence de temps
+     */
+    private void mettreAJourPosition(double deltaTemps){
         x += deltaTemps * vx;
         y += deltaTemps * vy;
     }
 
     /**
-     * Assurer que la vitesse est dans les bornes
-     *
-     * @param vitesse la vitesse à vérifier
-     * @return la vitesse ajustée si elle est en dehors des bornes, la vitesse donnée en argument sinon
+     * Pour les objets qui ont une vitesse maximale, assurer que la vitesse est entre les bornes
+     * @param vitesse la vitesse à analyser
+     * @param vitesseMin la vitesse minimale
+     * @param vitesseMax la vitesse maximale
+     * @return la vitesse ajustée
      */
-    protected double assurerQueVitesseDansLesBornes(double vitesse) {
+    protected double assurerVitesseDansBornes(double vitesse, double vitesseMin, double vitesseMax) {
         if (vitesse > vitesseMax) {
             vitesse = vitesseMax;
-        } else if (vitesse < -vitesseMax) {
+        } else if (vitesse < vitesseMin) {
             vitesse = -vitesseMax;
         }
         return vitesse;
     }
 
     //TOUT EN LIEN AVEC LE DESSIN:
-
     /**
      * Dessiner l'objet
-     *
      * @param contexte le GraphicsContext sur lequel on dessine
      */
     public void dessiner(GraphicsContext contexte) {
@@ -67,7 +76,6 @@ public abstract class ObjetJeu {
 
     /**
      * Mettre un contour autour de l'objet
-     *
      * @param contexte le GraphicsContext sur lequel on dessine
      */
     protected void mettreContour(GraphicsContext contexte) {
@@ -77,19 +85,19 @@ public abstract class ObjetJeu {
     }
 
     //GETTERS :
-    protected double getXGauche() {
+    protected double getXGauche(){
         return this.x;
     }
 
-    protected double getXDroite() {
+    protected double getXDroite(){
         return this.x + this.w;
     }
 
-    protected double getYHaut() {
+    protected double getYHaut(){
         return this.y;
     }
 
-    protected double getYBas() {
+    protected double getYBas(){
         return this.y + this.h;
     }
 
@@ -97,5 +105,8 @@ public abstract class ObjetJeu {
         return vx;
     }
 
-    public void setX(double x) {this.x = x;}
+    //SETTERS :
+    public void setX(double x) {
+        this.x = x;
+    }
 }

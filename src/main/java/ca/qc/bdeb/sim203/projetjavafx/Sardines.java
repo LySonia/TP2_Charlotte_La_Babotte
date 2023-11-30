@@ -7,6 +7,10 @@ import java.util.*;
 public class Sardines extends Projectile {
     private final static int CHARGE_Q = 200;
     private final static int K = 1000;
+    private final static double VITESSE_X_MIN = 300;
+    private final static double VITESSE_X_MAX = 500;
+    private final static double VITESSE_Y_MIN = -500;
+    private final static double VITESSE_Y_MAX = 500;
     private double forceEnX = 0;
     private double forceEnY = 0;
     private ArrayList<PoissonEnnemi> poissonsEnnemis;
@@ -20,7 +24,6 @@ public class Sardines extends Projectile {
     public Sardines(Charlotte charlotte, double tempsActuel, ArrayList<PoissonEnnemi> poissonEnnemis) {
         super(charlotte, tempsActuel);
         calculerPosInitial();
-        vitesseMax = 800;
         w = 35;
         h = 29;
         vx = 300;
@@ -43,6 +46,19 @@ public class Sardines extends Projectile {
         ajusterRebondissement();
         super.mettreAJourPhysique(deltaTemps);
     }
+
+    /**
+     * Override la méthode mettreAJourVitesse de ObjetJeu pour prendre en considération les limites de vitesse
+     * @param deltaTemps différence de temps
+     */
+    @Override
+    protected void mettreAJourVitesse(double deltaTemps) {
+        super.mettreAJourVitesse(deltaTemps);
+        vx = assurerVitesseDansBornes(vx, VITESSE_X_MIN, VITESSE_X_MAX);
+        vy = assurerVitesseDansBornes(vy, VITESSE_Y_MIN, VITESSE_Y_MAX);
+    }
+
+
 
     /**
      * Fait rebondir la canette de sardines si elle touche soit le haut, soit le bas de l'écran

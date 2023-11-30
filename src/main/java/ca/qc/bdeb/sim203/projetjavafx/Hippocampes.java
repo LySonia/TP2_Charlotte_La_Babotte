@@ -21,7 +21,6 @@ public class Hippocampes extends Projectile {
         w = 20;
         h = 36;
         vx = 500;
-        vitesseMax = 500;
         calculerPosInitial();
         yInitial = y;
 

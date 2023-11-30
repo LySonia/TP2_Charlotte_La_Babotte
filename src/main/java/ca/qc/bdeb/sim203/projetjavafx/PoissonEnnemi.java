@@ -6,7 +6,6 @@ import static ca.qc.bdeb.sim203.projetjavafx.Hasard.nextDouble;
 import static ca.qc.bdeb.sim203.projetjavafx.Hasard.nextInt;
 
 public class PoissonEnnemi extends ObjetJeu {
-    private int numNiveau;
     private static final int HAUTEUR_MAX_IMAGE= 120;
     private static final int HAUTEUR_MIN_IMAGE = 50;
     public static final int CHARGE_Q = -100;
@@ -16,9 +15,7 @@ public class PoissonEnnemi extends ObjetJeu {
      * @param numNiveau le numéro du niveau
      */
     public PoissonEnnemi(int numNiveau) {
-        this.numNiveau = numNiveau;
-        vitesseMax = 300; // Déterminé arbitrairement
-        vx = -100 * Math.pow(this.numNiveau, 0.33) + 200;
+        vx = -100 * Math.pow(numNiveau, 0.33) + 200;
         vy = nextInt(-100, 100);
         ax = -500;
 
@@ -33,7 +30,7 @@ public class PoissonEnnemi extends ObjetJeu {
 
     /**
      * Trouver le y de départ du poisson ennemi
-     * @return
+     * @return le y de départ du poisson ennemi
      */
     private double trouverYDepart() {
         double min = (Main.HAUTEUR/5);
@@ -55,6 +52,7 @@ public class PoissonEnnemi extends ObjetJeu {
 
             estDansEcran = true;
         }
+
         return estDansEcran;
     }
 
