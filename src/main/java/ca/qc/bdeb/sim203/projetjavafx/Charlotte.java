@@ -200,7 +200,7 @@ public class Charlotte extends ObjetJeu {
      * Méthode qui, en vérifiant plusieurs booleans, set l'image de Charlotte selon son état (Statique, en mouvement ou
      * blessée)
      */
-    public void gererImageCharlotte() {
+    private void gererImageCharlotte() {
         if (estVisible) {
             if (estEndommagee) {
                 image = new Image(Assets.CHARLOTTE_OUTCH.getEmplacement());
