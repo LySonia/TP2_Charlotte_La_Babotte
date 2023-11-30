@@ -5,7 +5,7 @@ public abstract class Projectile extends ObjetJeu {
     protected double momentTire;
 
     /**
-     * Constructeur de l'objet Projectile
+     * Constructeur de la classe Projectile
      * @param charlotte la Charlotte de la Partie
      * @param momentTire le temps en secondes au moment de la tire
      */
@@ -31,8 +31,8 @@ public abstract class Projectile extends ObjetJeu {
 
         if ((getXGauche() > Camera.getCamera().getXCamera()) && //Vérifier gauche écran
                 (getXGauche() < Camera.getCamera().getXCamera() + Main.LARGEUR_ECRAN) && //Vérifier droite écran
-                (getYHaut() < Main.HAUTEUR) && //Vérifier haut écran
-                (getYBas() > Camera.getCamera().getYCamera())) { //Vérifier bas écran
+                (getYHaut() < Main.HAUTEUR) && //Vérifier bas écran
+                (getYBas() > Camera.getCamera().getYCamera())) { //Vérifier haut écran
 
             estDansEcran = true;
         }

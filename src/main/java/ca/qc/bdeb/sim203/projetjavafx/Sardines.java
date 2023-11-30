@@ -12,7 +12,7 @@ public class Sardines extends Projectile {
     private ArrayList<PoissonEnnemi> poissonsEnnemis;
 
     /**
-     * Constructeur de l'objet Sardines
+     * Constructeur de la classe Sardines
      * @param charlotte la Charlotte de la partie
      * @param tempsActuel le temps quand l'objet est crée
      * @param poissonEnnemis le ArrayList des poissons ennemis dans le jeu
@@ -85,7 +85,7 @@ public class Sardines extends Projectile {
     /**
      * Vérifier que le poisson ennemi à analyser se retrouve à droite de la canette de sardines
      * @param poissonEnnemi le poisson ennemi à analyser
-     * @return un boolean qui est vrai si le poisson ennemi est à droite
+     * @return un boolean qui est true si le poisson ennemi est à droite
      */
     private boolean verifierQuePoissonADroite(PoissonEnnemi poissonEnnemi) {
         return poissonEnnemi.x > this.x;

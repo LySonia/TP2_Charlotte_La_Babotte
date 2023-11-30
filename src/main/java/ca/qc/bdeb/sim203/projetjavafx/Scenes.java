@@ -22,7 +22,7 @@ public class Scenes {
     private AnimationTimer timer;
 
     /**
-     * Constructeur de l'objet Scenes
+     * Constructeur de la classe Scenes
      * @param stage le stage utilisé pour afficher le jeu
      */
     public Scenes(Stage stage) {
