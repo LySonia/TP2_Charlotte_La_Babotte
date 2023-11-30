@@ -24,13 +24,13 @@ public class Sardines extends Projectile {
      */
     public Sardines(Charlotte charlotte, double tempsActuel, ArrayList<PoissonEnnemi> poissonEnnemis) {
         super(charlotte, tempsActuel);
-        calculerPosInitial();
-        w = 35;
-        h = 29;
         vx = 300;
         vy = 0;
         ay = 0;
         image = new Image(Assets.SARDINES.getEmplacement());
+        w = 35;
+        h = 29;
+        calculerPosInitial();
         this.poissonsEnnemis = poissonEnnemis;
     }
 
