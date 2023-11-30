@@ -61,37 +61,55 @@ public class Charlotte extends ObjetJeu {
         yCentre = y + (h / 2);
 
         //region -- MOUVEMENT --
-        if (gauche)
-            ax = -ACCELERATION_X;
-        else if (droite)
-            ax = ACCELERATION_X;
-        else {
-            ax = 0;
-            int signeVitesse = trouverSigneVitesse(vx);
-            vx += deltaTemps * (-signeVitesse) * ACCELERATION_X;
-            int nouveauSigneVitesse = trouverSigneVitesse(vx);
-            if (nouveauSigneVitesse != signeVitesse) {
-                vx = 0;
-            }
+        ax = trouverAcceleration(gauche, droite, ACCELERATION_X);
+        ay = trouverAcceleration(haut, bas, ACCELERATION_Y);
+        if (ax == 0) {
+            vx = trouverVitesse(deltaTemps, ACCELERATION_X, vx);
+        }
+        if (ay == 0) {
+            vy = trouverVitesse(deltaTemps, ACCELERATION_Y, vy);
         }
 
-        if (haut)
-            ay = -ACCELERATION_Y;
-        else if (bas)
-            ay = ACCELERATION_Y;
-        else {
-            // Code inspiré des NDC "Animations 5"
-            ay = 0;
-            int signeVitesse = trouverSigneVitesse(vy);
-            vy += deltaTemps * (-signeVitesse) * ACCELERATION_Y;
-            int nouveauSigneVitesse = trouverSigneVitesse(vy);
-            if (nouveauSigneVitesse != signeVitesse) {
-                vy = 0;
-            }
-        }
         //endregion
         super.mettreAJourPhysique(deltaTemps);
         assurerQueResteDansEcran();
+    }
+
+    /**
+     * Méthode servant à réduire le copier-coller lors du calculer des vitesses quand l'accélération est = à 0
+     * @param deltaTemps la difféerence de temps
+     * @param constanteAcceleration la constante (soit x ou y) de l'accélération de Charlotte
+     * @param vitesse la vitesse initiale de charlotte (soit x ou y)
+     * @return la nouvelle vitesse de Charlotte
+     */
+    private double trouverVitesse(double deltaTemps, double constanteAcceleration, double vitesse) {
+        int signeVitesse = trouverSigneVitesse(vitesse);
+        vitesse += deltaTemps * (-signeVitesse) * constanteAcceleration;
+        int nouveauSigneVitesse = trouverSigneVitesse(vitesse);
+        if (nouveauSigneVitesse != signeVitesse) {
+            vitesse = 0;
+        }
+        return vitesse;
+    }
+
+    /**
+     * Méthode qui sert à trouver l'accélération selon les touches appuyées par l'utilisateur
+     * @param vaVersNegatif boolean qui dicte si l'utilisateur appuie une touche amenant charlotte vers les négatifs
+     * @param vaVersPositif boolean qui dicte si l'utilisateur appuie une touche amenant charlotte vers les positifs
+     * @param constanteAcceleration constante de l'accélération (soit x ou y)
+     * @return la nouvelle accélération
+     */
+    private double trouverAcceleration(boolean vaVersNegatif, boolean vaVersPositif, double constanteAcceleration) {
+        double acceleration;
+
+        if (vaVersNegatif)
+            acceleration = -constanteAcceleration;
+        else if (vaVersPositif)
+            acceleration = constanteAcceleration;
+        else {
+            acceleration = 0;
+        }
+        return acceleration;
     }
 
 
@@ -143,6 +161,7 @@ public class Charlotte extends ObjetJeu {
 
     /**
      * Méthode trouvant le signe de la vitesse donner en paramètre
+     *
      * @param vitesse vitesse de charlotte
      * @return 1 ou -1 selon le signe de sa vitesse
      */
@@ -169,6 +188,7 @@ public class Charlotte extends ObjetJeu {
 
     /**
      * Override de la méthode dessiner de objetJeu qui appelle gérerImageCharlotte
+     *
      * @param contexte pour dessiner
      */
     @Override
