@@ -2,6 +2,8 @@ package ca.qc.bdeb.sim203.projetjavafx;
 
 import javafx.scene.image.Image;
 
+import static ca.qc.bdeb.sim203.projetjavafx.Hasard.generateurAleatoire;
+
 public class Hippocampes extends Projectile {
     private double amplitude;
     private double periode;
@@ -25,7 +27,7 @@ public class Hippocampes extends Projectile {
 
         //amplitude négative/positive aléatoire
         amplitude = Hasard.nextInt(30, 60);
-        if (Hasard.getGenerateurAleatoire().nextBoolean()) {
+        if (generateurAleatoire.nextBoolean()) {
             amplitude *= -1;
         }
         //periode aléatoire

@@ -13,6 +13,7 @@ public class Main extends Application {
     public static final double LARGEUR_ECRAN = 900.0;
     public static final double LARGEUR_MONDE = 8.0 * Main.LARGEUR_ECRAN;
     public static final double HAUTEUR = 520.0;
+    public static final double NANOSECONDE = 1e-9;
     private Stage stage;
 
     /**

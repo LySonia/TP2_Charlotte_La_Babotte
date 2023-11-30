@@ -67,9 +67,6 @@ public class Camera {
         }
     }
 
-
-    //TODO: Assurer que XEcran et YEcran seulement utilisé pour dessins
-
     /**
      * Pour savoir où dessiner les objets
      * @param x le x d'un objet dans le monde

@@ -185,7 +185,6 @@ public class Charlotte extends ObjetJeu {
 
 
     //TOUT CE QUI EST "DESSIN" :
-
     /**
      * Override de la méthode dessiner de objetJeu qui appelle gérerImageCharlotte
      *

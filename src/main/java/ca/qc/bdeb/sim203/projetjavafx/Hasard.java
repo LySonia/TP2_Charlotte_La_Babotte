@@ -2,19 +2,8 @@ package ca.qc.bdeb.sim203.projetjavafx;
 
 import java.util.*;
 
-//Classe avec méthodes statiques, pcq j'ai la flemme de créer un nouveau object random à chaque fois que j'en ai besoin
-//Tout ce qui peut être généré par hasard peut se faire générer icite
 public class Hasard {
     public static  Random generateurAleatoire = new Random();
-
-    /**
-     * Méthode qui retourne une valeur int random selon une borne supérieure exclue
-     * @param borneSupExclue la borne supérieure à respecter
-     * @return un int random entre 0 et la borne exclue
-     */
-    public static int nextInt(int borneSupExclue) {
-        return generateurAleatoire.nextInt(borneSupExclue);
-    }
 
     /**
      * Méthode qui retourne une valeur int random se trouvant entre deux valeurs inclusives
@@ -33,11 +22,8 @@ public class Hasard {
      * @return un double aléatoire se trouvant entre les deux bornes inclusivement
      */
     public static double nextDouble(double borneInférieureInclue, double borneSuperieureInclue) {
-        return generateurAleatoire.nextDouble(borneSuperieureInclue - borneInférieureInclue) + borneInférieureInclue;
-    }
-
-    public static Random getGenerateurAleatoire() {
-        return generateurAleatoire;
+        return generateurAleatoire.nextDouble
+                (borneSuperieureInclue - borneInférieureInclue) + borneInférieureInclue;
     }
 
     /**
@@ -95,7 +81,7 @@ public class Hasard {
     private static Assets choisirAssetHasard(Assets[] assets) {
         Assets assetChoisi = null;
 
-        int nbrAleatoire = nextInt(assets.length);
+        int nbrAleatoire = generateurAleatoire.nextInt(assets.length);
 
         for (int i = 0; i < assets.length; i++) {
             if (nbrAleatoire == i)

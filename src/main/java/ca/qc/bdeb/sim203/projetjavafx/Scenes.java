@@ -13,10 +13,7 @@ import javafx.scene.paint.*;
 import javafx.scene.text.*;
 import javafx.stage.*;
 
-import static ca.qc.bdeb.sim203.projetjavafx.Hasard.nextInt;
-
 public class Scenes {
-    public static final double NANOSECONDE = 1e-9; //Bon placement de la variable?
     private static final String NOM_JEU = "Charlotte la Barbotte";
     private Stage stage;
     private AnimationTimer timer;
@@ -38,7 +35,7 @@ public class Scenes {
      * @return la scène de jeu
      */
     public Scene getSceneJeu() {
-        PartieJeu partieJeu = new PartieJeu(System.nanoTime() * NANOSECONDE);
+        PartieJeu partieJeu = new PartieJeu(System.nanoTime() * Main.NANOSECONDE);
 
         var root = new Pane();
 
@@ -51,7 +48,7 @@ public class Scenes {
         timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
-                double tempsActuel = now * NANOSECONDE;
+                double tempsActuel = now * Main.NANOSECONDE;
 
                 //Ajuster la couleur de fond
                 var couleurFond = partieJeu.getCouleurFondNiveau();
@@ -90,13 +87,13 @@ public class Scenes {
                 }
 
                 if (partieJeu.estDebug()) {
-                    gererKeyPressedDebug(partieJeu, e, System.nanoTime() * NANOSECONDE);
+                    gererKeyPressedDebug(partieJeu, e, System.nanoTime() * Main.NANOSECONDE);
                 }
             }
         });
 
         sceneJeu.setOnKeyReleased((e) -> {
-            gererKeyReleasedGenerale(e);
+            Input.setKeyPressed(e.getCode(), false);
         });
 
         return sceneJeu;
@@ -165,11 +162,16 @@ public class Scenes {
 
         //region ÉVÉNEMENTS
         sceneAccueil.setOnKeyPressed((e) -> {
-            gererKeyPressedGenerale(e);
+            Input.setKeyPressed(e.getCode(), true);
+
+            if (e.getCode() == KeyCode.ESCAPE) {
+                Platform.exit();
+                Input.touches.clear();
+            }
         });
 
         sceneAccueil.setOnKeyReleased((e) -> {
-            gererKeyReleasedGenerale(e);
+            Input.setKeyPressed(e.getCode(), false);
         });
 
         jouer.setOnAction((e) -> {
@@ -258,11 +260,16 @@ public class Scenes {
 
         //region ÉVÉNEMENTS
         sceneInfo.setOnKeyPressed((e) -> {
-            gererKeyPressedGenerale(e);
+            Input.setKeyPressed(e.getCode(), true);
+
+            if (e.getCode() == KeyCode.ESCAPE) {
+                stage.setScene(getSceneAccueil());
+                Input.touches.clear();
+            }
         });
 
         sceneInfo.setOnKeyReleased((e) -> {
-            gererKeyReleasedGenerale(e);
+            Input.setKeyPressed(e.getCode(), false);
         });
 
         retour.setOnAction((e) -> {
@@ -274,27 +281,6 @@ public class Scenes {
     }
 
     //region MÉTHODES GÉNÉRALES
-
-    /**
-     * Gérer ce que le programme fait selon la saisie de l'utilisateur quand on est dans la scène d'accueil ou d'info
-     * @param e le KeyEvent quand l'utilisateur touche un bouton
-     */
-    private void gererKeyPressedGenerale(KeyEvent e){
-        Input.setKeyPressed(e.getCode(), true);
-
-        if (e.getCode() == KeyCode.ESCAPE) {
-            Platform.exit();
-            Input.touches.clear();
-        }
-    }
-
-    /**
-     * Gérer ce que le programme fait quand l'utilisateur ne pèse plus sur un bouton.
-     * @param e le Keyevent quand l'utilisateur ne pèse plus sur le bouton
-     */
-    private void gererKeyReleasedGenerale(KeyEvent e){
-        Input.setKeyPressed(e.getCode(), false);
-    }
 
     /**
      * Créer un root pou
