@@ -16,13 +16,15 @@ public class PoissonEnnemi extends ObjetJeu {
      * @param numNiveau le numéro du niveau
      */
     public PoissonEnnemi(int numNiveau) {
+        this.numNiveau = numNiveau;
         vitesseMax = 300; // Déterminé arbitrairement
-        vx = -100 * Math.pow(numNiveau, 0.33) + 200;
+        vx = -100 * Math.pow(this.numNiveau, 0.33) + 200;
         vy = nextInt(-100, 100);
         ax = -500;
 
         h = nextDouble(HAUTEUR_MIN_IMAGE, HAUTEUR_MAX_IMAGE);
-        image = new Image(Hasard.choisirPoissonHasard().getEmplacement(), 0, h, true, false);
+        image = new Image(Hasard.choisirPoissonHasard().getEmplacement(), 0, h,
+                true, false);
         w = image.getWidth();
 
         x = Camera.getCamera().getXCamera() + w + Main.LARGEUR_ECRAN;

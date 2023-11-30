@@ -74,7 +74,7 @@ public class Sardines extends Projectile {
                 double proportionX = deltaX / distance;
                 double proportionY = deltaY / distance;
 
-                forceElectrique += (K * poisson.CHARGE_Q * this.CHARGE_Q) / (Math.pow(distance, 2));
+                forceElectrique += (K * PoissonEnnemi.CHARGE_Q * CHARGE_Q) / (Math.pow(distance, 2));
 
                 forceEnX += forceElectrique * proportionX;
                 forceEnY += forceElectrique * proportionY;
