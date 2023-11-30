@@ -94,7 +94,7 @@ public class Camera {
         return xCamera;
     }
 
-    public double getYCamera(){
+    public double getYCamera() {
         return yCamera;
     }
 
