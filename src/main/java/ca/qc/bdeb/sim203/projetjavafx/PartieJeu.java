@@ -196,6 +196,9 @@ public class PartieJeu {
         }
     }
 
+    /**
+     * Permettre le joueur de tirer, si celui-ci respecte le delai de tire
+     */
     public void gererTireProjectile() {
         if ((tempsActuel - momentDernierTir) > DELAIS_TIR) {
             momentDernierTir = tempsActuel;

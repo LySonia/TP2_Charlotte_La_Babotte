@@ -15,9 +15,18 @@ public abstract class ObjetJeu {
 
     protected Image image;
 
+    /**
+     * Mettre à jour l'objet
+     * @param deltaTemps différence de temps
+     */
     public void mettreAJour(double deltaTemps) {
         mettreAJourPhysique(deltaTemps);
     }
+
+    /**
+     * Mettre à jour la physique de l'objet
+     * @param deltaTemps différence de temps
+     */
     public void mettreAJourPhysique(double deltaTemps) {
         vx += deltaTemps * ax;
         vy += deltaTemps * ay;
@@ -26,12 +35,13 @@ public abstract class ObjetJeu {
 
         x += deltaTemps * vx;
         y += deltaTemps * vy;
-
-
     }
 
-
-
+    /**
+     * Assurer que la vitesse est dans les bornes
+     * @param vitesse la vitesse à vérifier
+     * @return la vitesse ajustée si elle est en dehors des bornes, la vitesse donnée en argument sinon
+     */
     protected double assurerQueVitesseDansLesBornes(double vitesse) {
         if (vitesse > vitesseMax) {
             vitesse = vitesseMax;
@@ -41,14 +51,23 @@ public abstract class ObjetJeu {
         return vitesse;
     }
 
+    //TOUT EN LIEN AVEC LE DESSIN:
+    /**
+     * Dessiner l'objet
+     * @param contexte le GraphicsContext sur lequel on dessine
+     */
+    public void dessiner(GraphicsContext contexte) {
+        contexte.drawImage(image, Camera.getCamera().calculerXEcran(x), Camera.getCamera().calculerYEcran(y));
+    }
+
+    /**
+     * Mettre un contour autour de l'objet
+     * @param contexte le GraphicsContext sur lequel on dessine
+     */
     public void mettreContour(GraphicsContext contexte) {
         contexte.setLineWidth(1);
         contexte.setStroke(Color.YELLOW);
         contexte.strokeRect(Camera.getCamera().calculerXEcran(x), Camera.getCamera().calculerYEcran(y), w, h);
-    }
-
-    public void dessiner(GraphicsContext contexte) {
-        contexte.drawImage(image, Camera.getCamera().calculerXEcran(x), Camera.getCamera().calculerYEcran(y));
     }
 
     //GETTERS :
@@ -80,9 +99,5 @@ public abstract class ObjetJeu {
 
     public void setY(double y) {
         this.y = y;
-    }
-
-    public void setImage(Image image) {
-        this.image = image;
     }
 }
