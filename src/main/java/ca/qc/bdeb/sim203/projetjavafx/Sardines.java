@@ -11,7 +11,12 @@ public class Sardines extends Projectile {
     private double forceEnY = 0;
     private ArrayList<PoissonEnnemi> poissonsEnnemis;
 
-
+    /**
+     * Constructeur de l'objet Sardines
+     * @param charlotte la Charlotte de la partie
+     * @param tempsActuel le temps quand l'objet est crée
+     * @param poissonEnnemis le ArrayList des poissons ennemis dans le jeu
+     */
     public Sardines(Charlotte charlotte, double tempsActuel, ArrayList<PoissonEnnemi> poissonEnnemis) {
         super(charlotte, tempsActuel);
         calculerPosInitial();
@@ -25,6 +30,10 @@ public class Sardines extends Projectile {
         this.poissonsEnnemis = poissonEnnemis;
     }
 
+    /**
+     * Fait les calculs de physiques en lien avec le mouvement des sardines
+     * @param deltaTemps différence de temps
+     */
     @Override
     public void mettreAJourPhysique(double deltaTemps) {
         calculerForceElectrique();
@@ -33,15 +42,20 @@ public class Sardines extends Projectile {
 
         ajusterRebondissement();
         super.mettreAJourPhysique(deltaTemps);
-
-
     }
 
+    /**
+     * Fait rebondir la canette de sardines si elle touche soit le haut, soit le bas de l'écran
+     */
     private void ajusterRebondissement() {
         if (this.getYBas() >= Main.HAUTEUR || this.getYHaut() <= 0) {
             vy *= -1;
         }
     }
+
+    /**
+     * Calculer la force électrique total exercé sur la canette de sardines par les poissons ennemis
+     */
     private void calculerForceElectrique() {
         double forceElectrique = 0;
         forceEnX = 0;
@@ -68,19 +82,25 @@ public class Sardines extends Projectile {
         }
     }
 
+    /**
+     * Vérifier que le poisson ennemi à analyser se retrouve à droite de la canette de sardines
+     * @param poissonEnnemi le poisson ennemi à analyser
+     * @return un boolean qui est vrai si le poisson ennemi est à droite
+     */
     private boolean verifierQuePoissonADroite(PoissonEnnemi poissonEnnemi) {
         return poissonEnnemi.x > this.x;
     }
 
+    /**
+     * Utiliser la formule de Pythagore pour trouver la distance entre la canette de sardines et le poisson
+     * @param deltaX différence en x
+     * @param deltaY différence en y
+     * @return distance qui sépare la canette du poisson
+     */
     private double calculerDistance(double deltaX, double deltaY) {
         double carreDeltaX = Math.pow(deltaX, 2);
         double carreDeltaY = Math.pow(deltaY, 2);
 
         return Math.pow((carreDeltaX + carreDeltaY), 1.0/2.0);
     }
-
-    public void updateListePoissons(ArrayList<PoissonEnnemi> poissonEnnemis) {
-        this.poissonsEnnemis = poissonEnnemis;
-    }
-
 }
