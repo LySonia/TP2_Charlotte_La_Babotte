@@ -20,6 +20,7 @@ public class Scenes {
 
     /**
      * Constructeur de la classe Scenes
+     *
      * @param stage le stage utilisé pour afficher le jeu
      */
     public Scenes(Stage stage) {
@@ -32,6 +33,7 @@ public class Scenes {
 
     /**
      * Méthode qui construit la scène de jeu
+     *
      * @return la scène de jeu
      */
     public Scene getSceneJeu() {
@@ -101,8 +103,9 @@ public class Scenes {
 
     /**
      * Gérer ce que le programme fait selon la saisie de l'utilisateur quand le jeu est en mode debug
-     * @param partieJeu un objet partieJeu
-     * @param e le KeyEvent quand l'utilisateur touche un bouton
+     *
+     * @param partieJeu   un objet partieJeu
+     * @param e           le KeyEvent quand l'utilisateur touche un bouton
      * @param tempsActuel le temps actuel
      */
     private void gererKeyPressedDebug(PartieJeu partieJeu, KeyEvent e, double tempsActuel) {
@@ -129,6 +132,7 @@ public class Scenes {
 
     /**
      * Méthode qui construit la scène d'accueil
+     *
      * @return la scène d'accueil
      */
     public Scene getSceneAccueil() {
@@ -188,6 +192,7 @@ public class Scenes {
 
     /**
      * Méthode qui construit la scène d'info
+     *
      * @return la scène de d'info
      */
     public Scene getSceneInfo() {
@@ -284,6 +289,7 @@ public class Scenes {
 
     /**
      * Créer un root pou
+     *
      * @return le root au fond blue
      */
     private Pane creerRoot() {

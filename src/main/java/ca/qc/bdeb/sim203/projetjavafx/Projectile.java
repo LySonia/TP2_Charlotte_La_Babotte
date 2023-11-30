@@ -6,24 +6,26 @@ public abstract class Projectile extends ObjetJeu {
 
     /**
      * Constructeur de la classe Projectile
-     * @param charlotte la Charlotte de la Partie
+     *
+     * @param charlotte  la Charlotte de la Partie
      * @param momentTire le temps en secondes au moment de la tire
      */
     public Projectile(Charlotte charlotte, double momentTire) {
         this.charlotte = charlotte;
-          this.momentTire = momentTire;
+        this.momentTire = momentTire;
     }
 
     /**
      * Calculer la position initiale du projectile (centre de Charlotte)
      */
-    protected void calculerPosInitial(){
-        this.x = charlotte.xCentre - w/2;
-        this.y = charlotte.yCentre - h/2;
+    protected void calculerPosInitial() {
+        this.x = charlotte.xCentre - w / 2;
+        this.y = charlotte.yCentre - h / 2;
     }
 
     /**
      * Vérifier si le projectile est dans l'écran
+     *
      * @return boolean qui est true si le projectile est dans l'écran
      */
     public boolean estDansEcran() {

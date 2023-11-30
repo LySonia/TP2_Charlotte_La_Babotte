@@ -1,8 +1,8 @@
 package ca.qc.bdeb.sim203.projetjavafx;
 
-import javafx.scene.image.Image;
+import javafx.scene.image.*;
 
-import static ca.qc.bdeb.sim203.projetjavafx.Hasard.generateurAleatoire;
+import static ca.qc.bdeb.sim203.projetjavafx.Hasard.*;
 
 public class Hippocampes extends Projectile {
     private double amplitude;
@@ -12,7 +12,8 @@ public class Hippocampes extends Projectile {
 
     /**
      * Constructeur de la classe Hippocampes
-     * @param charlotte pour trouver la position initiale du projectile
+     *
+     * @param charlotte  pour trouver la position initiale du projectile
      * @param momentTire le moment où le projectile est tiré
      */
     public Hippocampes(Charlotte charlotte, double momentTire) {
@@ -36,12 +37,13 @@ public class Hippocampes extends Projectile {
     /**
      * Override de la méthode mettreAJourPhysique de la classe objet de jeu pour prendre en compte le mouvement
      * particulier des hippocampes
+     *
      * @param deltaTemps différence de temps
      */
     @Override
     public void mettreAJourPhysique(double deltaTemps) {
 
-        double tempsEcoule = System.nanoTime()*Main.NANOSECONDE - momentTire;
+        double tempsEcoule = System.nanoTime() * Main.NANOSECONDE - momentTire;
         y = amplitude * Math.sin((2 * Math.PI * periode * tempsEcoule) / 2) + yInitial;
         x += deltaTemps * vx;
     }

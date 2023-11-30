@@ -16,6 +16,7 @@ public abstract class ObjetJeu {
 
     /**
      * Mettre à jour l'objet
+     *
      * @param deltaTemps différence de temps
      */
     public void mettreAJour(double deltaTemps) {
@@ -24,6 +25,7 @@ public abstract class ObjetJeu {
 
     /**
      * Mettre à jour la physique de l'objet
+     *
      * @param deltaTemps différence de temps
      */
     public void mettreAJourPhysique(double deltaTemps) {
@@ -33,6 +35,7 @@ public abstract class ObjetJeu {
 
     /**
      * Effectuer les calculs pour mettre à jour la vitesse
+     *
      * @param deltaTemps différence de temps
      */
     protected void mettreAJourVitesse(double deltaTemps) {
@@ -42,16 +45,18 @@ public abstract class ObjetJeu {
 
     /**
      * Calculs pour mettre à jour la position
+     *
      * @param deltaTemps différence de temps
      */
-    private void mettreAJourPosition(double deltaTemps){
+    private void mettreAJourPosition(double deltaTemps) {
         x += deltaTemps * vx;
         y += deltaTemps * vy;
     }
 
     /**
      * Pour les objets qui ont une vitesse maximale, assurer que la vitesse est entre les bornes
-     * @param vitesse la vitesse à analyser
+     *
+     * @param vitesse    la vitesse à analyser
      * @param vitesseMin la vitesse minimale
      * @param vitesseMax la vitesse maximale
      * @return la vitesse ajustée
@@ -66,8 +71,10 @@ public abstract class ObjetJeu {
     }
 
     //TOUT EN LIEN AVEC LE DESSIN:
+
     /**
      * Dessiner l'objet
+     *
      * @param contexte le GraphicsContext sur lequel on dessine
      */
     public void dessiner(GraphicsContext contexte) {
@@ -76,6 +83,7 @@ public abstract class ObjetJeu {
 
     /**
      * Mettre un contour autour de l'objet
+     *
      * @param contexte le GraphicsContext sur lequel on dessine
      */
     protected void mettreContour(GraphicsContext contexte) {
@@ -85,19 +93,19 @@ public abstract class ObjetJeu {
     }
 
     //GETTERS :
-    protected double getXGauche(){
+    protected double getXGauche() {
         return this.x;
     }
 
-    protected double getXDroite(){
+    protected double getXDroite() {
         return this.x + this.w;
     }
 
-    protected double getYHaut(){
+    protected double getYHaut() {
         return this.y;
     }
 
-    protected double getYBas(){
+    protected double getYBas() {
         return this.y + this.h;
     }
 

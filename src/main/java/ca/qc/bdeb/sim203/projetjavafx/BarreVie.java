@@ -10,6 +10,7 @@ public class BarreVie extends ObjetJeu {
 
     /**
      * Constructeur de Bar de vie
+     *
      * @param charlotte Charlotte la babotte qui est liée à la barre de vie
      */
     public BarreVie(Charlotte charlotte) {
@@ -25,6 +26,7 @@ public class BarreVie extends ObjetJeu {
     /**
      * Override de la méthode mettreAjourPhysique de Objet jeu qui change la largeur de la barre selon le pourcentage
      * de vie de Charlotte
+     *
      * @param deltaTemps différence de temps (pas utilisé dans le override)
      */
     @Override
@@ -35,6 +37,7 @@ public class BarreVie extends ObjetJeu {
     /**
      * Override de la méthode mettreContour pour que le rectangle jaune du mode debug ne disparaisse pas avec le
      * mouvement de la caméra
+     *
      * @param contexte pour dessiner
      */
     @Override
@@ -47,6 +50,7 @@ public class BarreVie extends ObjetJeu {
     /**
      * Override de la méthode Dessiner de objetJeu qui dessine le rectangle et le contour de la barre de vie
      * selon les critères
+     *
      * @param contexte pour dessiner
      */
     @Override

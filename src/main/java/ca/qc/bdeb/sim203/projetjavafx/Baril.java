@@ -1,11 +1,9 @@
 package ca.qc.bdeb.sim203.projetjavafx;
 
 import javafx.scene.canvas.*;
-import javafx.scene.image.Image;
+import javafx.scene.image.*;
 
-
-
-import static ca.qc.bdeb.sim203.projetjavafx.Hasard.nextDouble;
+import static ca.qc.bdeb.sim203.projetjavafx.Hasard.*;
 
 public class Baril extends ObjetJeu {
     private static final int PERIODE = 3;
@@ -14,6 +12,7 @@ public class Baril extends ObjetJeu {
 
     /**
      * Constructeur de l'objet baril
+     *
      * @param tempsDebutNiveau le temps de début de niveau qui servira à trouver le temps écoulé depuis le début du
      *                         niveau
      */
@@ -30,6 +29,7 @@ public class Baril extends ObjetJeu {
 
     /**
      * méthode qui appelle un Random pour trouver aléatoirement la position initiale en X du baril
+     *
      * @return la position initiale du baril
      */
     private double trouverXInitial() {
@@ -39,6 +39,7 @@ public class Baril extends ObjetJeu {
 
     /**
      * Override de la methode mettreAJourPhysique de ObjetDeJeu, elle ajuste le mouvement du baril selon le temps
+     *
      * @param deltaTemps difference de temps (pas utilisé dans cet override)
      */
     @Override
@@ -53,6 +54,7 @@ public class Baril extends ObjetJeu {
 
     /**
      * Override de dessiner pour inclure une méthode changeant l'image si le baril est ouvert
+     *
      * @param contexte pour dessiner
      */
     @Override
@@ -74,6 +76,7 @@ public class Baril extends ObjetJeu {
 
     /**
      * Donne un nouveau projectile Random différent du type que Charlotte a déjà
+     *
      * @param dernierType le type de projectile que Charlotte a en ce moment
      * @return un nouveau type de projectile
      */

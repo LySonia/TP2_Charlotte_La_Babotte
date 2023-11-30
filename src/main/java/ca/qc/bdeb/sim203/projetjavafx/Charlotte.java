@@ -55,6 +55,7 @@ public class Charlotte extends ObjetJeu {
 
     /**
      * Mettre à jour la vitesse de Charlotte en considérant la vitesse maximale
+     *
      * @param deltaTemps la différence de temps
      */
     @Override
@@ -66,9 +67,10 @@ public class Charlotte extends ObjetJeu {
 
     /**
      * Ajuster l'accélération de Charlotte selon la saisie de l'utilisateur
+     *
      * @param deltaTemps différence de temps
      */
-    private void mettreAJourAccelerationSelonSaisie(double deltaTemps){
+    private void mettreAJourAccelerationSelonSaisie(double deltaTemps) {
         boolean gauche = Input.isKeyPressed(KeyCode.LEFT);
         boolean droite = Input.isKeyPressed(KeyCode.RIGHT);
         boolean haut = Input.isKeyPressed(KeyCode.UP);
@@ -94,9 +96,10 @@ public class Charlotte extends ObjetJeu {
 
     /**
      * Méthode servant à réduire le copier-coller lors du calculer des vitesses quand l'accélération est = à 0
-     * @param deltaTemps la difféerence de temps
+     *
+     * @param deltaTemps            la difféerence de temps
      * @param constanteAcceleration la constante (soit x ou y) de l'accélération de Charlotte
-     * @param vitesse la vitesse initiale de charlotte (soit x ou y)
+     * @param vitesse               la vitesse initiale de charlotte (soit x ou y)
      * @return la nouvelle vitesse de Charlotte
      */
     private double trouverVitesse(double deltaTemps, double constanteAcceleration, double vitesse) {
@@ -111,8 +114,9 @@ public class Charlotte extends ObjetJeu {
 
     /**
      * Méthode qui sert à trouver l'accélération selon les touches appuyées par l'utilisateur
-     * @param vaVersNegatif boolean qui dicte si l'utilisateur appuie une touche amenant charlotte vers les négatifs
-     * @param vaVersPositif boolean qui dicte si l'utilisateur appuie une touche amenant charlotte vers les positifs
+     *
+     * @param vaVersNegatif         boolean qui dicte si l'utilisateur appuie une touche amenant charlotte vers les négatifs
+     * @param vaVersPositif         boolean qui dicte si l'utilisateur appuie une touche amenant charlotte vers les positifs
      * @param constanteAcceleration constante de l'accélération (soit x ou y)
      * @return la nouvelle accélération
      */
@@ -202,6 +206,7 @@ public class Charlotte extends ObjetJeu {
 
 
     //TOUT CE QUI EST "DESSIN" :
+
     /**
      * Override de la méthode dessiner de objetJeu qui appelle gérerImageCharlotte
      *

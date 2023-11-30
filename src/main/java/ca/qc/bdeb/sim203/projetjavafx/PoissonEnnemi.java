@@ -2,16 +2,16 @@ package ca.qc.bdeb.sim203.projetjavafx;
 
 import javafx.scene.image.*;
 
-import static ca.qc.bdeb.sim203.projetjavafx.Hasard.nextDouble;
-import static ca.qc.bdeb.sim203.projetjavafx.Hasard.nextInt;
+import static ca.qc.bdeb.sim203.projetjavafx.Hasard.*;
 
 public class PoissonEnnemi extends ObjetJeu {
-    private static final int HAUTEUR_MAX_IMAGE= 120;
+    private static final int HAUTEUR_MAX_IMAGE = 120;
     private static final int HAUTEUR_MIN_IMAGE = 50;
     public static final int CHARGE_Q = -100;
 
     /**
      * Construteur de la classe PoissonEnnemi
+     *
      * @param numNiveau le numéro du niveau
      */
     public PoissonEnnemi(int numNiveau) {
@@ -30,20 +30,22 @@ public class PoissonEnnemi extends ObjetJeu {
 
     /**
      * Trouver le y de départ du poisson ennemi
+     *
      * @return le y de départ du poisson ennemi
      */
     private double trouverYDepart() {
-        double min = (Main.HAUTEUR/5);
-        double max = (Main.HAUTEUR/5)*4;
+        double min = (Main.HAUTEUR / 5);
+        double max = (Main.HAUTEUR / 5) * 4;
 
         return nextDouble(min, max);
     }
 
     /**
      * Trouver si le poisson ennemi est dans l'écran
+     *
      * @return boolean qui est true si le poisson est dans l'écran
      */
-   public boolean estDansEcran() {
+    public boolean estDansEcran() {
         boolean estDansEcran = false;
 
         if ((getXDroite() > Camera.getCamera().getXCamera()) && //Vérifier gauche écran

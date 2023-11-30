@@ -19,6 +19,7 @@ public class Camera {
 
     /**
      * Méthode qui crée l'objet Caméra une fois, puis la return à chaque fois
+     *
      * @return l'objet Caméra crée
      */
     public static Camera getCamera() {
@@ -40,7 +41,8 @@ public class Camera {
     /**
      * Méthode qui update la position de la caméra en changeant sa vitesse selon celle de Charlotte pour qu'elle reste
      * bien positionnée dans l'écran
-     * @param charlotte Pour utiliser sa position et sa vitesse
+     *
+     * @param charlotte  Pour utiliser sa position et sa vitesse
      * @param deltaTemps différence de temps pour trouver la position
      */
     public void update(Charlotte charlotte, double deltaTemps) {
@@ -70,6 +72,7 @@ public class Camera {
 
     /**
      * Pour savoir où dessiner les objets
+     *
      * @param x le x d'un objet dans le monde
      * @return le x d'un objet sur l'écran
      */
@@ -79,6 +82,7 @@ public class Camera {
 
     /**
      * Pour savoir où dessiner les objets dans l'écran
+     *
      * @param y le y de l'objet dans le monde
      * @return le y sur l'écran
      * Dans ce TP, la position y écran et y monde est la même, nous avons tout de même inclus cette méthode dans le cas

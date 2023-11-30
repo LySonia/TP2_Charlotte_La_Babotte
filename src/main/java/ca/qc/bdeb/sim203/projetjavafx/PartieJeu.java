@@ -7,7 +7,7 @@ import javafx.scene.text.*;
 
 import java.util.*;
 
-import static ca.qc.bdeb.sim203.projetjavafx.Hasard.nextInt;
+import static ca.qc.bdeb.sim203.projetjavafx.Hasard.*;
 
 public class PartieJeu {
     //Attributs objets de jeu:
@@ -441,9 +441,13 @@ public class PartieJeu {
         return momentFinNiveau;
     }
 
-    public boolean estDebug() {return estDebug;}
+    public boolean estDebug() {
+        return estDebug;
+    }
 
-    public boolean estFinPartie() {return estFinPartie;}
+    public boolean estFinPartie() {
+        return estFinPartie;
+    }
 
     //SETTERS
     public void setEstDebug(boolean estDebug) {

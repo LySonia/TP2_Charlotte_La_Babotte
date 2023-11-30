@@ -1,6 +1,6 @@
 package ca.qc.bdeb.sim203.projetjavafx;
 
-import javafx.scene.image.Image;
+import javafx.scene.image.*;
 
 import java.util.*;
 
@@ -17,8 +17,9 @@ public class Sardines extends Projectile {
 
     /**
      * Constructeur de la classe Sardines
-     * @param charlotte la Charlotte de la partie
-     * @param tempsActuel le temps quand l'objet est crée
+     *
+     * @param charlotte      la Charlotte de la partie
+     * @param tempsActuel    le temps quand l'objet est crée
      * @param poissonEnnemis le ArrayList des poissons ennemis dans le jeu
      */
     public Sardines(Charlotte charlotte, double tempsActuel, ArrayList<PoissonEnnemi> poissonEnnemis) {
@@ -35,6 +36,7 @@ public class Sardines extends Projectile {
 
     /**
      * Fait les calculs de physiques en lien avec le mouvement des sardines
+     *
      * @param deltaTemps différence de temps
      */
     @Override
@@ -49,6 +51,7 @@ public class Sardines extends Projectile {
 
     /**
      * Override la méthode mettreAJourVitesse de ObjetJeu pour prendre en considération les limites de vitesse
+     *
      * @param deltaTemps différence de temps
      */
     @Override
@@ -57,7 +60,6 @@ public class Sardines extends Projectile {
         vx = assurerVitesseDansBornes(vx, VITESSE_X_MIN, VITESSE_X_MAX);
         vy = assurerVitesseDansBornes(vy, VITESSE_Y_MIN, VITESSE_Y_MAX);
     }
-
 
 
     /**
@@ -76,7 +78,7 @@ public class Sardines extends Projectile {
         double forceElectrique = 0;
         forceEnX = 0;
         forceEnY = 0;
-        for (PoissonEnnemi poisson: poissonsEnnemis) {
+        for (PoissonEnnemi poisson : poissonsEnnemis) {
             if (verifierQuePoissonADroite(poisson)) {
                 double deltaX = x - poisson.x;
                 double deltaY = y - poisson.y;
@@ -100,6 +102,7 @@ public class Sardines extends Projectile {
 
     /**
      * Vérifier que le poisson ennemi à analyser se retrouve à droite de la canette de sardines
+     *
      * @param poissonEnnemi le poisson ennemi à analyser
      * @return un boolean qui est true si le poisson ennemi est à droite
      */
@@ -109,6 +112,7 @@ public class Sardines extends Projectile {
 
     /**
      * Utiliser la formule de Pythagore pour trouver la distance entre la canette de sardines et le poisson
+     *
      * @param deltaX différence en x
      * @param deltaY différence en y
      * @return distance qui sépare la canette du poisson
@@ -117,6 +121,6 @@ public class Sardines extends Projectile {
         double carreDeltaX = Math.pow(deltaX, 2);
         double carreDeltaY = Math.pow(deltaY, 2);
 
-        return Math.pow((carreDeltaX + carreDeltaY), 1.0/2.0);
+        return Math.pow((carreDeltaX + carreDeltaY), 1.0 / 2.0);
     }
 }
