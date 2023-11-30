@@ -44,7 +44,10 @@ public class PartieJeu {
     private static final double NBR_HIPPOCAMPES_A_LA_FOIS = 3;
 
 
-    //Constructeur :
+    /**
+     * Contructeur de la classe PartieJeu
+     * @param tempsActuel le temps au moment de la création d'une instance de PartieJeu
+     */
     public PartieJeu(double tempsActuel) {
         this.tempsActuel = tempsActuel;
 
@@ -52,6 +55,10 @@ public class PartieJeu {
     }
 
     //Méthodes :
+    /**
+     * Commencer un nouvel niveau
+     * @param tempsActuel le temps au moment d'apeller cette méthode
+     */
     public void demarrerNiveau(double tempsActuel) {
         numNiveau++;
         momentDebutNiveau = tempsActuel;
@@ -82,6 +89,10 @@ public class PartieJeu {
     }
 
     //TOUT CE QUI EST "MISE À JOUR" :
+    /**
+     * Méthode qui sert à avacer l'état de l'objet
+     * @param tempsActuel le temps au moment de l'appel de cette méthode
+     */
     public void mettreAJourJeu(double tempsActuel) {
         this.deltaTemps = tempsActuel - this.tempsActuel;
         this.tempsActuel = tempsActuel;
@@ -96,7 +107,7 @@ public class PartieJeu {
 
         //Autre :
         enleverObjetsHorsEcran();
-        calculerEstALaFinNiveau();
+        verifierCharlotteEstALaFinNiveau();
 
         if ((tempsActuel - momentDerniersPoissons) > nSecondes) {
             ajouterGroupePoissons();
@@ -111,12 +122,18 @@ public class PartieJeu {
         }
     }
 
+    /**
+     * Mettre à jour l'état de chaque objet dans le jeu
+     */
     private void mettreAJourObjets() {
         for (ObjetJeu objetJeu : objetsJeu) {
             objetJeu.mettreAJour(deltaTemps);
         }
     }
 
+    /**
+     * Vérifier les collisions entre chaque poisson et Charlotte
+     */
     private void gererCollisionsPoissons() {
         for (PoissonEnnemi poissonEnnemi : poissonsEnnemis) {
             if (Collision.estEnCollision(poissonEnnemi, charlotte)) {
@@ -126,6 +143,9 @@ public class PartieJeu {
         }
     }
 
+    /**
+     * Vérifier les collisions entre les projectiles et les poissons ennemis
+     */
     private void gererCollisionsProjectiles() {
         for (int i = 0; i < projectilesTires.size(); i++) { //Analyser chaque projectile
             Projectile projectileAnalyse = projectilesTires.get(i);
@@ -138,14 +158,19 @@ public class PartieJeu {
         }
     }
 
+    /**
+     * Vérifier pour une collision entre le baril et Charlotte
+     */
     private void gererCollisionBaril() {
         if (Collision.estEnCollision(baril, charlotte)) {
             ouvrirBaril();
         }
     }
 
-    private void enleverObjetsHorsEcran() { //TODO: Code copié-collé?
-
+    /**
+     * Enlever les objets de jeu qui sont en-dehors de l'écran
+     */
+    private void enleverObjetsHorsEcran() {
         //Enlever poissons hors écran
         for (int i = 0; i < poissonsEnnemis.size(); i++) {
             if (!poissonsEnnemis.get(i).estDansEcran()) {
@@ -161,6 +186,9 @@ public class PartieJeu {
         }
     }
 
+    /**
+     * Vérifier si le jeu est terminé, c'est-à-dire si Charlotte est morte
+     */
     private void verifierFinPartie() {
         if (!charlotte.estVivante()) {
             estFinPartie = true;
@@ -175,24 +203,27 @@ public class PartieJeu {
         }
     }
 
-
-   /* public void enleverObjetDeListe(ArrayList<ObjetJeu> listeObjet, ObjetJeu objetAEnleve){
-        //Array du même type que l'objet
-        listeObjet.remove(objetAEnleve);
-        objetsJeu.remove(objetAEnleve);
-    }*/
-
+    /**
+     * Enlever un poisson des ArrayLists d'objets de jeu qui le contiennent
+     * @param poisson le poisson à enlever
+     */
     public void enleverPoissonDeListe(PoissonEnnemi poisson) {
         poissonsEnnemis.remove(poisson);
         objetsJeu.remove(poisson);
     }
 
+    /**
+     * Enlever un projectile des ArrayLists d'objets de jeu qui le contiennent
+     * @param projectile le projectile à enlever
+     */
     public void enleverProjectileDeListe(Projectile projectile) {
         projectilesTires.remove(projectile);
         objetsJeu.remove(projectile);
     }
 
-
+    /**
+     * Ajouter un groupe de poissons ennemis dans le jeu
+     */
     public void ajouterGroupePoissons() {
         momentDerniersPoissons = tempsActuel;
 
@@ -212,10 +243,16 @@ public class PartieJeu {
         objetsJeu.addAll(nouveauxPoissons);
     }
 
-    private void calculerEstALaFinNiveau() {
+    /**
+     * Vérifier si Charlotte est à la fin du niveau
+      */
+    private void verifierCharlotteEstALaFinNiveau() {
         estALaFinNiveau = charlotte.getXDroite() >= Main.LARGEUR_MONDE;
     }
 
+    /**
+     * Générer et positionner tous les morceaux de décor
+     */
     private void positionnerDecor() {
         //x = 0.0 pour le premier corail
         decors.add(new Decor(0.0));
@@ -232,6 +269,9 @@ public class PartieJeu {
         objetsJeu.addAll(decors);
     }
 
+    /**
+     * Ouvrir le baril
+     */
     public void ouvrirBaril() {
         if (!baril.isEstOuvert()) {
             baril.setEstOuvert(true);
@@ -240,10 +280,17 @@ public class PartieJeu {
         }
     }
 
+    /**
+     * Changer le type de projectile à Charlotte
+     * @param typeProjectile le nouvel type de projectile à Charlotte
+     */
     public void changerTypeProjectile(Assets typeProjectile) {
         charlotte.setTypeProjectileActuel(typeProjectile);
     }
 
+    /**
+     * Tirer un projectile
+     */
     public void tirer() {
         ArrayList<Projectile> nouveauxProjectiles = new ArrayList<>();
 
@@ -261,12 +308,18 @@ public class PartieJeu {
         objetsJeu.addAll(nouveauxProjectiles);
     }
 
+    /**
+     * Calculer nSecondes selon la formule donnée dans l'énoncé
+     */
     private void calculerNSecondes() {
         nSecondes = 0.75 + 1 / Math.pow(numNiveau, 0.5);
     }
 
-
     //TOUT CE QUI EST "DESSIN" :
+    /**
+     * Méthode qui gère le dessin de tout ce qui doit être affiché sur l'écran de jeu à l'aide de JavaFX
+     * @param contexte le GraphicsContext sur lequel on dessine ce qu'on a à dessiner
+     */
     public void dessiner(GraphicsContext contexte) {
         contexte.clearRect(0, 0, Main.LARGEUR_ECRAN, Main.HAUTEUR);
         for (ObjetJeu objetJeu : objetsJeu) {
@@ -288,10 +341,18 @@ public class PartieJeu {
         }
     }
 
+    /**
+     * Dessine le type de projectile à droite de la barre de vie
+     * @param contexte le GraphicsContext sur lequel on dessine
+     */
     private void dessinerProjectileDroiteBarre(GraphicsContext contexte) {
         contexte.drawImage(new Image(charlotte.getTypeProjectileActuel().getEmplacement()), 175, 8);
     }
 
+    /**
+     * Affiche le text qui indique le numéro du niveau
+     * @param contexte le GraphicsContexte sur lequel on dessine
+     */
     private void afficherNumNiveau(GraphicsContext contexte) {
         String texteNiveau = ("NIVEAU " + numNiveau);
         contexte.setFont(Font.font(80));
@@ -299,6 +360,10 @@ public class PartieJeu {
         contexte.fillText(texteNiveau, 255, 277); //Valeurs de x et y choisies arbitrairement
     }
 
+    /**
+     * Affiche le texte de fin de partie
+     * @param contexte le GraphicsContext sur lequel on dessine
+     */
     private void afficherFinPartie(GraphicsContext contexte) {
         String texteNiveau = ("FIN DE PARTIE ");
         contexte.setFill(Color.RED);
@@ -307,6 +372,10 @@ public class PartieJeu {
         contexte.fillText(texteNiveau, 170, 277); //Valeurs de x et y choisies arbitrairement
     }
 
+    /**
+     * Afficher les informations à montrer dans le mode debug
+     * @param contexte le GraphicsContext sur lequel on dessine
+     */
     private void afficherDebug(GraphicsContext contexte) {
         //Mettre un rectangle jaune autour de tous les objets de jeu
         for (ObjetJeu objet : objetsJeu) {
@@ -328,6 +397,9 @@ public class PartieJeu {
         contexte.fillText("nSecondes:" + nSecondes, Main.LARGEUR_ECRAN - 150, 90);
     }
 
+    /**
+     * Générer la couleur de fond du niveau
+     */
     private void preparerFondNiveau() {
         final double saturation = 0.84;
         final double luminosité = 1.0;
