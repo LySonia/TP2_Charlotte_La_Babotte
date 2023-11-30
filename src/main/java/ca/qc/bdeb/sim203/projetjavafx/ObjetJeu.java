@@ -64,7 +64,7 @@ public abstract class ObjetJeu {
      * Mettre un contour autour de l'objet
      * @param contexte le GraphicsContext sur lequel on dessine
      */
-    public void mettreContour(GraphicsContext contexte) {
+    protected void mettreContour(GraphicsContext contexte) {
         contexte.setLineWidth(1);
         contexte.setStroke(Color.YELLOW);
         contexte.strokeRect(Camera.getCamera().calculerXEcran(x), Camera.getCamera().calculerYEcran(y), w, h);
@@ -92,12 +92,4 @@ public abstract class ObjetJeu {
     }
 
 
-    //SETTERS :
-    public void setX(double x) {
-        this.x = x;
-    }
-
-    public void setY(double y) {
-        this.y = y;
-    }
 }
