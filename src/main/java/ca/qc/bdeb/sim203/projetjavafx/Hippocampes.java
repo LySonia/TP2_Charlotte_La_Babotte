@@ -8,6 +8,11 @@ public class Hippocampes extends Projectile {
 
     private double yInitial;
 
+    /**
+     * Constructeur de la classe Hippocampes
+     * @param charlotte pour trouver la position initiale du projectile
+     * @param momentTire le moment où le projectile est tiré
+     */
     public Hippocampes(Charlotte charlotte, double momentTire) {
         super(charlotte, momentTire);
         image = new Image(Assets.HIPPOCAMPE.getEmplacement());
@@ -27,6 +32,11 @@ public class Hippocampes extends Projectile {
         periode = Hasard.nextInt(1, 3);
     }
 
+    /**
+     * Override de la méthode mettreAJourPhysique de la classe objet de jeu pour prendre en compte le mouvement
+     * particulier des hippocampes
+     * @param deltaTemps différence de temps
+     */
     @Override
     public void mettreAJourPhysique(double deltaTemps) {
 
