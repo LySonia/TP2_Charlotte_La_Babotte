@@ -8,9 +8,9 @@ public class Main extends Application {
         launch(args);
     }
 
-    public static final double LARGEUR_ECRAN = 900;
-    public static final double LARGEUR_MONDE = 8 * Main.LARGEUR_ECRAN;
-    public static final double HAUTEUR = 520;
+    public static final double LARGEUR_ECRAN = 900.0;
+    public static final double LARGEUR_MONDE = 8.0 * Main.LARGEUR_ECRAN;
+    public static final double HAUTEUR = 520.0;
     private Stage stage;
 
     @Override
