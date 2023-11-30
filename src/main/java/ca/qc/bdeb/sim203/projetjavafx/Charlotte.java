@@ -44,6 +44,7 @@ public class Charlotte extends ObjetJeu {
     /**
      * Override de la méthode mettreAJourPhysique de objet de jeu qui prend en compte les touches utilisés par
      * l'utilisateur pour faire bouger charlotte
+     *
      * @param deltaTemps la différence de temps
      */
     @Override
@@ -106,6 +107,7 @@ public class Charlotte extends ObjetJeu {
 
     /**
      * Méthode qui gère le moment d'immortalité de charlotte après qu'elle aille prit du dommage
+     *
      * @param tempsActuel utilisé pour savoir combien de temps charlotte reste immortelle
      */
     public void gererImmortalite(double tempsActuel) {
@@ -123,8 +125,10 @@ public class Charlotte extends ObjetJeu {
     //Va set le boolean estVisible à la bonne valeur
 
     /**
+     * Méthode qui gère le clignotement de Charlotte en changeant la valeur du boolean estVisible selon le temps
      *
-     * @param tempsActuel
+     * @param tempsActuel le temps actuel servant à trouver la différence de temps entre maintenant et le dernier
+     *                    clignotement
      */
     private void gererVisibilite(double tempsActuel) {
         if (estEndommagee) {
@@ -137,6 +141,11 @@ public class Charlotte extends ObjetJeu {
         }
     }
 
+    /**
+     * Méthode trouvant le signe de la vitesse donner en paramètre
+     * @param vitesse vitesse de charlotte
+     * @return 1 ou -1 selon le signe de sa vitesse
+     */
     private int trouverSigneVitesse(double vitesse) {
         if (vitesse > 1) {
             return 1;
@@ -144,6 +153,10 @@ public class Charlotte extends ObjetJeu {
         return -1;
     }
 
+    /**
+     * Méthode qui s'assure que Charlotte reste dans l'écran en changeant sa valeur de x ou de y si elle dépasse les
+     * limites de l'écran
+     */
     private void assurerQueResteDansEcran() {
         x = Math.max(Camera.getCamera().getXCamera(), x);
         x = Math.min(x, (Main.LARGEUR_MONDE - w));
@@ -153,19 +166,28 @@ public class Charlotte extends ObjetJeu {
 
 
     //TOUT CE QUI EST "DESSIN" :
+
+    /**
+     * Override de la méthode dessiner de objetJeu qui appelle gérerImageCharlotte
+     * @param contexte pour dessiner
+     */
     @Override
     public void dessiner(GraphicsContext contexte) {
         gererImageCharlotte();
         super.dessiner(contexte);
     }
 
+    /**
+     * Méthode qui, en vérifiant plusieurs booleans, set l'image de Charlotte selon son état (Statique, en mouvement ou
+     * blessée)
+     */
     public void gererImageCharlotte() {
         if (estVisible) {
             if (estEndommagee) {
                 image = new Image(Assets.CHARLOTTE_OUTCH.getEmplacement());
-            } else if(estEnMouvement){
+            } else if (estEnMouvement) {
                 image = new Image(Assets.CHARLOTTE_AVANT.getEmplacement());
-            }else{
+            } else {
                 image = new Image(Assets.CHARLOTTE.getEmplacement());
             }
         } else {
