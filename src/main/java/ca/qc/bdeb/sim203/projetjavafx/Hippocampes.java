@@ -42,7 +42,7 @@ public class Hippocampes extends Projectile {
     @Override
     public void mettreAJourPhysique(double deltaTemps) {
 
-        double tempsEcoule = System.nanoTime()*Scenes.NANOSECONDE - momentTire;
+        double tempsEcoule = System.nanoTime()*Main.NANOSECONDE - momentTire;
         y = amplitude * Math.sin((2 * Math.PI * periode * tempsEcoule) / 2) + yInitial;
         x += deltaTemps * vx;
     }

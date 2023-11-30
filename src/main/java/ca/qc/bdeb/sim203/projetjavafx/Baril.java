@@ -33,7 +33,8 @@ public class Baril extends ObjetJeu {
      * @return la position initiale du baril
      */
     private double trouverXInitial() {
-        return nextDouble((1.0 / 5.0) * Main.LARGEUR_MONDE, (4.0 / 5.0) * Main.LARGEUR_MONDE);
+        return nextDouble((1.0 / 5.0) * Main.LARGEUR_MONDE,
+                (4.0 / 5.0) * Main.LARGEUR_MONDE);
     }
 
     /**

@@ -46,7 +46,8 @@ public class Camera {
     public void update(Charlotte charlotte, double deltaTemps) {
         verifierPositionCamera();
         if (!estALaFin) {
-            if (calculerXEcran(charlotte.getXDroite()) >= Main.LARGEUR_ECRAN / 5) { //charlotte est plus grande que 1/5 de l'écran
+            //charlotte est plus grande que 1/5 de l'écran
+            if (calculerXEcran(charlotte.getXDroite()) >= Main.LARGEUR_ECRAN / 5) {
                 vxCamera = charlotte.getVx();
             } else {
                 vxCamera = 0;
